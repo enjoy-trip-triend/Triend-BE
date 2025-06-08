@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.myplace.mapper.MyPlaceMapper">
+
+  <insert id="insertMyPlace" parameterType="map">
+    INSERT INTO my_places (
+      kakao_id,
+      address,
+      lat,
+      lon,
+      location_name,
+      description,
+      member_id,
+      category_id
+    )
+    VALUES (
+      #{dto.kakaoId},
+      #{dto.address},
+      #{dto.lat},
+      #{dto.lon},
+      #{dto.locationName},
+      #{dto.description},
+      #{memberId},
+      #{dto.categoryId}
+    )
+  </insert>
+  
+	<select id="selectCountByMemberIdAndPlaceId" resultType="int">
+	  SELECT COUNT(*) 
+	  FROM my_places
+	  WHERE member_id = #{memberId}
+	    AND kakao_id = #{kakaoId}
+	</select>
+
+	<select id="selectMyPlacesByMemberId"
+	        parameterType="map"
+	        resultMap="MyPlaceResultMap">
+	  SELECT *
+	  FROM my_places p
+	  LEFT JOIN categories c
+	    ON (p.category_id = c.id)
+	  WHERE p.member_id = #{memberId}
+	  <if test="categoryId != null">
+	    AND p.category_id = #{categoryId}
+	  </if>
+	</select>
+
+	
+	<select id="selectTop10ByOrderByCountDesc">
+	    SELECT 
+	        kakao_id AS kakaoId,
+	        address,
+	        COUNT(*) AS count
+	    FROM my_places
+	    GROUP BY kakao_id, address
+	    ORDER BY count DESC
+	    LIMIT 10
+	</select>
+
+
+	<delete id="deleteMyPlaceByIds" parameterType="java.util.List">
+	  DELETE FROM my_places
+	  WHERE id IN
+	  <foreach
+	    collection="list"      
+	    item="id"              
+	    open="("              
+	    separator=","          
+	    close=")"              
+	  >
+	    #{id}
+	  </foreach>
+	</delete> 
+	
+	<update id="updateMypalceById">
+		UPDATE my_places
+		SET description=#{dto.description}, category_id=#{dto.categoryId}
+		WHERE id=#{dto.id}
+	</update>
+   
+	  <select id="selectCategories" resultType="com.ssafy.myplace.dto.CategoryDTO">
+	    SELECT
+	      id,
+	      name
+	    FROM categories
+	  </select>
+	  
+		<select id="selectTopPlacesByMbti" resultType="com.ssafy.myplace.dto.RecommendPlaceDto">
+		  SELECT
+		    id,
+		    kakao_id AS kakaoId,
+		    address,
+		    lat,
+		    lon,
+		    location_name AS locationName,
+		    cnt
+		  FROM (
+		    SELECT
+		      p.id,
+		      p.kakao_id,
+		      p.address,
+		      p.lat,
+		      p.lon,
+		      p.location_name,
+		      c.cnt,
+		      ROW_NUMBER() OVER (PARTITION BY p.kakao_id ORDER BY c.cnt DESC) AS row_num
+		    FROM my_places p
+		    JOIN (
+		      SELECT
+		        p2.kakao_id,
+		        COUNT(*) AS cnt
+		      FROM my_places p2
+		      JOIN members m2
+		        ON p2.member_id = m2.id
+		      WHERE m2.mbti = #{mbti}
+		        AND p2.member_id &lt;&gt; #{excludeMemberId}
+		        AND NOT EXISTS (
+		          SELECT 1
+		          FROM my_places p3
+		          WHERE p3.kakao_id = p2.kakao_id
+		            AND p3.member_id = #{excludeMemberId}
+		        )
+		      GROUP BY p2.kakao_id
+		      ORDER BY cnt DESC
+		      LIMIT #{limit}
+		    ) AS c
+		    ON p.kakao_id = c.kakao_id
+		  ) AS subquery
+		  WHERE row_num = 1
+		  ORDER BY cnt DESC
+		</select>
+
+
+
+	
+		<select id="selectTopPlacesByCharacters" resultType="com.ssafy.myplace.dto.RecommendPlaceDto">
+		  SELECT
+		    id,
+		    kakao_id AS kakaoId,
+		    address,
+		    lat,
+		    lon,
+		    location_name AS locationName,
+		    cnt
+		  FROM (
+		    SELECT
+		      p.id,
+		      p.kakao_id,
+		      p.address,
+		      p.lat,
+		      p.lon,
+		      p.location_name,
+		      c.cnt,
+		      ROW_NUMBER() OVER (PARTITION BY p.kakao_id ORDER BY c.cnt DESC) AS row_num
+		    FROM my_places p
+		    JOIN (
+		      SELECT
+		        p2.kakao_id,
+		        COUNT(*) AS cnt
+		      FROM my_places p2
+		      JOIN members_characters mc
+		        ON p2.member_id = mc.member_id
+		      WHERE mc.character_id IN
+		        <foreach collection="characterIds" item="cid"
+		                 open="(" separator="," close=")">
+		          #{cid}
+		        </foreach>
+		        AND p2.member_id &lt;&gt; #{excludeMemberId}
+		        AND NOT EXISTS (
+		          SELECT 1
+		          FROM my_places p3
+		          WHERE p3.kakao_id = p2.kakao_id
+		            AND p3.member_id = #{excludeMemberId}
+		        )
+		      GROUP BY p2.kakao_id
+		      ORDER BY cnt DESC
+		      LIMIT #{limit}
+		    ) AS c
+		    ON p.kakao_id = c.kakao_id
+		  ) AS subquery
+		  WHERE row_num = 1
+		  ORDER BY cnt DESC
+		</select>
+
+
+
+
+
+	  
+  <resultMap id="MyPlaceResultMap" type="com.ssafy.myplace.dto.MyPlaceDto">
+    <id     column="id"             property="id"/>
+    <result column="address"        property="address"/>
+    <result column="lat"            property="lat"/>
+    <result column="lon"            property="lon"/>
+    <result column="location_name"  property="locationName"/>
+    <result column="description"    property="description"/>
+    <result column="category_id"    property="categoryId"/>
+    <result column="name" 			property="categoryName"/>
+    <result column="kakao_id"		property="kakaoId"/>
+  </resultMap>
+
+</mapper>

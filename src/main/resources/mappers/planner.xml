@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.planner.mapper.PlannerMapper">
+
+	<insert id="createPlanner">
+		insert into planners (start_day, end_day, name, member_id, location)
+		values(#{startDay}, #{endDay}, #{name}, #{member.id}, #{location})
+	</insert>
+
+	<select id="getPlannerById" resultMap="plannerMap">
+		SELECT
+			p.id AS p_id,
+			p.start_day AS p_start_day,
+			p.end_day AS p_end_day,
+			p.name AS p_name,
+			p.location AS p_location,
+			m.id AS m_id,
+			m.name AS m_name,
+			m.email AS m_email,
+			m.password AS m_password,
+			m.role AS m_role
+		FROM planners p
+		JOIN members m ON p.member_id = m.id
+		WHERE p.id = #{plannerId}
+	</select>
+
+	<select id="getPlannersByMember" resultMap="plannerMap">
+		SELECT
+			p.id AS p_id,
+			p.start_day AS p_start_day,
+			p.end_day AS p_end_day,
+			p.name AS p_name,
+			p.location AS p_location,
+			m.id AS m_id,
+			m.name AS m_name,
+			m.email AS m_email,
+			m.password AS m_password,
+			m.role AS m_role
+		FROM planners p
+		JOIN members m ON p.member_id = m.id
+		WHERE p.member_id = #{memberId}
+	</select>
+	
+	<update id="updatePlanner">
+		update planners
+		set start_day = #{startDay}, end_day = #{endDay}, name = #{name}, location = #{location}
+		where id = #{id}
+	</update>
+
+	<delete id="deletePlanner">
+		delete from planners
+		where id = #{plannerId}
+	</delete>
+	
+	<resultMap type="Planner" id="plannerMap">
+		<id column="p_id" property="id" />
+		<result column="p_start_day" property="startDay" />
+		<result column="p_end_day" property="endDay" />
+		<result column="p_name" property="name" />
+		<result column="p_location" property="location" />
+		<association property="member" resultMap="com.ssafy.member.mapper.MemberMapper.memberMap" />
+	</resultMap>
+
+
+
+</mapper>

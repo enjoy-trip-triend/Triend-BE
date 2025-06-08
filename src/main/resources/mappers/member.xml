@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.member.mapper.MemberMapper">
+
+	<insert id="insertMember" parameterType="Member">
+		INSERT INTO members (
+		email,
+		password,
+		name,
+		mbti,
+		birth
+		)
+		VALUES (
+		#{email},
+		#{password},
+		#{name},
+		#{mbti},
+		#{birth}
+		)
+	</insert>
+
+	<insert id="insertMembersCharacters" parameterType="map">
+		insert into members_characters(member_id, character_id)
+		values
+		<foreach collection="characters" item="characterId"
+			separator=",">
+			(#{memberId}, #{characterId})
+		</foreach>
+	</insert>
+
+	<select id="selectCharactersByMemberId" parameterType="Long">
+		select
+		name from members_characters where member_id=#{memberId};
+	</select>
+
+	<select id="selectCharactersById" parameterType="long"
+		resultType="com.ssafy.member.dto.CharacterDTO">
+		SELECT c.id, c.name
+		FROM characters c
+		JOIN members_characters mc ON
+		c.id = mc.character_id
+		WHERE mc.member_id = #{memberId}
+	</select>
+
+
+	<select id="selectMemberByEmail" parameterType="String">
+		select * from
+		members where email=#{email}
+	</select>
+
+	<select id="selectCharacters">
+		select * from characters;
+	</select>
+
+	<update id="updateMember" parameterType="Member">
+		UPDATE members
+		SET
+			email = #{email},
+			password = #{password},
+			name = #{name},
+			role = #{role},
+			refresh_token = #{refreshToken},
+			mbti = #{mbti},
+			birth = #{birth}
+		WHERE id = #{id}
+	</update>
+
+	<resultMap type="Member" id="memberMap">
+		<id column="m_id" property="id" />
+		<result column="m_email" property="email" />
+		<result column="m_password" property="password" />
+		<result column="m_name" property="name" />
+		<result column="m_role" property="role" />
+	</resultMap>
+
+</mapper>
