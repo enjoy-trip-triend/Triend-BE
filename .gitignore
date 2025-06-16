@@ -141,5 +141,9 @@ $RECYCLE.BIN/
 # Spring Boot
 **/application.properties
 
+# IntelliJ 설정
+.idea/
+*.iml
+
 # End of https://www.toptal.com/developers/gitignore/api/eclipse,maven,windows,java
 
