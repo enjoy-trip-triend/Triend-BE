@@ -104,7 +104,7 @@ CREATE TABLE `my_places`
 -- PLANNERS
 CREATE TABLE `planners`
 (
-    `id`          VARCHAR(255) NOT NULL,
+    `id`          BIGINT       NOT NULL AUTO_INCREMENT COMMENT 'auto_increment',
     `start_day`   DATETIME     NOT NULL,
     `end_day`     DATETIME     NOT NULL,
     `member_id`   BIGINT       NOT NULL,
