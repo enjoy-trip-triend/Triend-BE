@@ -122,7 +122,7 @@ CREATE TABLE `planners`
 CREATE TABLE `planners_locations`
 (
     `id`         BIGINT       NOT NULL AUTO_INCREMENT COMMENT 'auto_increment',
-    `planner_id` VARCHAR(255) NOT NULL,
+    `planner_id` BIGINT      NOT NULL,
     `sido_code`  INT       NOT NULL,
     `gugun_code` INT       NOT NULL,
     PRIMARY KEY (`id`),
@@ -135,7 +135,7 @@ CREATE TABLE `planners_locations`
 CREATE TABLE `planners_likes`
 (
     `id`         BIGINT       NOT NULL AUTO_INCREMENT COMMENT 'auto_increment',
-    `planner_id` VARCHAR(255) NOT NULL,
+    `planner_id` BIGINT       NOT NULL,
     `member_id`  BIGINT       NOT NULL,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`planner_id`) REFERENCES `planners` (`id`),
@@ -146,7 +146,7 @@ CREATE TABLE `planners_likes`
 CREATE TABLE `planners_members`
 (
     `id`         BIGINT       NOT NULL AUTO_INCREMENT COMMENT 'auto_increment',
-    `planner_id` VARCHAR(255) NOT NULL,
+    `planner_id` BIGINT       NOT NULL,
     `member_id`  BIGINT       NOT NULL,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`planner_id`) REFERENCES `planners` (`id`),
@@ -166,7 +166,7 @@ CREATE TABLE `places_images`
 CREATE TABLE `schedules`
 (
     `id`         BIGINT       NOT NULL AUTO_INCREMENT COMMENT 'auto_increment',
-    `planner_id` VARCHAR(255) NOT NULL,
+    `planner_id` BIGINT       NOT NULL,
     `date`       TIMESTAMP    NOT NULL,
     `start_time` TIMESTAMP,
     `content`    VARCHAR(255),

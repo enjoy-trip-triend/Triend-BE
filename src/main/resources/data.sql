@@ -47,27 +47,27 @@ VALUES (1, 1001),
        (1, 1002);
 
 -- PLANNERS
-INSERT INTO planners (id, start_day, end_day, member_id, name, location, comment, exposure,
+INSERT INTO planners (start_day, end_day, member_id, name, location, comment, exposure,
                       password, likes_count)
-VALUES ('p1', '2025-07-01 00:00:00', '2025-07-03 00:00:00', 1, '여름 서울 여행', '서울', '서울 맛집 투어',
+VALUES ('2025-07-01 00:00:00', '2025-07-03 00:00:00', 1, '여름 서울 여행', '서울', '서울 맛집 투어',
         'PUBLIC', NULL, 1),
-       ('p2', '2025-08-01 00:00:00', '2025-08-02 00:00:00', 2, '부산 여행', '부산', '해운대 힐링', 'PRIVATE',
+       ('2025-08-01 00:00:00', '2025-08-02 00:00:00', 2, '부산 여행', '부산', '해운대 힐링', 'PRIVATE',
         NULL, 0);
 
 -- PLANNERS_LOCATIONS
 INSERT INTO planners_locations (planner_id, sido_code, gugun_code)
-VALUES ('p1', 11, 11010),
-       ('p2', 26, 26010);
+VALUES (1, 11, 11010),
+       (2, 26, 26010);
 
 -- PLANNERS_LIKES
 INSERT INTO planners_likes (planner_id, member_id)
-VALUES ('p1', 2);
+VALUES (1, 2);
 
 -- PLANNERS_MEMBERS
 INSERT INTO planners_members (planner_id, member_id)
-VALUES ('p1', 1),
-       ('p1', 2),
-       ('p2', 2);
+VALUES (1, 1),
+       (1, 2),
+       (2, 2);
 
 -- PLACES_IMAGES
 INSERT INTO places_images (kakaoId, image_key)
@@ -76,9 +76,9 @@ VALUES (1001, 'img_1001.jpg'),
 
 -- SCHEDULES
 INSERT INTO schedules (id, planner_id, date, start_time, content, place_url, idx, place_id)
-VALUES (1, 'p1', '2025-07-01 10:00:00', '2025-07-01 10:00:00', '점심 식사', 'https://place1.com', 1,
+VALUES (1, 1, '2025-07-01 10:00:00', '2025-07-01 10:00:00', '점심 식사', 'https://place1.com', 1,
         1001),
-       (2, 'p1', '2025-07-01 15:00:00', '2025-07-01 15:00:00', '카페 타임', 'https://place2.com', 2,
+       (2, 1, '2025-07-01 15:00:00', '2025-07-01 15:00:00', '카페 타임', 'https://place2.com', 2,
         1002);
 
 -- INSERT INTO members (email, password, name, role, birth, mbti) VALUES
