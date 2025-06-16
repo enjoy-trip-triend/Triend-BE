@@ -1,19 +1,16 @@
 package com.ssafy.s3.service;
 
+import com.ssafy.plan.mapper.PlanMapper;
 import java.io.ByteArrayInputStream;
 import java.net.URLConnection;
 import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.WebClient;
-
-import com.ssafy.plan.mapper.PlanMapper;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -22,7 +19,7 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class S3Service {
 
