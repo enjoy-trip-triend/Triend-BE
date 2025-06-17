@@ -117,7 +117,7 @@ VALUES (1, 1, '2025-07-01 10:00:00', '2025-07-01 10:00:00', '점심 식사', 'ht
 -- ('2025-06-01', '2025-06-05', 1, '제주도 4박 5일 여행', '제주도');
 --
 --
--- INSERT INTO plans (planner_id, date, start_time, end_time, place_name, address, content, lat, lon, place_url) VALUES
+-- INSERT INTO schedules (planner_id, date, start_time, end_time, place_name, address, content, lat, lon, place_url) VALUES
 -- (1, '2025-12-24', '09:30:00', '10:00:00', '황리단길', '경북 경주시 태종로 746', '레트로 감성 가득한 골목', 35.8393348165945, 129.209645417434, 'http://place.map.kakao.com/627627078'),
 -- (1, '2025-12-24', '11:00:00', '11:30:00', '천마총', '경북 경주시 계림로 9', '황금의 유물이 잠든 천마총', 35.8384565998858, 129.210559431045, 'http://place.map.kakao.com/17809057'),
 -- (1, '2025-12-24', '14:00:00', '15:00:00', '대릉원', '경북 경주시 황남동 31-1', '신라 왕들의 숨결이 깃든 고분군', 35.83819105876201, 129.21333399231364, 'http://place.map.kakao.com/8288444'),
