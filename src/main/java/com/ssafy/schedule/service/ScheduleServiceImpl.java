@@ -72,6 +72,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .placeId(request.placeId())
                 .content(request.content())
                 .placeUrl(request.placeUrl())
+                .idx((request.idx()))
                 .plannerId(planner.getId())
                 .build();
         
