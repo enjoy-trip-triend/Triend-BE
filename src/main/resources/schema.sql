@@ -153,6 +153,16 @@ CREATE TABLE `planners_members`
     FOREIGN KEY (`member_id`) REFERENCES `members` (`id`)
 );
 
+-- PLANNERS_share
+CREATE TABLE `planners_share` (
+     `id` BIGINT NOT NULL AUTO_INCREMENT,
+     `secret_code` VARCHAR(50) NOT NULL UNIQUE COMMENT '공유 링크 식별자',
+     `planner_id` BIGINT NOT NULL,
+     `password` VARCHAR(255) NOT NULL COMMENT 'BCrypt 해시된 비밀번호',
+     PRIMARY KEY (`id`),
+     FOREIGN KEY (`planner_id`) REFERENCES `planners` (`id`) ON DELETE CASCADE
+);
+
 -- PLACES_IMAGES
 CREATE TABLE `places_images`
 (
