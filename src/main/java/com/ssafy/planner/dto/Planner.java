@@ -12,16 +12,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class Planner {
-	private Long id;
-	private LocalDate startDay;
-	private LocalDate endDay;
-	private Long memberId;
-	private String name;
-	private String location;
-	private String comment;
-	private Exposure exposure;
-	private String password;
-	private Long likesCount;
 
-	//private Member member;
+  private Long id;
+  private LocalDate startDay;
+  private LocalDate endDay;
+  private Long memberId;
+  private String name;
+  private String location;
+  private String comment;
+  private Exposure exposure;
+  private String password;
+  private Long likesCount;
+
+  //private Member member;
 }
