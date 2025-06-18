@@ -1,6 +1,6 @@
 package com.ssafy.s3.service;
 
-import com.ssafy.plan.mapper.PlanMapper;
+import com.ssafy.schedule.mapper.ScheduleMapper;
 import java.io.ByteArrayInputStream;
 import java.net.URLConnection;
 import java.time.Duration;
@@ -29,7 +29,7 @@ public class S3Service {
     private final WebClient webClient;
     private final S3Client s3Client;
     private final S3Presigner s3Presigner;
-    private final PlanMapper planMapper;
+    private final ScheduleMapper scheduleMapper;
     
     public List<String> uploadExternalImagesToS3(Long planId, List<String> imageUrls) {
         List<String> imageKeys = imageUrls.parallelStream()
@@ -38,7 +38,7 @@ public class S3Service {
             .toList();
 
         if (!imageKeys.isEmpty()) {
-            planMapper.insertPlanImages(planId, imageKeys);
+            scheduleMapper.insertScheduleImages(planId, imageKeys);
         }
 
         return imageKeys;
