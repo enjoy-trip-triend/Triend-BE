@@ -2,6 +2,7 @@ package com.ssafy.plannershare.controller;
 
 import com.ssafy.common.security.dto.CustomUserDetails;
 import com.ssafy.plannershare.dto.PlannerShareCreateRequest;
+import com.ssafy.plannershare.dto.PlannerShareResponse;
 import com.ssafy.plannershare.dto.PlannerShareVerifyRequest;
 import com.ssafy.plannershare.service.PlannerShareService;
 import java.util.Map;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,4 +43,14 @@ public class PlannerShareController {
         plannerShareService.verifyPassword(secretCode, request.password());
         return ResponseEntity.noContent().build();
     }
+
+    // 공유 링크 조회
+    @GetMapping("/{secretCode}")
+    public ResponseEntity<PlannerShareResponse> getSharedPlanner(
+            @PathVariable String secretCode,
+            @AuthenticationPrincipal CustomUserDetails loginUser
+    ) {
+        return ResponseEntity.ok(plannerShareService.getSharedPlanner(secretCode, loginUser));
+    }
+
 }

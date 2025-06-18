@@ -1,7 +1,12 @@
 package com.ssafy.plannershare.service;
 
 import com.ssafy.common.security.dto.CustomUserDetails;
+import com.ssafy.planner.dto.Planner;
+import com.ssafy.planner.mapper.PlannerMapper;
+import com.ssafy.planner.service.PlannerService;
 import com.ssafy.plannershare.dto.PlannerShare;
+import com.ssafy.plannershare.dto.PlannerShareResponse;
+import com.ssafy.plannershare.mapper.PlannerMemberMapper;
 import com.ssafy.plannershare.mapper.PlannerShareMapper;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class PlannerShareServiceImpl implements PlannerShareService{
     private final PlannerShareMapper plannerShareMapper;
+    private final PlannerMemberMapper plannerMemberMapper;
+    private final PlannerMapper plannerMapper;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
@@ -45,5 +52,30 @@ public class PlannerShareServiceImpl implements PlannerShareService{
         if (!matches) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
+    }
+
+    @Transactional
+    @Override
+    public PlannerShareResponse getSharedPlanner(String secretCode, CustomUserDetails loginUser) {
+        PlannerShare share = plannerShareMapper.findBySecretCode(secretCode);
+        if (share == null) {
+            throw new IllegalArgumentException("공유 링크가 존재하지 않습니다.");
+        }
+        Long plannerId = share.getPlannerId();
+        Planner planner = plannerMapper.getPlannerById(plannerId);
+
+        boolean isEditable = false;
+        if (loginUser != null) {
+            if (planner.getMember().getId().equals(loginUser.getMember().getId())) {
+                isEditable = true;
+            } else {
+                boolean isMember = plannerMemberMapper.isPlannerMember(plannerId, loginUser.getMember().getId());
+                if (isMember) {
+                    isEditable = true;
+                }
+            }
+        }
+
+        return new PlannerShareResponse(planner, isEditable);
     }
 }
