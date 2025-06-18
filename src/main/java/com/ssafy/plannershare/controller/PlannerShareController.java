@@ -2,6 +2,7 @@ package com.ssafy.plannershare.controller;
 
 import com.ssafy.common.security.dto.CustomUserDetails;
 import com.ssafy.plannershare.dto.PlannerShareCreateRequest;
+import com.ssafy.plannershare.dto.PlannerShareVerifyRequest;
 import com.ssafy.plannershare.service.PlannerShareService;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -29,5 +30,15 @@ public class PlannerShareController {
             @RequestBody PlannerShareCreateRequest request) {
         String secretCode = plannerShareService.createSecreteCode(plannerId, loginUser, request.password());
         return ResponseEntity.ok(Map.of("secretCode", secretCode));
+    }
+
+    // 공유 플래너 비밀번호 검증
+    @PostMapping("/{secretCode}/verify")
+    public ResponseEntity<Void> verifyPassword(
+            @PathVariable String secretCode,
+            @RequestBody PlannerShareVerifyRequest request
+    ) {
+        plannerShareService.verifyPassword(secretCode, request.password());
+        return ResponseEntity.noContent().build();
     }
 }

@@ -7,4 +7,6 @@ import org.apache.ibatis.annotations.Mapper;
 public interface PlannerShareMapper {
 
     void insertPlannerShare(PlannerShare share);
+
+    PlannerShare findBySecretCode(String secretCode);
 }

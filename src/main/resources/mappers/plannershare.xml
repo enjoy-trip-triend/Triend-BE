@@ -8,6 +8,13 @@
     VALUES (#{secretCode}, #{password}, #{plannerId})
   </insert>
 
+  <select id="findBySecretCode" resultMap="plannerShareMap">
+    SELECT id, secret_code, password, planner_id
+    FROM planners_share
+    WHERE secret_code = #{secretCode}
+  </select>
+
+
   <resultMap type="PlannerShare" id="plannerShareMap">
     <id column="id" property="id" />
     <result column="secret_code" property="secretCode" />

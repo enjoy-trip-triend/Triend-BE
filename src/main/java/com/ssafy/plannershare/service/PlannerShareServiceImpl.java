@@ -33,4 +33,17 @@ public class PlannerShareServiceImpl implements PlannerShareService{
         plannerShareMapper.insertPlannerShare(share);
         return secretCode;
     }
+
+    @Transactional
+    @Override
+    public void verifyPassword(String secretCode, String inputPassword) {
+        PlannerShare share = plannerShareMapper.findBySecretCode(secretCode);
+        if(share==null){
+            throw new IllegalArgumentException("공유 링크가 존재하지 않습니다.");
+        }
+        boolean matches = passwordEncoder.matches(inputPassword, share.getPassword());
+        if (!matches) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+    }
 }
