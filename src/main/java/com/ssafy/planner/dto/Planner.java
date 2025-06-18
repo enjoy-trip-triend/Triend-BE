@@ -1,5 +1,6 @@
 package com.ssafy.planner.dto;
 
+import com.ssafy.member.dto.Member;
 import java.time.LocalDate;
 
 import lombok.AllArgsConstructor;
@@ -23,6 +24,5 @@ public class Planner {
   private Exposure exposure;
   private String password;
   private Long likesCount;
-
-  //private Member member;
+  private Member member;
 }
