@@ -78,4 +78,22 @@ public class PlannerShareServiceImpl implements PlannerShareService{
 
         return new PlannerShareResponse(planner, isEditable);
     }
+
+    @Transactional
+    @Override
+    public void addMemberToPlannerMember(String secretCode, CustomUserDetails loginUser) {
+        PlannerShare share = plannerShareMapper.findBySecretCode(secretCode);
+        if (share == null) {
+            throw new IllegalArgumentException("공유 링크가 존재하지 않습니다.");
+        }
+
+        Long plannerId = share.getPlannerId();
+        Long memberId = loginUser.getMember().getId();
+
+        boolean isMember = plannerMemberMapper.isPlannerMember(plannerId, memberId);
+
+        if (!isMember) {
+            plannerMemberMapper.insertPlannerMember(plannerId, memberId);
+        }
+    }
 }

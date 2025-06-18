@@ -53,4 +53,13 @@ public class PlannerShareController {
         return ResponseEntity.ok(plannerShareService.getSharedPlanner(secretCode, loginUser));
     }
 
+    // 참여자 등록
+    @PostMapping("/{secretCode}/join")
+    public ResponseEntity<Void> joinPlannerShare(
+            @PathVariable String secretCode,
+            @AuthenticationPrincipal CustomUserDetails loginUser
+    ) {
+        plannerShareService.addMemberToPlannerMember(secretCode, loginUser);
+        return ResponseEntity.noContent().build();
+    }
 }

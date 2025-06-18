@@ -9,4 +9,10 @@
     WHERE planner_id = #{plannerId} AND member_id = #{memberId}
     )
   </select>
+
+  <insert id="insertPlannerMember">
+    INSERT INTO planners_members (planner_id, member_id)
+    VALUES (#{plannerId}, #{memberId})
+  </insert>
+
 </mapper>

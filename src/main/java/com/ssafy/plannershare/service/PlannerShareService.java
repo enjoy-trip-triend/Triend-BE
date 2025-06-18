@@ -11,4 +11,6 @@ public interface PlannerShareService {
     void verifyPassword(String secretCode, String password);
 
     PlannerShareResponse getSharedPlanner(String secretCode, CustomUserDetails loginUser);
+
+    void addMemberToPlannerMember(String secretCode, CustomUserDetails loginUser);
 }
