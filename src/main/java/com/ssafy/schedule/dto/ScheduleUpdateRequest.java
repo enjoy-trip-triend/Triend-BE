@@ -1,18 +1,15 @@
-package com.ssafy.plan.dto;
+package com.ssafy.schedule.dto;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public record PlanUpdateRequest(
+public record ScheduleUpdateRequest(
 		Long id,
 		LocalDate date,
 		LocalTime startTime,
 		LocalTime endTime,
-		String placeName,
-		String address,
+		Long placeId,
 		String content,
-		double lat,
-		double lon,
 		String placeUrl
 ) {
 }

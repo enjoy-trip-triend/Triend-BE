@@ -121,10 +121,10 @@ CREATE TABLE `planners`
 -- PLANNERS_LOCATIONS
 CREATE TABLE `planners_locations`
 (
-    `id`         BIGINT       NOT NULL AUTO_INCREMENT COMMENT 'auto_increment',
-    `planner_id` BIGINT      NOT NULL,
-    `sido_code`  INT       NOT NULL,
-    `gugun_code` INT       NOT NULL,
+    `id`         BIGINT NOT NULL AUTO_INCREMENT COMMENT 'auto_increment',
+    `planner_id` BIGINT NOT NULL,
+    `sido_code`  INT    NOT NULL,
+    `gugun_code` INT    NOT NULL,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`planner_id`) REFERENCES `planners` (`id`),
     FOREIGN KEY (`sido_code`) REFERENCES `sidos` (`sido_code`),
@@ -134,9 +134,9 @@ CREATE TABLE `planners_locations`
 -- PLANNERS_LIKES
 CREATE TABLE `planners_likes`
 (
-    `id`         BIGINT       NOT NULL AUTO_INCREMENT COMMENT 'auto_increment',
-    `planner_id` BIGINT       NOT NULL,
-    `member_id`  BIGINT       NOT NULL,
+    `id`         BIGINT NOT NULL AUTO_INCREMENT COMMENT 'auto_increment',
+    `planner_id` BIGINT NOT NULL,
+    `member_id`  BIGINT NOT NULL,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`planner_id`) REFERENCES `planners` (`id`),
     FOREIGN KEY (`member_id`) REFERENCES `members` (`id`)
@@ -145,9 +145,9 @@ CREATE TABLE `planners_likes`
 -- PLANNERS_MEMBERS
 CREATE TABLE `planners_members`
 (
-    `id`         BIGINT       NOT NULL AUTO_INCREMENT COMMENT 'auto_increment',
-    `planner_id` BIGINT       NOT NULL,
-    `member_id`  BIGINT       NOT NULL,
+    `id`         BIGINT NOT NULL AUTO_INCREMENT COMMENT 'auto_increment',
+    `planner_id` BIGINT NOT NULL,
+    `member_id`  BIGINT NOT NULL,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`planner_id`) REFERENCES `planners` (`id`),
     FOREIGN KEY (`member_id`) REFERENCES `members` (`id`)
@@ -165,14 +165,14 @@ CREATE TABLE `places_images`
 -- SCHEDULES
 CREATE TABLE `schedules`
 (
-    `id`         BIGINT       NOT NULL AUTO_INCREMENT COMMENT 'auto_increment',
-    `planner_id` BIGINT       NOT NULL,
-    `date`       TIMESTAMP    NOT NULL,
+    `id`         BIGINT NOT NULL AUTO_INCREMENT COMMENT 'auto_increment',
+    `planner_id` BIGINT NOT NULL,
+    `date`       DATE   NOT NULL,
     `start_time` TIMESTAMP,
     `content`    VARCHAR(255),
     `place_url`  VARCHAR(255),
-    `idx`        BIGINT       NOT NULL,
-    `place_id`   BIGINT       NOT NULL,
+    `idx`        INT    NOT NULL,
+    `place_id`   BIGINT NOT NULL,
     PRIMARY KEY (`id`, `planner_id`),
     FOREIGN KEY (`planner_id`) REFERENCES `planners` (`id`),
     FOREIGN KEY (`place_id`) REFERENCES `places` (`kakaoId`)

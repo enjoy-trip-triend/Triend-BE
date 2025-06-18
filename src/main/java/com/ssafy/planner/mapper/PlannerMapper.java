@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.ssafy.plan.dto.Plan;
 import com.ssafy.planner.dto.Planner;
 
 @Mapper
