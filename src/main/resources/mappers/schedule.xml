@@ -7,7 +7,7 @@
   <insert id="createSchedule" useGeneratedKeys="true" keyProperty="id">
     insert into schedules (planner_id, date, start_time, place_id, content, place_url, idx)
     values(
-    #{planner.id}, #{date}, #{startTime}, #{placeId}, #{content}, #{placeUrl}, #{idx}
+    #{plannerId}, #{date}, #{startTime}, #{placeId}, #{content}, #{placeUrl}, #{idx}
     )
   </insert>
 
@@ -86,7 +86,7 @@
       content = #{schedule.content},
       idx = #{schedule.idx}
       WHERE id = #{schedule.id} AND
-      planner_id = #{schedule.planner.id}
+      planner_id = #{schedule.plannerId}
     </foreach>
   </update>
 
@@ -106,8 +106,7 @@
     <result column="s_content" property="content"/>
     <result column="s_place_url" property="placeUrl"/>
     <result column="s_idx" property="idx"/>
-    <association property="planner"
-      resultMap="com.ssafy.planner.mapper.PlannerMapper.plannerMap"/>
+    <result column="p_id" property="plannerId"/>
   </resultMap>
 
 </mapper>

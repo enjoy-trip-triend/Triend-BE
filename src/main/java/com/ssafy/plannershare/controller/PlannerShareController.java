@@ -1,9 +1,9 @@
 package com.ssafy.plannershare.controller;
 
 import com.ssafy.common.security.dto.CustomUserDetails;
-import com.ssafy.plannershare.dto.PlannerShareCreateRequest;
-import com.ssafy.plannershare.dto.PlannerShareResponse;
-import com.ssafy.plannershare.dto.PlannerShareVerifyRequest;
+import com.ssafy.plannershare.dto.PlannerShareCreateRequestDto;
+import com.ssafy.plannershare.dto.PlannerShareResponseDto;
+import com.ssafy.plannershare.dto.PlannerShareVerifyRequestDto;
 import com.ssafy.plannershare.service.PlannerShareService;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,7 @@ public class PlannerShareController {
     public ResponseEntity<Map<String, String>> createShare(
             @AuthenticationPrincipal CustomUserDetails loginUser,
             @PathVariable("planner-id") Long plannerId,
-            @RequestBody PlannerShareCreateRequest request) {
+            @RequestBody PlannerShareCreateRequestDto request) {
         String secretCode = plannerShareService.createSecreteCode(plannerId, loginUser, request.password());
         return ResponseEntity.ok(Map.of("secretCode", secretCode));
     }
@@ -38,7 +38,7 @@ public class PlannerShareController {
     @PostMapping("/{secretCode}/verify")
     public ResponseEntity<Void> verifyPassword(
             @PathVariable String secretCode,
-            @RequestBody PlannerShareVerifyRequest request
+            @RequestBody PlannerShareVerifyRequestDto request
     ) {
         plannerShareService.verifyPassword(secretCode, request.password());
         return ResponseEntity.noContent().build();
@@ -46,7 +46,7 @@ public class PlannerShareController {
 
     // 공유 링크 조회
     @GetMapping("/{secretCode}")
-    public ResponseEntity<PlannerShareResponse> getSharedPlanner(
+    public ResponseEntity<PlannerShareResponseDto> getSharedPlanner(
             @PathVariable String secretCode,
             @AuthenticationPrincipal CustomUserDetails loginUser
     ) {

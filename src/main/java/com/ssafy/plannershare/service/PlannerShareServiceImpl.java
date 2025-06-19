@@ -3,11 +3,13 @@ package com.ssafy.plannershare.service;
 import com.ssafy.common.security.dto.CustomUserDetails;
 import com.ssafy.planner.dto.Planner;
 import com.ssafy.planner.mapper.PlannerMapper;
-import com.ssafy.planner.service.PlannerService;
 import com.ssafy.plannershare.dto.PlannerShare;
-import com.ssafy.plannershare.dto.PlannerShareResponse;
+import com.ssafy.plannershare.dto.PlannerShareResponseDto;
 import com.ssafy.plannershare.mapper.PlannerMemberMapper;
 import com.ssafy.plannershare.mapper.PlannerShareMapper;
+import com.ssafy.schedule.dto.Schedule;
+import com.ssafy.schedule.mapper.ScheduleMapper;
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +25,7 @@ public class PlannerShareServiceImpl implements PlannerShareService{
     private final PlannerShareMapper plannerShareMapper;
     private final PlannerMemberMapper plannerMemberMapper;
     private final PlannerMapper plannerMapper;
+    private final ScheduleMapper scheduleMapper;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
@@ -56,14 +59,14 @@ public class PlannerShareServiceImpl implements PlannerShareService{
 
     @Transactional
     @Override
-    public PlannerShareResponse getSharedPlanner(String secretCode, CustomUserDetails loginUser) {
+    public PlannerShareResponseDto getSharedPlanner(String secretCode, CustomUserDetails loginUser) {
         PlannerShare share = plannerShareMapper.findBySecretCode(secretCode);
         if (share == null) {
             throw new IllegalArgumentException("공유 링크가 존재하지 않습니다.");
         }
         Long plannerId = share.getPlannerId();
         Planner planner = plannerMapper.getPlannerById(plannerId);
-
+        List<Schedule> scheduleList = scheduleMapper.getSchedulesByPlanner(plannerId);
         boolean isEditable = false;
         if (loginUser != null) {
             if (planner.getMember().getId().equals(loginUser.getMember().getId())) {
@@ -76,7 +79,7 @@ public class PlannerShareServiceImpl implements PlannerShareService{
             }
         }
 
-        return new PlannerShareResponse(planner, isEditable);
+        return new PlannerShareResponseDto(planner, scheduleList, isEditable);
     }
 
     @Transactional

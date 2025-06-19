@@ -2,7 +2,7 @@ package com.ssafy.plannershare.service;
 
 
 import com.ssafy.common.security.dto.CustomUserDetails;
-import com.ssafy.plannershare.dto.PlannerShareResponse;
+import com.ssafy.plannershare.dto.PlannerShareResponseDto;
 
 public interface PlannerShareService {
 
@@ -10,7 +10,7 @@ public interface PlannerShareService {
 
     void verifyPassword(String secretCode, String password);
 
-    PlannerShareResponse getSharedPlanner(String secretCode, CustomUserDetails loginUser);
+    PlannerShareResponseDto getSharedPlanner(String secretCode, CustomUserDetails loginUser);
 
     void addMemberToPlannerMember(String secretCode, CustomUserDetails loginUser);
 }

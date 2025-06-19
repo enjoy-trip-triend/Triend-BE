@@ -1,6 +1,6 @@
 package com.ssafy.plannershare.dto;
 
-public record PlannerShareCreateRequest (
+public record PlannerShareCreateRequestDto(
         String password
 ){ }
 
