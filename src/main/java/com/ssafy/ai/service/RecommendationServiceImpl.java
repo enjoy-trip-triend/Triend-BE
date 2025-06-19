@@ -1,4 +1,4 @@
-package com.ssafy.chatGPT.service;
+package com.ssafy.ai.service;
 
 import java.util.List;
 

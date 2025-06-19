@@ -1,15 +1,15 @@
-package com.ssafy.chatGPT.tool;
+package com.ssafy.ai.tool;
 
 import java.util.List;
 
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.stereotype.Component;
 
-import com.ssafy.chatGPT.service.RecommendationService;
+import com.ssafy.ai.service.RecommendationService;
 import com.ssafy.member.dto.Member;
 import com.ssafy.member.service.MemberService;
 import com.ssafy.myplace.dto.RecommendPlaceDto;
-import static com.ssafy.chatGPT.constant.RecommendationConstants.*;
+import static com.ssafy.ai.constant.RecommendationConstants.*;
 
 import lombok.RequiredArgsConstructor;
 

@@ -1,4 +1,4 @@
-package com.ssafy.chatGPT.config;
+package com.ssafy.ai.config;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;

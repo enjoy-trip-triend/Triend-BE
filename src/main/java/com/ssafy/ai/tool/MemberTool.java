@@ -1,6 +1,4 @@
-package com.ssafy.chatGPT.tool;
-
-import java.util.List;
+package com.ssafy.ai.tool;
 
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.stereotype.Component;

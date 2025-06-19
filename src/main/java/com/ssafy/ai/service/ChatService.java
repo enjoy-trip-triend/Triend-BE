@@ -1,11 +1,11 @@
-package com.ssafy.chatGPT.service;
+package com.ssafy.ai.service;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.stereotype.Service;
 
-import com.ssafy.chatGPT.dto.UserMessage;
-import com.ssafy.chatGPT.tool.MemberTool;
-import com.ssafy.chatGPT.tool.PlaceRecommendationTool;
+import com.ssafy.ai.dto.UserMessage;
+import com.ssafy.ai.tool.MemberTool;
+import com.ssafy.ai.tool.PlaceRecommendationTool;
 import com.ssafy.member.dto.CharacterDTO;
 import com.ssafy.member.dto.Member;
 import com.ssafy.member.service.MemberService;
@@ -13,7 +13,7 @@ import com.ssafy.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import static com.ssafy.chatGPT.constant.PromptParamConstants.*;
+import static com.ssafy.ai.constant.PromptParamConstants.*;
 
 import java.time.LocalDate;
 import java.util.List;
