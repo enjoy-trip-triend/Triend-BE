@@ -37,7 +37,7 @@ public class PlannerShareServiceImpl implements PlannerShareService{
         String secretCode = UUID.randomUUID().toString().substring(0, 10);
         PlannerShare share = PlannerShare.builder()
                 .secretCode(secretCode)
-                .password(hashedPassword) // 이제 변수명 통일 했으니까 password!
+                .password(hashedPassword)
                 .plannerId(plannerId)
                 .build();
         plannerShareMapper.insertPlannerShare(share);
