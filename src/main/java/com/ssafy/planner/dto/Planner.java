@@ -22,7 +22,6 @@ public class Planner {
   private String location;
   private String comment;
   private Exposure exposure;
-  private String password;
   private Long likesCount;
   private Member member;
 }
