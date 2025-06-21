@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.schedule.mapper.ScheduleMapper">
+
+  <insert id="createSchedule" useGeneratedKeys="true" keyProperty="id">
+    insert into schedules (planner_id, date, start_time, place_id, content, place_url, idx)
+    values(
+    #{planner.id}, #{date}, #{startTime}, #{placeId}, #{content}, #{placeUrl}, #{idx}
+    )
+  </insert>
+
+  <select id="getScheduleById" resultMap="scheduleMap">
+    SELECT
+    s.id AS s_id,
+    s.date AS s_date,
+    s.start_time AS s_start_time,
+    s.place_id AS s_place_id,
+    s.content AS s.content,
+    s.place_url AS s.placeUrl,
+    s.idx AS s.idx,
+    p.id AS p_id,
+    p.start_day AS p_start_day,
+    p.end_day AS p_end_day,
+    p.name AS p_name,
+    p.location AS p_location
+    FROM schedules s
+    JOIN planners p ON s.planner_id = p.id
+    WHERE s.id = #{s.id}
+  </select>
+
+  <!-- <update id="updatePlanner"> -->
+  <!-- update planners -->
+  <!-- set start_day = #{startDay}, end_day = #{end_day} -->
+  <!-- where id = #{plannerId} -->
+  <!-- </update> -->
+
+  <delete id="deleteSchedulesByPlannerAndDate">
+    <![CDATA[
+        DELETE FROM schedules
+        WHERE planner_id = #{plannerId}
+          AND ( date < #{startDay} OR date > #{endDay} )
+    ]]>
+  </delete>
+
+  <delete id="deleteSchedulesByPlanner">
+    DELETE FROM schedules
+    WHERE planner_id = #{plannerId}
+  </delete>
+
+  <delete id="deleteSchedule">
+    <![CDATA[
+        DELETE FROM schedules
+        WHERE schedule_id = #{scheduleId}
+    ]]>
+  </delete>
+
+  <select id="getSchedulesByPlanner" resultMap="scheduleMap">
+    SELECT
+    s.id AS s_id,
+    s.date AS s_date,
+    s.start_time AS s_start_time,
+    s.place_id AS s_place_id,
+    s.content AS s_content,
+    s.place_url AS s_place_url,
+    p.id AS p_id,
+    p.start_day AS p_start_day,
+    p.end_day AS p_end_day,
+    p.name AS p_name,
+    p.location AS p_location
+    FROM schedules s
+    JOIN planners p ON s.planner_id = p.id
+    WHERE s.planner_id = #{plannerId}
+    ORDER BY s.date, s.start_time
+  </select>
+
+  <update id="updateSchedulesBatch">
+    <foreach collection="schedules" item="schedule" separator=";">
+      UPDATE schedules
+      SET
+      date = #{schedule.date},
+      start_time = #{schedule.startTime},
+      place_id = #{schedule.placeId},
+      place_url = #{schedule.placeUrl},
+      content = #{schedule.content},
+      idx = #{schedule.idx}
+      WHERE id = #{schedule.id} AND
+      planner_id = #{schedule.planner.id}
+    </foreach>
+  </update>
+
+  <delete id="deleteSchedulesBatch">
+    <foreach collection="schedulesIdList" item="scheduleId" separator=";">
+      DELETE FROM schedules
+      WHERE id = #{scheduleId}
+    </foreach>
+  </delete>
+
+
+  <resultMap type="Schedule" id="scheduleMap">
+    <id column="s_id" property="id"/>
+    <result column="s_date" property="date"/>
+    <result column="s_start_time" property="startTime"/>
+    <result column="s_place_id" property="placeId"/>
+    <result column="s_content" property="content"/>
+    <result column="s_place_url" property="placeUrl"/>
+    <result column="s_idx" property="idx"/>
+    <association property="planner"
+      resultMap="com.ssafy.planner.mapper.PlannerMapper.plannerMap"/>
+  </resultMap>
+
+</mapper>

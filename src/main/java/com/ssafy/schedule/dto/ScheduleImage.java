@@ -1,4 +1,4 @@
-package com.ssafy.plan.dto;
+package com.ssafy.schedule.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PlanImage {
+public class ScheduleImage {
     private Long id;
     private Long planId;
     private String imageKey;
