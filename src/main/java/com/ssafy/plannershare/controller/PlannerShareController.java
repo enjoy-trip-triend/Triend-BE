@@ -20,12 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/planners-share")
+@RequestMapping("/api/planners/{planner-id}/share")
 public class PlannerShareController {
     private final PlannerShareService plannerShareService;
 
     // 공유 링크 생성 (비밀번호까지 설정)
-    @PostMapping("/{planner-id}")
+    @PostMapping
     public ResponseEntity<Map<String, String>> createShare(
             @AuthenticationPrincipal CustomUserDetails loginUser,
             @PathVariable("planner-id") Long plannerId,
