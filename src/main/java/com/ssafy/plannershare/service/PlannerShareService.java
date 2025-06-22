@@ -2,11 +2,12 @@ package com.ssafy.plannershare.service;
 
 
 import com.ssafy.common.security.dto.CustomUserDetails;
+import com.ssafy.plannershare.dto.PlannerShareCreateResponseDto;
 import com.ssafy.plannershare.dto.PlannerShareResponseDto;
 
 public interface PlannerShareService {
 
-    String createSecreteCode(Long plannerId, CustomUserDetails loginUser, String password);
+    PlannerShareCreateResponseDto createSecreteCode(Long plannerId, CustomUserDetails loginUser, String password);
 
     void verifyPassword(String secretCode, String password);
 

@@ -4,6 +4,7 @@ import com.ssafy.common.security.dto.CustomUserDetails;
 import com.ssafy.planner.dto.Planner;
 import com.ssafy.planner.mapper.PlannerMapper;
 import com.ssafy.plannershare.dto.PlannerShare;
+import com.ssafy.plannershare.dto.PlannerShareCreateResponseDto;
 import com.ssafy.plannershare.dto.PlannerShareResponseDto;
 import com.ssafy.plannershare.mapper.PlannerMemberMapper;
 import com.ssafy.plannershare.mapper.PlannerShareMapper;
@@ -30,7 +31,7 @@ public class PlannerShareServiceImpl implements PlannerShareService{
 
     @Transactional
     @Override
-    public String createSecreteCode(Long plannerId, CustomUserDetails loginUser, String rawPassword) {
+    public PlannerShareCreateResponseDto createSecreteCode(Long plannerId, CustomUserDetails loginUser, String rawPassword) {
         // 비밀번호 해시
         String hashedPassword = passwordEncoder.encode(rawPassword);
         // 시크릿 코드 생성
@@ -41,7 +42,7 @@ public class PlannerShareServiceImpl implements PlannerShareService{
                 .plannerId(plannerId)
                 .build();
         plannerShareMapper.insertPlannerShare(share);
-        return secretCode;
+        return new PlannerShareCreateResponseDto(secretCode);
     }
 
     @Transactional

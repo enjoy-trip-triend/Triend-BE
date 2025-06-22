@@ -2,6 +2,7 @@ package com.ssafy.plannershare.controller;
 
 import com.ssafy.common.security.dto.CustomUserDetails;
 import com.ssafy.plannershare.dto.PlannerShareCreateRequestDto;
+import com.ssafy.plannershare.dto.PlannerShareCreateResponseDto;
 import com.ssafy.plannershare.dto.PlannerShareResponseDto;
 import com.ssafy.plannershare.dto.PlannerShareVerifyRequestDto;
 import com.ssafy.plannershare.service.PlannerShareService;
@@ -26,12 +27,11 @@ public class PlannerShareController {
 
     // 공유 링크 생성 (비밀번호까지 설정)
     @PostMapping
-    public ResponseEntity<Map<String, String>> createShare(
+    public ResponseEntity<PlannerShareCreateResponseDto> createShare(
             @AuthenticationPrincipal CustomUserDetails loginUser,
             @PathVariable("planner-id") Long plannerId,
             @RequestBody PlannerShareCreateRequestDto request) {
-        String secretCode = plannerShareService.createSecreteCode(plannerId, loginUser, request.password());
-        return ResponseEntity.ok(Map.of("secretCode", secretCode));
+        return ResponseEntity.ok(plannerShareService.createSecreteCode(plannerId, loginUser, request.password()));
     }
 
     // 공유 플래너 비밀번호 검증
