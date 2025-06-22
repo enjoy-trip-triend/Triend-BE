@@ -77,28 +77,42 @@ CREATE TABLE `places_categories`
 );
 
 -- PLACES
-CREATE TABLE `places`
-(
-    `kakaoId`       BIGINT       NOT NULL COMMENT '카카오 API 고유 키 값',
-    `address`       VARCHAR(225) NOT NULL,
-    `location_name` VARCHAR(225) NOT NULL,
-    `lat` DOUBLE NOT NULL,
-    `lon` DOUBLE NOT NULL,
-    `count`         BIGINT       NOT NULL DEFAULT 0,
-    `category_id`   BIGINT       NOT NULL,
-    PRIMARY KEY (`kakaoId`),
-    FOREIGN KEY (`category_id`) REFERENCES `places_categories` (`id`)
-);
+CREATE TABLE `places` (
+  `id`                 BIGINT          NOT NULL AUTO_INCREMENT COMMENT '내부 PK',
+  `kakao_id`           BIGINT          NOT NULL COMMENT '카카오 API 고유 키 값',
+  `address_name`       VARCHAR(225)    NOT NULL COMMENT '지번 주소',
+  `road_address_name`  VARCHAR(225)    DEFAULT NULL COMMENT '도로명 주소',
+  `place_name`         VARCHAR(225)    NOT NULL COMMENT '장소 이름',
+  `latitude`           DECIMAL(10,7)   NOT NULL COMMENT '위도',
+  `longitude`          DECIMAL(10,7)   NOT NULL COMMENT '경도',
+  `phone`              VARCHAR(15)     DEFAULT NULL COMMENT '전화번호',
+  `save_count`         BIGINT          NOT NULL DEFAULT 0 COMMENT '플래너에 추가된 횟수',
+  `category_id`        BIGINT          NOT NULL COMMENT 'places_categories.id 참조',
+  `created_at`         TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성 시각',
+  `updated_at`         TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP
+                                           ON UPDATE CURRENT_TIMESTAMP COMMENT '수정 시각',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `ux_places_kakao_id` (`kakao_id`),
+  KEY `idx_places_category` (`category_id`),
+  CONSTRAINT `fk_places_category`
+    FOREIGN KEY (`category_id`)
+    REFERENCES `places_categories` (`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT
+) ENGINE=InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COMMENT = '플래너용 장소 테이블';
+
 
 -- MY_PLACES
 CREATE TABLE `my_places`
 (
     `id`        BIGINT NOT NULL AUTO_INCREMENT COMMENT 'auto_increment',
     `member_id` BIGINT NOT NULL,
-    `kakaoId`   BIGINT NOT NULL COMMENT '카카오 API 고유 키 값',
+    `place_id`   BIGINT NOT NULL COMMENT '장소 테이블 PK',
     PRIMARY KEY (`id`),
     FOREIGN KEY (`member_id`) REFERENCES `members` (`id`),
-    FOREIGN KEY (`kakaoId`) REFERENCES `places` (`kakaoId`)
+    FOREIGN KEY (`place_id`) REFERENCES `places` (`id`)
 );
 
 -- PLANNERS
@@ -156,10 +170,10 @@ CREATE TABLE `planners_members`
 -- PLACES_IMAGES
 CREATE TABLE `places_images`
 (
-    `kakaoId`   BIGINT       NOT NULL,
+    `place_id`   BIGINT       NOT NULL,
     `image_key` VARCHAR(255) NOT NULL,
-    PRIMARY KEY (`kakaoId`),
-    FOREIGN KEY (`kakaoId`) REFERENCES `places` (`kakaoId`)
+    PRIMARY KEY (`place_id`),
+    FOREIGN KEY (`place_id`) REFERENCES `places` (`id`)
 );
 
 -- SCHEDULES
@@ -175,5 +189,5 @@ CREATE TABLE `schedules`
     `place_id`   BIGINT NOT NULL,
     PRIMARY KEY (`id`, `planner_id`),
     FOREIGN KEY (`planner_id`) REFERENCES `planners` (`id`),
-    FOREIGN KEY (`place_id`) REFERENCES `places` (`kakaoId`)
+    FOREIGN KEY (`place_id`) REFERENCES `places` (`id`)
 );
