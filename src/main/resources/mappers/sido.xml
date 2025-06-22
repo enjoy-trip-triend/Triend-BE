@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.location.mapper.SidoMapper">
+
+  <insert id="insertAll" parameterType="java.util.List">
+    INSERT INTO sidos (sido_code, sido_name)
+    VALUES
+    <foreach collection="list" item="it" separator=",">
+      (#{it.sidoCode}, #{it.sidoName})
+    </foreach>
+  </insert>
+
+  <select id="getAll" resultType="com.ssafy.location.dto.Sido">
+    Select *
+    FROM sidos
+  </select>
+
+  <resultMap type="Sido" id="sidoMap">
+    <id column="id" property="id" />
+    <result column="sido_code" property="sidoCode" />
+    <result column="sido_name" property="sidoName" />
+  </resultMap>
+
+</mapper>

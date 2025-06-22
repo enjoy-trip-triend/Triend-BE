@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.location.mapper.GugunMapper">
+
+  <insert id="insertAll" parameterType="java.util.List">
+    INSERT INTO guguns (gugun_code, gugun_name, sido_code)
+    VALUES
+    <foreach collection="list" item="it" separator=",">
+      (#{it.gugunCode}, #{it.gugunName}, #{it.sidoCode})
+    </foreach>
+  </insert>
+
+  <select id="findBySidoCode" parameterType="int" resultType="com.ssafy.location.dto.Gugun">
+    SELECT
+    gugun_code AS code,
+    gugun_name AS name,
+    sido_code AS sidoCode
+    FROM guguns
+    WHERE sido_code = #{sidoCode}
+  </select>
+
+  <resultMap type="Gugun" id="gugunMap">
+    <id column="id" property="id"/>
+    <result column="gugun_code" property="gugunCode"/>
+    <result column="gugun_name" property="gugunName"/>
+    <result column="sido_code" property="sidoCode"/>
+  </resultMap>
+
+</mapper>

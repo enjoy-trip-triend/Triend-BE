@@ -8,7 +8,7 @@ triend;
 -- SIDOS
 CREATE TABLE `sidos`
 (
-    `id`        BIGINT      NOT NULL,
+    `id`        BIGINT      NOT NULL AUTO_INCREMENT,
     `sido_code` INT         NOT NULL UNIQUE,
     `sido_name` VARCHAR(20) NOT NULL,
     PRIMARY KEY (`id`)
@@ -17,12 +17,17 @@ CREATE TABLE `sidos`
 -- GUGUNS
 CREATE TABLE `guguns`
 (
-    `id`         BIGINT      NOT NULL,
-    `gugun_code` INT         NOT NULL UNIQUE,
+    `id`         BIGINT      NOT NULL AUTO_INCREMENT,
+    `gugun_code` INT         NOT NULL,
     `gugun_name` VARCHAR(20) NOT NULL,
     `sido_code`  INT         NOT NULL,
     PRIMARY KEY (`id`),
-    FOREIGN KEY (`sido_code`) REFERENCES `sidos` (`sido_code`)
+    -- 복합 유니크 키 (시도-구군)
+    UNIQUE KEY `uk_guguns_sido_gugun` (`sido_code`, `gugun_code`),
+    CONSTRAINT `fk_guguns_sido`
+      FOREIGN KEY (`sido_code`)
+      REFERENCES `sidos` (`sido_code`)
+
 );
 
 -- MEMBERS
@@ -119,16 +124,24 @@ CREATE TABLE `planners`
 );
 
 -- PLANNERS_LOCATIONS
-CREATE TABLE `planners_locations`
-(
-    `id`         BIGINT NOT NULL AUTO_INCREMENT COMMENT 'auto_increment',
-    `planner_id` BIGINT NOT NULL,
-    `sido_code`  INT    NOT NULL,
-    `gugun_code` INT    NOT NULL,
+CREATE TABLE `planners_locations` (
+    `id`          BIGINT NOT NULL AUTO_INCREMENT COMMENT 'auto_increment',
+    `planner_id`  BIGINT NOT NULL,
+    `sido_code`   INT    NOT NULL,
+    `gugun_code`  INT    NOT NULL,
     PRIMARY KEY (`id`),
-    FOREIGN KEY (`planner_id`) REFERENCES `planners` (`id`),
-    FOREIGN KEY (`sido_code`) REFERENCES `sidos` (`sido_code`),
-    FOREIGN KEY (`gugun_code`) REFERENCES `guguns` (`gugun_code`)
+    -- 플래너 참조
+    CONSTRAINT `fk_planners_locations_planner`
+      FOREIGN KEY (`planner_id`)
+      REFERENCES `planners` (`id`),
+    -- 시도 참조
+    CONSTRAINT `fk_planners_locations_sido`
+      FOREIGN KEY (`sido_code`)
+      REFERENCES `sidos` (`sido_code`),
+    -- 복합 (시도, 구군) 참조
+    CONSTRAINT `fk_planners_locations_gugun`
+      FOREIGN KEY (`sido_code`, `gugun_code`)
+      REFERENCES `guguns` (`sido_code`, `gugun_code`)
 );
 
 -- PLANNERS_LIKES
