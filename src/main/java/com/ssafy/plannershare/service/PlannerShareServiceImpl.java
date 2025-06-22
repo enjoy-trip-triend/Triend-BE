@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
-@Transactional
 @Slf4j
 public class PlannerShareServiceImpl implements PlannerShareService{
     private final PlannerShareMapper plannerShareMapper;
@@ -58,7 +57,7 @@ public class PlannerShareServiceImpl implements PlannerShareService{
         }
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public PlannerShareResponseDto getSharedPlanner(String secretCode, CustomUserDetails loginUser) {
         PlannerShare share = plannerShareMapper.findBySecretCode(secretCode);
@@ -73,10 +72,7 @@ public class PlannerShareServiceImpl implements PlannerShareService{
             if (planner.getMember().getId().equals(loginUser.getMember().getId())) {
                 isEditable = true;
             } else {
-                boolean isMember = plannerMemberMapper.isPlannerMember(plannerId, loginUser.getMember().getId());
-                if (isMember) {
-                    isEditable = true;
-                }
+                isEditable = plannerMemberMapper.isPlannerMember(plannerId, loginUser.getMember().getId());
             }
         }
 
