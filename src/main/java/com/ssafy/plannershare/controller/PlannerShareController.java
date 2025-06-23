@@ -37,6 +37,7 @@ public class PlannerShareController {
     // 공유 플래너 비밀번호 검증
     @PostMapping("/{secretCode}/verify")
     public ResponseEntity<Void> verifyPassword(
+            @PathVariable("planner-id") Long plannerId,
             @PathVariable String secretCode,
             @RequestBody PlannerShareVerifyRequestDto request
     ) {
@@ -47,6 +48,7 @@ public class PlannerShareController {
     // 공유 링크 조회
     @GetMapping("/{secretCode}")
     public ResponseEntity<PlannerShareResponseDto> getSharedPlanner(
+            @PathVariable("planner-id") Long plannerId,
             @PathVariable String secretCode,
             @AuthenticationPrincipal CustomUserDetails loginUser
     ) {
@@ -56,6 +58,7 @@ public class PlannerShareController {
     // 참여자 등록
     @PostMapping("/{secretCode}/join")
     public ResponseEntity<Void> joinPlannerShare(
+            @PathVariable("planner-id") Long plannerId,
             @PathVariable String secretCode,
             @AuthenticationPrincipal CustomUserDetails loginUser
     ) {
