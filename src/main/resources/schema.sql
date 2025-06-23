@@ -88,9 +88,6 @@ CREATE TABLE `places` (
   `phone`              VARCHAR(15)     DEFAULT NULL COMMENT '전화번호',
   `save_count`         BIGINT          NOT NULL DEFAULT 0 COMMENT '플래너에 추가된 횟수',
   `category_id`        BIGINT          NOT NULL COMMENT 'places_categories.id 참조',
-  `created_at`         TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성 시각',
-  `updated_at`         TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP
-                                           ON UPDATE CURRENT_TIMESTAMP COMMENT '수정 시각',
   PRIMARY KEY (`id`),
   UNIQUE KEY `ux_places_kakao_id` (`kakao_id`),
   KEY `idx_places_category` (`category_id`),
@@ -102,6 +99,7 @@ CREATE TABLE `places` (
 ) ENGINE=InnoDB
   DEFAULT CHARSET = utf8mb4
   COMMENT = '플래너용 장소 테이블';
+
 
 
 -- MY_PLACES
