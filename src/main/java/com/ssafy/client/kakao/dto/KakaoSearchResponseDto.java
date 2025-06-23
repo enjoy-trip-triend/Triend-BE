@@ -5,7 +5,7 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class KakaoSearchResponse {
+public class KakaoSearchResponseDto {
     private Meta meta;
     private List<Document> documents;
 

@@ -3,14 +3,12 @@ package com.ssafy.client.kakao;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.ssafy.client.kakao.dto.KakaoSearchResponse.Document;
+import com.ssafy.client.kakao.dto.KakaoSearchResponseDto.Document;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest

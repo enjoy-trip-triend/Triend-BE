@@ -1,11 +1,6 @@
 package com.ssafy.ai.controller;
 
-import com.ssafy.client.kakao.CategoryGroupCode;
 import com.ssafy.client.kakao.KakaoMapService;
-import com.ssafy.client.kakao.dto.KakaoSearchResponse;
-import java.util.Collections;
-import java.util.Objects;
-import java.util.stream.Collectors;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,7 +15,7 @@ import com.ssafy.ai.service.ChatService;
 import com.ssafy.ai.service.RecommendationService;
 import com.ssafy.common.security.dto.CustomUserDetails;
 import com.ssafy.member.dto.Member;
-import com.ssafy.myplace.dto.RecommendPlaceDto;
+import com.ssafy.ai.dto.RecommendationPlaceResponseDto;
 import static com.ssafy.ai.constant.RecommendationConstants.*;
 
 import java.util.List;
@@ -44,16 +39,16 @@ public class AiController {
     }
     
     @GetMapping("/recommendation/places/mbti")
-    public ResponseEntity<List<RecommendPlaceDto>> getRecommendPlacesByMBTI(@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<List<RecommendationPlaceResponseDto>> getRecommendPlacesByMBTI(@AuthenticationPrincipal CustomUserDetails userDetails) {
     	Member loginUser = userDetails.getMember();
-    	List<RecommendPlaceDto> body = recommendationService.recommendPlacesByMbti(loginUser, DEFAULT_RECOMMEND_LIMIT);
+    	List<RecommendationPlaceResponseDto> body = recommendationService.recommendPlacesByMbti(loginUser, DEFAULT_RECOMMENDATION_LIMIT);
     	return ResponseEntity.ok(body);
     }
     
     @GetMapping("/recommendation/places/characters")
-    public ResponseEntity<List<RecommendPlaceDto>> getRecommendPlacesByCharacters(@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<List<RecommendationPlaceResponseDto>> getRecommendPlacesByCharacters(@AuthenticationPrincipal CustomUserDetails userDetails) {
     	Member loginUser = userDetails.getMember();
-    	List<RecommendPlaceDto> body = recommendationService.recommendByCharacters(loginUser, DEFAULT_RECOMMEND_LIMIT);
+    	List<RecommendationPlaceResponseDto> body = recommendationService.recommendByCharacters(loginUser, DEFAULT_RECOMMENDATION_LIMIT);
     	return ResponseEntity.ok(body);
     }
 }

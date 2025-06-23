@@ -9,7 +9,7 @@ import com.ssafy.myplace.dto.CategoryDTO;
 import com.ssafy.myplace.dto.HotPlaceResponseDto;
 import com.ssafy.myplace.dto.MyPlaceDto;
 import com.ssafy.myplace.dto.MyPlaceUpdateResponseDto;
-import com.ssafy.myplace.dto.RecommendPlaceDto;
+import com.ssafy.ai.dto.RecommendationPlaceResponseDto;
 
 @Mapper
 public interface MyPlaceMapper {
@@ -20,8 +20,8 @@ public interface MyPlaceMapper {
 	List<HotPlaceResponseDto> selectTop10ByOrderByCountDesc();
 	int deleteMyPlaceByIds(List<Long> myPlaceIds);
 	int updateMypalceById(@Param("dto") MyPlaceUpdateResponseDto updateResponseDto);
-	List<RecommendPlaceDto> selectTopPlacesByMbti(@Param("mbti") String mbti, @Param("excludeMemberId") Long excludeMemberId, @Param("limit")  int limit);
-	List<RecommendPlaceDto> selectTopPlacesByCharacters(
+	List<RecommendationPlaceResponseDto> selectTopPlacesByMbti(@Param("mbti") String mbti, @Param("excludeMemberId") Long excludeMemberId, @Param("limit")  int limit);
+	List<RecommendationPlaceResponseDto> selectTopPlacesByCharacters(
 	        @Param("characterIds") List<Long> characterIds,
 	        @Param("excludeMemberId") Long excludeMemberId,
 	        @Param("limit") int limit
