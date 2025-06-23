@@ -6,6 +6,7 @@ import com.ssafy.planner.mapper.PlannerMapper;
 import com.ssafy.plannershare.dto.PlannerShare;
 import com.ssafy.plannershare.dto.PlannerShareCreateResponseDto;
 import com.ssafy.plannershare.dto.PlannerShareResponseDto;
+import com.ssafy.plannershare.dto.PlannerShareStatusResponseDto;
 import com.ssafy.plannershare.mapper.PlannerMemberMapper;
 import com.ssafy.plannershare.mapper.PlannerShareMapper;
 import com.ssafy.schedule.dto.Schedule;
@@ -28,9 +29,23 @@ public class PlannerShareServiceImpl implements PlannerShareService{
     private final ScheduleMapper scheduleMapper;
     private final PasswordEncoder passwordEncoder;
 
+    @Transactional(readOnly = true)
+    @Override
+    public PlannerShareStatusResponseDto getPlannerShareStatus(Long plannerId) {
+        PlannerShare share = plannerShareMapper.findSecretCodeByPlannerId(plannerId);
+        if (share == null) {
+            return new PlannerShareStatusResponseDto(false, null);
+        }
+        return new PlannerShareStatusResponseDto(true, share.getSecretCode());
+    }
+
     @Transactional
     @Override
     public PlannerShareCreateResponseDto createSecreteCode(Long plannerId, CustomUserDetails loginUser, String rawPassword) {
+        PlannerShare existing = plannerShareMapper.findSecretCodeByPlannerId(plannerId);
+        if (existing != null) {
+            return new PlannerShareCreateResponseDto(existing.getSecretCode());
+        }
         // 비밀번호 해시
         String hashedPassword = passwordEncoder.encode(rawPassword);
         // 시크릿 코드 생성

@@ -4,6 +4,7 @@ import com.ssafy.common.security.dto.CustomUserDetails;
 import com.ssafy.plannershare.dto.PlannerShareCreateRequestDto;
 import com.ssafy.plannershare.dto.PlannerShareCreateResponseDto;
 import com.ssafy.plannershare.dto.PlannerShareResponseDto;
+import com.ssafy.plannershare.dto.PlannerShareStatusResponseDto;
 import com.ssafy.plannershare.dto.PlannerShareVerifyRequestDto;
 import com.ssafy.plannershare.service.PlannerShareService;
 import java.util.Map;
@@ -24,6 +25,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/planners/{planner-id}/share")
 public class PlannerShareController {
     private final PlannerShareService plannerShareService;
+
+    // 공유 링크 조회
+    @GetMapping
+    public ResponseEntity<PlannerShareStatusResponseDto> getShareStatus(
+            @PathVariable("planner-id") Long plannerId) {
+        return ResponseEntity.ok(plannerShareService.getPlannerShareStatus(plannerId));
+    }
 
     // 공유 링크 생성 (비밀번호까지 설정)
     @PostMapping

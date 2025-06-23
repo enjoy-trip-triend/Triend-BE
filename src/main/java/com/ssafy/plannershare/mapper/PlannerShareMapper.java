@@ -9,4 +9,6 @@ public interface PlannerShareMapper {
     void insertPlannerShare(PlannerShare share);
 
     PlannerShare findBySecretCode(String secretCode);
+
+    PlannerShare findSecretCodeByPlannerId(Long plannerId);
 }
