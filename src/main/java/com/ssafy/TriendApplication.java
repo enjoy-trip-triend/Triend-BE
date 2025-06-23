@@ -5,11 +5,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
-@EnableFeignClients(basePackages = "com.ssafy.location.api")
 public class TriendApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(TriendApplication.class, args);
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(TriendApplication.class, args);
+  }
 
 }
