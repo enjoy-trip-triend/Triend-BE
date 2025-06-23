@@ -51,8 +51,7 @@ public class PlannerShareServiceImpl implements PlannerShareService{
         if(share==null){
             throw new IllegalArgumentException("공유 링크가 존재하지 않습니다.");
         }
-        boolean matches = passwordEncoder.matches(inputPassword, share.getPassword());
-        if (!matches) {
+        if (!share.isPasswordMatched(inputPassword, passwordEncoder)) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
     }

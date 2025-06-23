@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Getter
 @NoArgsConstructor
@@ -14,4 +15,8 @@ public class PlannerShare {
     private String secretCode;
     private String password;
     private Long plannerId;
+
+    public boolean isPasswordMatched(String inputPassword, PasswordEncoder encoder) {
+        return encoder.matches(inputPassword, this.password);
+    }
 }
