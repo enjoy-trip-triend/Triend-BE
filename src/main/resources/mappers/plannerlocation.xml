@@ -5,18 +5,18 @@
 <mapper namespace="com.ssafy.planner.mapper.PlannerLocationMapper">
 
   <insert id="insertLocation" parameterType="map">
-    INSERT INTO planners_locations (planner_id, sido_id, gugun_id)
+    INSERT INTO planners_locations (planner_id, sido_code, gugun_code)
     VALUES
     <foreach collection="list" item="loc" index="idx" separator=",">
-      (#{plannerId}, #{loc.sidoId}, #{loc.gugunId})
+      (#{plannerId}, #{loc.sidoCode}, #{loc.gugunCode})
     </foreach>
   </insert>
 
   <resultMap type="com.ssafy.planner.dto.PlannerLocationDto" id="locationMap">
 <!--    <id column="id" property="id" />-->
 <!--    <result column="planner_id" property="plannerId"/>-->
-    <result column="sido_id" property="sidoId" />
-    <result column="gugun_id" property="gugunId" />
+    <result column="sido_code" property="sidoCode" />
+    <result column="gugun_code" property="gugunCode" />
   </resultMap>
 
 </mapper>

@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class PlannerLocationDto {
-  private Long sidoId;
-  private Long gugunId;
+  private Long sidoCode;
+  private Long gugunCode;
 
 }
