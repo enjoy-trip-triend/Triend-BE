@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.admin.mapper.ApiLogMapper">
+
+  <insert id="insertApiLog" parameterType="ApiLogDto">
+    INSERT INTO api_logs (
+    member_id,
+    endpoint,
+    http_method,
+    status_code,
+    response_time_ms,
+    ip_address,
+    user_agent,
+    request_body
+    )
+    VALUES (
+    #{memberId},
+    #{endpoint},
+    #{httpMethod},
+    #{statusCode},
+    #{responseTimeMs},
+    #{ipAddress},
+    #{userAgent},
+    #{requestBody}
+    );
+  </insert>
+
+  <select id="selectAllApiLogs" resultMap="apiLogMap">
+    select
+    id as a_id,
+    member_id as a_member_id,
+    endpoint as a_endpoint,
+    http_method as a_http_method,
+    status_code as a_status_code,
+    response_time_ms as a_response_time_ms,
+    ip_address as a_ip_address,
+    user_agent as a_user_agent,
+    request_body as a_request_body
+    from api_logs;
+  </select>
+
+  <select id="selectApiLogsByDateRange" resultType="ApiLogDto" resultMap="apiLogMap">
+    SELECT
+    id as a_id,
+    member_id as a_member_id,
+    endpoint as a_endpoint,
+    http_method as a_http_method,
+    status_code as a_status_code,
+    response_time_ms as a_response_time_ms,
+    ip_address as a_ip_address,
+    user_agent as a_user_agent,
+    request_body as a_request_body
+    FROM api_logs
+    WHERE 1 = 1
+    <if test="startDateTime != null">
+      AND created_at <![CDATA[ >= ]]> #{startDateTime}
+    </if>
+    <if test="endDateTime != null">
+      AND created_at <![CDATA[ <= ]]> #{endDateTime}
+    </if>
+    ORDER BY created_at DESC
+  </select>
+
+
+  <select id="selectApiLogsByMember" resultMap="apiLogMap">
+    select
+    id as a_id,
+    member_id as a_member_id,
+    endpoint as a_endpoint,
+    http_method as a_http_method,
+    status_code as a_status_code,
+    response_time_ms as a_response_time_ms,
+    ip_address as a_ip_address,
+    user_agent as a_user_agent,
+    request_body as a_request_body
+    from api_logs
+    where member_id = #{memberId};
+  </select>
+
+  <resultMap type="ApiLogDto" id="apiLogMap">
+    <id column="a_id" property="id"/>
+    <result column="a_member_id" property="memberId"/>
+    <result column="a_endpoint" property="endpoint"/>
+    <result column="a_http_method" property="httpMethod"/>
+    <result column="a_status_code" property="statusCode"/>
+    <result column="a_response_time_ms" property="responseTimeMs"/>
+    <result column="a_ip_address" property="ipAddress"/>
+    <result column="a_user_agent" property="userAgent"/>
+    <result column="a_request_body" property="requestBody"/>
+  </resultMap>
+
+</mapper>
