@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.planner.mapper.PlannerLocationMapper">
+
+  <insert id="insertLocation" parameterType="map">
+    INSERT INTO planners_locations (planner_id, sido_id, gugun_id)
+    VALUES
+    <foreach collection="list" item="loc" index="idx" separator=",">
+      (#{plannerId}, #{loc.sidoId}, #{loc.gugunId})
+    </foreach>
+  </insert>
+
+  <resultMap type="com.ssafy.planner.dto.PlannerLocationDto" id="locationMap">
+<!--    <id column="id" property="id" />-->
+<!--    <result column="planner_id" property="plannerId"/>-->
+    <result column="sido_id" property="sidoId" />
+    <result column="gugun_id" property="gugunId" />
+  </resultMap>
+
+</mapper>

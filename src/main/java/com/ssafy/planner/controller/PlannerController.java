@@ -2,7 +2,7 @@ package com.ssafy.planner.controller;
 
 import com.ssafy.common.security.dto.CustomUserDetails;
 import com.ssafy.planner.dto.Planner;
-import com.ssafy.planner.dto.PlannerCreateRequest;
+import com.ssafy.planner.dto.PlannerCreateRequestDto;
 import com.ssafy.planner.dto.PlannerUpdateRequest;
 import com.ssafy.planner.service.PlannerService;
 import com.ssafy.schedule.dto.Schedule;
@@ -32,7 +32,7 @@ public class PlannerController {
 
   @PostMapping
   public ResponseEntity<Void> createPlanner(@AuthenticationPrincipal CustomUserDetails loginUser,
-      @RequestBody PlannerCreateRequest request) {
+      @RequestBody PlannerCreateRequestDto request) {
     plannerService.createPlanner(request, loginUser);
     return ResponseEntity.created(null)
         .build();
