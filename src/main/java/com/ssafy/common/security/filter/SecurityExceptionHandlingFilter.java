@@ -1,31 +1,33 @@
 package com.ssafy.common.security.filter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.JwtException;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import io.jsonwebtoken.JwtException;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
-
 @Component
 @Slf4j
 public class SecurityExceptionHandlingFilter extends OncePerRequestFilter {
+    
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+            FilterChain filterChain) throws ServletException, IOException {
+        
         try {
+            log.debug("[SecurityExceptionHandlingFilter] 요청 실행됨");
             filterChain.doFilter(request, response);
+            log.debug("[SecurityExceptionHandlingFilter] 응답 실행됨");
         } catch (Exception e) {
             if (e instanceof JwtException) {// JWT 관련 예외 처리
                 setErrorResponse(response, HttpStatus.UNAUTHORIZED, "TOKEN_ERROR");
@@ -36,8 +38,9 @@ public class SecurityExceptionHandlingFilter extends OncePerRequestFilter {
             }
         }
     }
-
-    private void setErrorResponse(HttpServletResponse response, HttpStatus status, String message) throws IOException {
+    
+    private void setErrorResponse(HttpServletResponse response, HttpStatus status, String message)
+            throws IOException {
         log.debug("에러 집중 처리국 {}, {}", status, message);
         response.setStatus(status.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE); // default utf-8
@@ -46,6 +49,7 @@ public class SecurityExceptionHandlingFilter extends OncePerRequestFilter {
         Map<String, Object> errorDetails = new HashMap<>();
         errorDetails.put("status", status.value());
         errorDetails.put("message", message);
-        response.getWriter().write(objectMapper.writeValueAsString(errorDetails));
+        response.getWriter()
+                .write(objectMapper.writeValueAsString(errorDetails));
     }
 }
