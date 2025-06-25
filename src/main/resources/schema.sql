@@ -1,4 +1,3 @@
-CREATE DATABASE IF NOT EXISTS triend;
 USE triend;
 
 -- SIDOS
@@ -110,10 +109,8 @@ CREATE TABLE IF NOT EXISTS `planners`
     `end_day`     DATETIME     NOT NULL,
     `member_id`   BIGINT       NOT NULL,
     `name`        VARCHAR(255) NOT NULL,
-    `location`    VARCHAR(10)  NOT NULL,
     `comment`     VARCHAR(100),
     `exposure`    ENUM('PRIVATE', 'PUBLIC') NOT NULL DEFAULT 'PUBLIC',
-    `password`    VARCHAR(255),
     `likes_count` BIGINT       NOT NULL DEFAULT 0,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`member_id`) REFERENCES `members` (`id`)
@@ -163,7 +160,7 @@ CREATE TABLE IF NOT EXISTS `planners_members`
 );
 
 -- PLANNERS_share
-CREATE TABLE `planners_share` (
+CREATE TABLE IF NOT EXISTS `planners_share` (
      `id` BIGINT NOT NULL AUTO_INCREMENT,
      `secret_code` VARCHAR(50) NOT NULL UNIQUE COMMENT '공유 링크 식별자',
      `planner_id` BIGINT NOT NULL,

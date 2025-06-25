@@ -15,9 +15,9 @@ TRUNCATE characters;
 TRUNCATE members;
 TRUNCATE places_categories;
 
--- 최초 1회 서버 구동 후
--- 1) sidos, guguns의 TRUNCATE문은 주석처리
--- 2) 아래 Dummy data는 주석해제 후 서버 재구동 부탁드립니다.
+-- schema/data.sql 수정 후 서버 최초 구동 시에만 아래 TRUNCATE 두줄 실행
+-- 이후에는 sidos, guguns의 TRUNCATE문은 주석처리
+-- 서버 중지 후 아래 Dummy data는 주석해제 -> 서버 재구동 부탁드립니다.
 TRUNCATE sidos;
 TRUNCATE guguns;
 
@@ -67,12 +67,12 @@ SET FOREIGN_KEY_CHECKS = 1;
 --       (1, 1002);
 --
 ---- PLANNERS
---INSERT INTO planners (start_day, end_day, member_id, name, location, comment, exposure,
---                      password, likes_count)
---VALUES ('2025-07-01 00:00:00', '2025-07-03 00:00:00', 1, '여름 서울 여행', '서울', '서울 맛집 투어',
---        'PUBLIC', NULL, 1),
---       ('2025-08-01 00:00:00', '2025-08-02 00:00:00', 2, '부산 여행', '부산', '해운대 힐링', 'PRIVATE',
---        NULL, 0);
+--INSERT INTO planners (start_day, end_day, member_id, name, comment, exposure,
+--                      likes_count)
+--VALUES ('2025-07-01 00:00:00', '2025-07-03 00:00:00', 1, '여름 서울 여행', '서울 맛집 투어',
+--        'PUBLIC', 1),
+--       ('2025-08-01 00:00:00', '2025-08-02 00:00:00', 2, '부산 여행', '부산', 'PRIVATE',
+--       0);
 --
 ---- PLANNERS_LOCATIONS
 --INSERT INTO planners_locations (planner_id, sido_code, gugun_code)

@@ -1,7 +1,6 @@
 package com.ssafy.planner.dto;
 
-public class PlannerLocation {
-
+public class PlannerLocationDto {
   private Long id;
   private Long plannerId;
   private Long sidoId;
