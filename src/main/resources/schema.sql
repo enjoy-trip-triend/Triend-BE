@@ -177,3 +177,18 @@ CREATE TABLE `schedules`
     FOREIGN KEY (`planner_id`) REFERENCES `planners` (`id`),
     FOREIGN KEY (`place_id`) REFERENCES `places` (`kakaoId`)
 );
+
+-- ApiLog
+CREATE TABLE `api_logs`
+(
+    id               BIGINT AUTO_INCREMENT PRIMARY KEY,
+    member_id        BIGINT,
+    endpoint         VARCHAR(255),
+    http_method      VARCHAR(10),
+    status_code      INT,
+    response_time_ms BIGINT,
+    ip_address       VARCHAR(45),
+    user_agent       TEXT,
+    request_body     TEXT,
+    created_at       DATETIME DEFAULT CURRENT_TIMESTAMP
+);
