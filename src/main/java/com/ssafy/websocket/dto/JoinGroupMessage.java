@@ -14,5 +14,5 @@ import lombok.Setter;
  */
 public class JoinGroupMessage {
     private Long plannerId;
-    private Long userId;
+    // private Long userId; // 사용 안함 추후에 삭제할 것 !!!
 }

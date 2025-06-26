@@ -1,6 +1,5 @@
 package com.ssafy.websocket.service;
 
-import com.ssafy.planner.service.PlannerService;
 import com.ssafy.schedule.dto.Schedule;
 import com.ssafy.schedule.mapper.ScheduleMapper;
 import com.ssafy.websocket.dto.EditorInfo;
@@ -47,17 +46,20 @@ public class PlannerWebSocketServiceImpl implements PlannerWebSocketService {
     public void handleScheduleEdit(ScheduleEditMessage message) {
         log.info("SCHEDULE_EDIT: {}", message);
 
+        Schedule schedule = null;
         // 메시지에서 스케줄 객체로 변환
-        Schedule schedule = Schedule.builder()
-                .id(message.getScheduleId())
-                .plannerId(message.getPlannerId())
-                .date(LocalDate.parse(message.getDate()))
-                .startTime(LocalTime.parse(message.getStartTime()))
-                .placeId(message.getPlaceId())
-                .content(message.getContent())
-                .placeUrl(message.getPlaceUrl())
-                .idx(message.getIdx())
-                .build();
+        if (!"DELETE".equals(message.getAction())) {
+            schedule = Schedule.builder()
+                    .id(message.getScheduleId())
+                    .plannerId(message.getPlannerId())
+                    .date(LocalDate.parse(message.getDate()))
+                    .startTime(LocalTime.parse(message.getStartTime()))
+                    .placeId(message.getPlaceId())
+                    .content(message.getContent())
+                    .placeUrl(message.getPlaceUrl())
+                    .idx(message.getIdx())
+                    .build();
+        }
 
         // DB 처리
         switch (message.getAction()) {
