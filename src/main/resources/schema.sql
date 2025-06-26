@@ -154,13 +154,14 @@ CREATE TABLE `planners_members`
 );
 
 -- PLANNERS_share
-CREATE TABLE `planners_share` (
-     `id` BIGINT NOT NULL AUTO_INCREMENT,
-     `secret_code` VARCHAR(50) NOT NULL UNIQUE COMMENT '공유 링크 식별자',
-     `planner_id` BIGINT NOT NULL,
-     `password` VARCHAR(255) NOT NULL COMMENT 'BCrypt 해시된 비밀번호',
-     PRIMARY KEY (`id`),
-     FOREIGN KEY (`planner_id`) REFERENCES `planners` (`id`) ON DELETE CASCADE
+CREATE TABLE `planners_share`
+(
+    `id`          BIGINT       NOT NULL AUTO_INCREMENT,
+    `secret_code` VARCHAR(50)  NOT NULL UNIQUE COMMENT '공유 링크 식별자',
+    `planner_id`  BIGINT       NOT NULL,
+    `password`    VARCHAR(255) NOT NULL COMMENT 'BCrypt 해시된 비밀번호',
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`planner_id`) REFERENCES `planners` (`id`) ON DELETE CASCADE
 );
 
 -- PLACES_IMAGES
@@ -189,16 +190,16 @@ CREATE TABLE `schedules`
 );
 
 -- ApiLog
-CREATE TABLE `api_logs`
+CREATE TABLE IF NOT EXISTS `api_logs`
 (
     id               BIGINT AUTO_INCREMENT PRIMARY KEY,
     member_id        BIGINT,
-    endpoint         VARCHAR(255),
-    http_method      VARCHAR(10),
-    status_code      INT,
-    response_time_ms BIGINT,
+    endpoint         VARCHAR(255) NOT NULL,
+    http_method      VARCHAR(10)  NOT NULL,
+    status_code      INT          NOT NULL,
+    response_time_ms BIGINT       NOT NULL,
     ip_address       VARCHAR(45),
     user_agent       TEXT,
     request_body     TEXT,
-    created_at       DATETIME DEFAULT CURRENT_TIMESTAMP
+    created_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
