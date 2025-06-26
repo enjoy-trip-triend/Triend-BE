@@ -40,11 +40,24 @@ VALUES
   ('이색체험러'),
   ('로컬러');
 
+-- PLACES_CATEGORIES_GROUPS
+INSERT INTO `places_categories_groups` (`group_code`, `group_name`)
+VALUES
+  ('FD6', '음식점'),            -- 숙박업소
+  ('CE7', '카페'),            -- 카페
+  ('PM9', '약국'),            -- 약국
+  ('CS2', '편의점'),          -- 편의점
+  ('HP8', '병원'),            -- 병원
+  ('CT1', '문화시설'),        -- 공연·전시·영화관 등
+  ('AT4', '관광명소'),        -- 관광/명소
+;
+
 
 -- PLACES_CATEGORIES
-INSERT INTO places_categories (category_group_code, category_group_name, category_name)
-VALUES ('FD6', '음식점', '한식'),
-       ('CE7', '카페', '커피전문점');
+INSERT INTO `places_categories` (`name`, `category_group_id`)
+VALUES ('음식점 > 한식', 1),
+       ('카페 > 커피숍', 2);
+
 
 -- PLACES
 INSERT INTO places (kakao_id, address_name, road_address_name, place_name, latitude, longitude, phone, save_count, category_id)
