@@ -41,7 +41,7 @@
     from api_logs;
   </select>
 
-  <select id="selectApiLogsByDateRange" resultType="ApiLogDto" resultMap="apiLogMap">
+  <select id="selectApiLogsByDateRange" resultMap="apiLogMap">
     SELECT
     id as a_id,
     member_id as a_member_id,
