@@ -203,3 +203,4 @@ CREATE TABLE IF NOT EXISTS `api_logs`
     request_body     TEXT,
     created_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+CREATE INDEX idx_created_at ON api_logs(created_at);
