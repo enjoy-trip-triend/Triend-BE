@@ -52,15 +52,14 @@ public class PlannerServiceImpl implements PlannerService {
         .build();
 
     int cnt = plannerMapper.createPlanner(planner); // 작업 행 개수 반환 (성공시 1)
+    if (cnt != 1) {
+      throw new RuntimeException("[ERROR] 플래너 생성 실패");
+    }
 
     if (request.locations() != null && !request.locations()
         .isEmpty()) // 추가할 장소가 존재하는 경우에만 추가
     {
       plannerLocationMapper.insertLocation(planner.getId(), request.locations());
-    }
-
-    if (cnt != 1) {
-      throw new RuntimeException("[ERROR] 플래너 생성 실패");
     }
   }
 
