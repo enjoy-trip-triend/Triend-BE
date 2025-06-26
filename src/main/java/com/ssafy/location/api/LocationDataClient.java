@@ -19,9 +19,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class LocationDataClient {
@@ -51,7 +53,7 @@ public class LocationDataClient {
       JsonArray list = fetchJsonArray(url);
       return Arrays.asList(objectMapper.readValue(list.toString(), Sido[].class));
     } catch (Exception e) {
-      System.out.println("[ERROR] Failed to fetch Sido data : " + e.getMessage());
+      log.error("[ERROR] Failed to fetch Sido data : {}", e.getMessage());
       return Collections.emptyList();
     }
   }
@@ -75,7 +77,7 @@ public class LocationDataClient {
       JsonArray list = fetchJsonArray(url);
       return Arrays.asList(objectMapper.readValue(list.toString(), Gugun[].class));
     } catch (Exception e) {
-      System.out.println("[ERROR] Failed to fetch Gugun data: " + e.getMessage());
+      log.error("[ERROR] Failed to fetch Gugun data: {}", e.getMessage());
       return Collections.emptyList();
     }
   }
