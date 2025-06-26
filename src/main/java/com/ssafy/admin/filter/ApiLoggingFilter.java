@@ -49,7 +49,7 @@ public class ApiLoggingFilter implements Filter {
         
         try {
             log.debug("[ApiLoggingFilter] 요청 실행됨");
-            chain.doFilter(request, response);
+            chain.doFilter(wrappedReq, response);
             log.debug("[ApiLoggingFilter] 응답 실행됨");
         } finally {
             long duration = System.currentTimeMillis() - start;
