@@ -23,6 +23,7 @@ public class ApiLogServiceImpl implements ApiLogService {
     }
     
     @Override
+    @Transactional(readOnly = true)
     public List<ApiLogDto> getApiLogsByDateRange(LocalDateTime startDateTime,
             LocalDateTime endDateTime) {
         List<ApiLogDto> apiLogDtoList = apiLogMapper.selectApiLogsByDateRange(startDateTime, endDateTime);
@@ -32,6 +33,7 @@ public class ApiLogServiceImpl implements ApiLogService {
     }
     
     @Override
+    @Transactional(readOnly = true)
     public List<ApiLogDto> getApiLogsByMember(Long memberId) {
         return apiLogMapper.selectApiLogsByMember(memberId);
     }
