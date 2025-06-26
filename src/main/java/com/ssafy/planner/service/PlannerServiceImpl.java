@@ -3,7 +3,6 @@ package com.ssafy.planner.service;
 import com.ssafy.common.security.dto.CustomUserDetails;
 import com.ssafy.planner.dto.Planner;
 import com.ssafy.planner.dto.PlannerCreateRequestDto;
-import com.ssafy.planner.dto.PlannerLocationDto;
 import com.ssafy.planner.dto.PlannerUpdateRequest;
 import com.ssafy.planner.mapper.PlannerLocationMapper;
 import com.ssafy.planner.mapper.PlannerMapper;
@@ -123,7 +122,6 @@ public class PlannerServiceImpl implements PlannerService {
         .endDay(request.endDay())
         .memberId(loginUser.getMember()
             .getId())
-//        .location(request.location())
         .build();
 
     int cnt = plannerMapper.updatePlanner(planner);
