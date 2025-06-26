@@ -16,6 +16,6 @@ public interface ApiLogMapper {
     List<ApiLogDto> selectApiLogsByMember(Long memberId);
     
     List<ApiLogDto> selectApiLogsByDateRange(@Param("startDateTime") LocalDateTime startDateTime,
-            @Param("endDateTime") LocalDateTime endDateTIme);
+            @Param("endDateTime") LocalDateTime endDateTime);
     
 }
