@@ -1,12 +1,12 @@
 package com.ssafy.ai.service;
 
+import com.ssafy.ai.dto.RecommendationPlaceResponseDto;
 import java.util.List;
 
 import com.ssafy.member.dto.Member;
-import com.ssafy.myplace.dto.RecommendPlaceDto;
 
 public interface RecommendationService {
-    List<RecommendPlaceDto> recommendPlacesByMbti(Member me, int limit);
-    List<RecommendPlaceDto> recommendByCharacters(Member me, int limit);
-    List<RecommendPlaceDto> recommendCombined(Member me, int limit);
+    List<RecommendationPlaceResponseDto> recommendPlacesByMbti(Member me, int limit);
+    List<RecommendationPlaceResponseDto> recommendByCharacters(Member me, int limit);
+    List<RecommendationPlaceResponseDto> recommendCombined(Member me, int limit);
 }
