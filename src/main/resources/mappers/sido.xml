@@ -12,7 +12,7 @@
     </foreach>
   </insert>
 
-  <select id="getAll" resultType="com.ssafy.location.dto.Sido">
+  <select id="getAll" resultMap="sidoMap">
     Select *
     FROM sidos
   </select>

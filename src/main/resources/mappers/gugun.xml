@@ -12,11 +12,8 @@
     </foreach>
   </insert>
 
-  <select id="findBySidoCode" parameterType="int" resultType="com.ssafy.location.dto.Gugun">
-    SELECT
-    gugun_code AS code,
-    gugun_name AS name,
-    sido_code AS sidoCode
+  <select id="findBySidoCode" parameterType="int" resultMap="gugunMap">
+    SELECT gugun_code, gugun_name, sido_code
     FROM guguns
     WHERE sido_code = #{sidoCode}
   </select>
