@@ -80,7 +80,7 @@ CREATE TABLE `places_categories_groups` (
 -- PLACES_CATEGORIES
 CREATE TABLE `places_categories` (
   `id`                   BIGINT       NOT NULL AUTO_INCREMENT,
-  `name`                 VARCHAR(200) NOT NULL COMMENT 'API 제공 카테고리 이름',
+  `category_name`                 VARCHAR(200) NOT NULL COMMENT 'API 제공 카테고리 이름',
   `category_group_id`    BIGINT       NULL            COMMENT 'places_categories_grouops.id 참조',
   PRIMARY KEY (`id`),
   UNIQUE KEY `ux_pc_category_name` (`category_name`),

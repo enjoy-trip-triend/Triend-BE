@@ -54,7 +54,7 @@ VALUES
 
 
 -- PLACES_CATEGORIES
-INSERT INTO `places_categories` (`name`, `category_group_id`)
+INSERT INTO `places_categories` (`category_name`, `category_group_id`)
 VALUES ('음식점 > 한식', 1),
        ('카페 > 커피숍', 2);
 
