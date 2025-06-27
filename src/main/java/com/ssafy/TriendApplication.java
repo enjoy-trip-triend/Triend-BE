@@ -7,8 +7,8 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @SpringBootApplication
 public class TriendApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(TriendApplication.class, args);
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(TriendApplication.class, args);
+  }
 
 }

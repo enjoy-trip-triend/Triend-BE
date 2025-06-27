@@ -1,28 +1,47 @@
-DROP
-DATABASE IF EXISTS triend;
-CREATE
-DATABASE triend;
-USE
-triend;
+USE triend;
+
+SET FOREIGN_KEY_CHECKS=0;
+
+DROP TABLE IF EXISTS `schedules`;
+DROP TABLE IF EXISTS `places_images`;
+DROP TABLE IF EXISTS `planners_share`;
+DROP TABLE IF EXISTS `planners_members`;
+DROP TABLE IF EXISTS `planners_likes`;
+DROP TABLE IF EXISTS `planners_locations`;
+DROP TABLE IF EXISTS `planners`;
+DROP TABLE IF EXISTS `my_places`;
+DROP TABLE IF EXISTS `places`;
+DROP TABLE IF EXISTS `places_categories`;
+DROP TABLE IF EXISTS `members_characters`;
+DROP TABLE IF EXISTS `characters`;
+DROP TABLE IF EXISTS `members`;
+DROP TABLE IF EXISTS `categories`;
+DROP TABLE IF EXISTS `api_logs`;
+
+SET FOREIGN_KEY_CHECKS=1;
 
 -- SIDOS
-CREATE TABLE `sidos`
+CREATE TABLE IF NOT EXISTS `sidos`
 (
-    `id`        BIGINT      NOT NULL,
+    `id`        BIGINT      NOT NULL AUTO_INCREMENT,
     `sido_code` INT         NOT NULL UNIQUE,
     `sido_name` VARCHAR(20) NOT NULL,
     PRIMARY KEY (`id`)
 );
 
 -- GUGUNS
-CREATE TABLE `guguns`
+CREATE TABLE IF NOT EXISTS `guguns`
 (
-    `id`         BIGINT      NOT NULL,
-    `gugun_code` INT         NOT NULL UNIQUE,
+    `id`         BIGINT      NOT NULL AUTO_INCREMENT,
+    `gugun_code` INT         NOT NULL,
     `gugun_name` VARCHAR(20) NOT NULL,
     `sido_code`  INT         NOT NULL,
     PRIMARY KEY (`id`),
-    FOREIGN KEY (`sido_code`) REFERENCES `sidos` (`sido_code`)
+    -- 복합 유니크 키 (시도-구군)
+    UNIQUE KEY `uk_guguns_sido_gugun` (`sido_code`, `gugun_code`),
+    CONSTRAINT `fk_guguns_sido`
+      FOREIGN KEY (`sido_code`)
+      REFERENCES `sidos` (`sido_code`)
 );
 
 -- MEMBERS
@@ -109,10 +128,8 @@ CREATE TABLE `planners`
     `end_day`     DATETIME     NOT NULL,
     `member_id`   BIGINT       NOT NULL,
     `name`        VARCHAR(255) NOT NULL,
-    `location`    VARCHAR(10)  NOT NULL,
     `comment`     VARCHAR(100),
     `exposure`    ENUM('PRIVATE', 'PUBLIC') NOT NULL DEFAULT 'PUBLIC',
-    `password`    VARCHAR(255),
     `likes_count` BIGINT       NOT NULL DEFAULT 0,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`member_id`) REFERENCES `members` (`id`)
@@ -121,14 +138,23 @@ CREATE TABLE `planners`
 -- PLANNERS_LOCATIONS
 CREATE TABLE `planners_locations`
 (
-    `id`         BIGINT NOT NULL AUTO_INCREMENT COMMENT 'auto_increment',
-    `planner_id` BIGINT NOT NULL,
-    `sido_code`  INT    NOT NULL,
-    `gugun_code` INT    NOT NULL,
+    `id`          BIGINT NOT NULL AUTO_INCREMENT COMMENT 'auto_increment',
+    `planner_id`  BIGINT NOT NULL,
+    `sido_code`   INT    NOT NULL,
+    `gugun_code`  INT    NOT NULL,
     PRIMARY KEY (`id`),
-    FOREIGN KEY (`planner_id`) REFERENCES `planners` (`id`),
-    FOREIGN KEY (`sido_code`) REFERENCES `sidos` (`sido_code`),
-    FOREIGN KEY (`gugun_code`) REFERENCES `guguns` (`gugun_code`)
+    -- 플래너 참조
+    CONSTRAINT `fk_planners_locations_planner`
+      FOREIGN KEY (`planner_id`)
+      REFERENCES `planners` (`id`),
+    -- 시도 참조
+    CONSTRAINT `fk_planners_locations_sido`
+      FOREIGN KEY (`sido_code`)
+      REFERENCES `sidos` (`sido_code`),
+    -- 복합 (시도, 구군) 참조
+    CONSTRAINT `fk_planners_locations_gugun`
+      FOREIGN KEY (`sido_code`, `gugun_code`)
+      REFERENCES `guguns` (`sido_code`, `gugun_code`)
 );
 
 -- PLANNERS_LIKES
@@ -154,14 +180,14 @@ CREATE TABLE `planners_members`
 );
 
 -- PLANNERS_share
-CREATE TABLE `planners_share`
+CREATE TABLE  `planners_share`
 (
-    `id`          BIGINT       NOT NULL AUTO_INCREMENT,
-    `secret_code` VARCHAR(50)  NOT NULL UNIQUE COMMENT '공유 링크 식별자',
-    `planner_id`  BIGINT       NOT NULL,
-    `password`    VARCHAR(255) NOT NULL COMMENT 'BCrypt 해시된 비밀번호',
-    PRIMARY KEY (`id`),
-    FOREIGN KEY (`planner_id`) REFERENCES `planners` (`id`) ON DELETE CASCADE
+     `id` BIGINT NOT NULL AUTO_INCREMENT,
+     `secret_code` VARCHAR(50) NOT NULL UNIQUE COMMENT '공유 링크 식별자',
+     `planner_id` BIGINT NOT NULL,
+     `password` VARCHAR(255) NOT NULL COMMENT 'BCrypt 해시된 비밀번호',
+     PRIMARY KEY (`id`),
+     FOREIGN KEY (`planner_id`) REFERENCES `planners` (`id`) ON DELETE CASCADE
 );
 
 -- PLACES_IMAGES
@@ -174,7 +200,7 @@ CREATE TABLE `places_images`
 );
 
 -- SCHEDULES
-CREATE TABLE `schedules`
+CREATE TABLE  `schedules`
 (
     `id`         BIGINT NOT NULL AUTO_INCREMENT COMMENT 'auto_increment',
     `planner_id` BIGINT NOT NULL,
@@ -190,7 +216,7 @@ CREATE TABLE `schedules`
 );
 
 -- ApiLog
-CREATE TABLE IF NOT EXISTS `api_logs`
+CREATE TABLE `api_logs`
 (
     id               BIGINT AUTO_INCREMENT PRIMARY KEY,
     member_id        BIGINT,

@@ -83,7 +83,7 @@ public class PlannerShareServiceImpl implements PlannerShareService{
         List<Schedule> scheduleList = scheduleMapper.getSchedulesByPlanner(plannerId);
         boolean isEditable = false;
         if (loginUser != null) {
-            if (planner.getMember().getId().equals(loginUser.getMember().getId())) {
+            if (planner.getMemberId().equals(loginUser.getMember().getId())) {
                 isEditable = true;
             } else {
                 isEditable = plannerMemberMapper.isPlannerMember(plannerId, loginUser.getMember().getId());

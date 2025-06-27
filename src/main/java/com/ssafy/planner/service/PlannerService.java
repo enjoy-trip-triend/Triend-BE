@@ -1,17 +1,18 @@
 package com.ssafy.planner.service;
 
+import com.ssafy.planner.dto.PlannerLocationDto;
 import java.util.List;
 
 import com.ssafy.common.security.dto.CustomUserDetails;
 import com.ssafy.schedule.dto.Schedule;
 import com.ssafy.schedule.dto.ScheduleUpdateRequest;
 import com.ssafy.planner.dto.Planner;
-import com.ssafy.planner.dto.PlannerCreateRequest;
+import com.ssafy.planner.dto.PlannerCreateRequestDto;
 import com.ssafy.planner.dto.PlannerUpdateRequest;
 
 public interface PlannerService {
 
-  void createPlanner(PlannerCreateRequest request, CustomUserDetails loginUser);
+  void createPlanner(PlannerCreateRequestDto request, CustomUserDetails loginUser);
 
   List<Planner> getPlannersByMember(CustomUserDetails loginUser);
 

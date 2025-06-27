@@ -19,9 +19,8 @@ public class Planner {
   private LocalDate endDay;
   private Long memberId;
   private String name;
-  private String location;
   private String comment;
   private Exposure exposure;
   private Long likesCount;
-  private Member member;
+//  private Member member;
 }
