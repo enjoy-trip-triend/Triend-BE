@@ -1,5 +1,24 @@
 USE triend;
 
+SET FOREIGN_KEY_CHECKS=0;
+
+DROP TABLE IF EXISTS `schedules`;
+DROP TABLE IF EXISTS `places_images`;
+DROP TABLE IF EXISTS `planners_share`;
+DROP TABLE IF EXISTS `planners_members`;
+DROP TABLE IF EXISTS `planners_likes`;
+DROP TABLE IF EXISTS `planners_locations`;
+DROP TABLE IF EXISTS `planners`;
+DROP TABLE IF EXISTS `my_places`;
+DROP TABLE IF EXISTS `places`;
+DROP TABLE IF EXISTS `places_categories`;
+DROP TABLE IF EXISTS `members_characters`;
+DROP TABLE IF EXISTS `characters`;
+DROP TABLE IF EXISTS `members`;
+DROP TABLE IF EXISTS `categories`;
+
+SET FOREIGN_KEY_CHECKS=1;
+
 -- SIDOS
 CREATE TABLE IF NOT EXISTS `sidos`
 (
@@ -22,11 +41,10 @@ CREATE TABLE IF NOT EXISTS `guguns`
     CONSTRAINT `fk_guguns_sido`
       FOREIGN KEY (`sido_code`)
       REFERENCES `sidos` (`sido_code`)
-
 );
 
 -- MEMBERS
-CREATE TABLE IF NOT EXISTS `members`
+CREATE TABLE `members`
 (
     `id`            BIGINT      NOT NULL AUTO_INCREMENT COMMENT 'auto_increment',
     `email`         VARCHAR(50) NOT NULL UNIQUE COMMENT 'unique',
@@ -40,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `members`
 );
 
 -- CHARACTERS
-CREATE TABLE IF NOT EXISTS `characters`
+CREATE TABLE `characters`
 (
     `id`   BIGINT      NOT NULL AUTO_INCREMENT COMMENT 'auto_increment',
     `name` VARCHAR(10) NOT NULL,
@@ -48,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `characters`
 );
 
 -- MEMBERS_CHARACTERS
-CREATE TABLE IF NOT EXISTS `members_characters`
+CREATE TABLE `members_characters`
 (
     `id`           BIGINT NOT NULL AUTO_INCREMENT COMMENT 'auto_increment',
     `member_id`    BIGINT NOT NULL,
@@ -59,7 +77,7 @@ CREATE TABLE IF NOT EXISTS `members_characters`
 );
 
 -- CATEGORIES (for future use)
-CREATE TABLE IF NOT EXISTS `categories`
+CREATE TABLE `categories`
 (
     `id`   BIGINT      NOT NULL AUTO_INCREMENT COMMENT 'auto_increment',
     `name` VARCHAR(50) NOT NULL COMMENT '카테고리 이름',
@@ -67,7 +85,7 @@ CREATE TABLE IF NOT EXISTS `categories`
 );
 
 -- PLACES_CATEGORIES
-CREATE TABLE IF NOT EXISTS `places_categories`
+CREATE TABLE `places_categories`
 (
     `id`                  BIGINT       NOT NULL AUTO_INCREMENT COMMENT 'auto_increment',
     `category_group_code` VARCHAR(10),
@@ -77,7 +95,7 @@ CREATE TABLE IF NOT EXISTS `places_categories`
 );
 
 -- PLACES
-CREATE TABLE IF NOT EXISTS `places`
+CREATE TABLE `places`
 (
     `kakaoId`       BIGINT       NOT NULL COMMENT '카카오 API 고유 키 값',
     `address`       VARCHAR(225) NOT NULL,
@@ -91,7 +109,7 @@ CREATE TABLE IF NOT EXISTS `places`
 );
 
 -- MY_PLACES
-CREATE TABLE IF NOT EXISTS `my_places`
+CREATE TABLE `my_places`
 (
     `id`        BIGINT NOT NULL AUTO_INCREMENT COMMENT 'auto_increment',
     `member_id` BIGINT NOT NULL,
@@ -102,7 +120,7 @@ CREATE TABLE IF NOT EXISTS `my_places`
 );
 
 -- PLANNERS
-CREATE TABLE IF NOT EXISTS `planners`
+CREATE TABLE `planners`
 (
     `id`          BIGINT       NOT NULL AUTO_INCREMENT COMMENT 'auto_increment',
     `start_day`   DATETIME     NOT NULL,
@@ -117,7 +135,8 @@ CREATE TABLE IF NOT EXISTS `planners`
 );
 
 -- PLANNERS_LOCATIONS
-CREATE TABLE IF NOT EXISTS `planners_locations` (
+CREATE TABLE `planners_locations`
+(
     `id`          BIGINT NOT NULL AUTO_INCREMENT COMMENT 'auto_increment',
     `planner_id`  BIGINT NOT NULL,
     `sido_code`   INT    NOT NULL,
@@ -138,7 +157,7 @@ CREATE TABLE IF NOT EXISTS `planners_locations` (
 );
 
 -- PLANNERS_LIKES
-CREATE TABLE IF NOT EXISTS `planners_likes`
+CREATE TABLE `planners_likes`
 (
     `id`         BIGINT NOT NULL AUTO_INCREMENT COMMENT 'auto_increment',
     `planner_id` BIGINT NOT NULL,
@@ -149,7 +168,7 @@ CREATE TABLE IF NOT EXISTS `planners_likes`
 );
 
 -- PLANNERS_MEMBERS
-CREATE TABLE IF NOT EXISTS `planners_members`
+CREATE TABLE `planners_members`
 (
     `id`         BIGINT NOT NULL AUTO_INCREMENT COMMENT 'auto_increment',
     `planner_id` BIGINT NOT NULL,
@@ -160,7 +179,8 @@ CREATE TABLE IF NOT EXISTS `planners_members`
 );
 
 -- PLANNERS_share
-CREATE TABLE IF NOT EXISTS `planners_share` (
+CREATE TABLE  `planners_share`
+(
      `id` BIGINT NOT NULL AUTO_INCREMENT,
      `secret_code` VARCHAR(50) NOT NULL UNIQUE COMMENT '공유 링크 식별자',
      `planner_id` BIGINT NOT NULL,
@@ -170,7 +190,7 @@ CREATE TABLE IF NOT EXISTS `planners_share` (
 );
 
 -- PLACES_IMAGES
-CREATE TABLE IF NOT EXISTS `places_images`
+CREATE TABLE `places_images`
 (
     `kakaoId`   BIGINT       NOT NULL,
     `image_key` VARCHAR(255) NOT NULL,
@@ -179,7 +199,7 @@ CREATE TABLE IF NOT EXISTS `places_images`
 );
 
 -- SCHEDULES
-CREATE TABLE IF NOT EXISTS `schedules`
+CREATE TABLE  `schedules`
 (
     `id`         BIGINT NOT NULL AUTO_INCREMENT COMMENT 'auto_increment',
     `planner_id` BIGINT NOT NULL,
