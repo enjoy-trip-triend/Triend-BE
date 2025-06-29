@@ -1,6 +1,5 @@
 package com.ssafy.place.mapper;
 
-import com.ssafy.ai.dto.RecommendationPlaceResponseDto;
 import com.ssafy.place.dto.PlaceResponseDto;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
