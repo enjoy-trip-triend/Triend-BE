@@ -16,6 +16,7 @@ import com.ssafy.ai.service.RecommendationService;
 import com.ssafy.common.security.dto.CustomUserDetails;
 import com.ssafy.member.dto.Member;
 import com.ssafy.ai.dto.RecommendationPlaceResponseDto;
+
 import static com.ssafy.ai.constant.RecommendationConstants.*;
 
 import java.util.List;
@@ -32,23 +33,10 @@ public class AiController {
     private final KakaoMapService kakaoMapService;
 
     @PostMapping("/chat")
-    public ResponseEntity<String> chat(@RequestBody UserMessage userMessage, @AuthenticationPrincipal CustomUserDetails userDetails) {
-    	Member member = userDetails.getMember();
+    public ResponseEntity<String> chat(@RequestBody UserMessage userMessage,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+        Member member = userDetails.getMember();
         String reply = chatService.askChatGPT(userMessage, member);
         return ResponseEntity.ok(reply);
-    }
-    
-    @GetMapping("/recommendation/places/mbti")
-    public ResponseEntity<List<RecommendationPlaceResponseDto>> getRecommendPlacesByMBTI(@AuthenticationPrincipal CustomUserDetails userDetails) {
-    	Member loginUser = userDetails.getMember();
-    	List<RecommendationPlaceResponseDto> body = recommendationService.recommendPlacesByMbti(loginUser, DEFAULT_RECOMMENDATION_LIMIT);
-    	return ResponseEntity.ok(body);
-    }
-    
-    @GetMapping("/recommendation/places/characters")
-    public ResponseEntity<List<RecommendationPlaceResponseDto>> getRecommendPlacesByCharacters(@AuthenticationPrincipal CustomUserDetails userDetails) {
-    	Member loginUser = userDetails.getMember();
-    	List<RecommendationPlaceResponseDto> body = recommendationService.recommendByCharacters(loginUser, DEFAULT_RECOMMENDATION_LIMIT);
-    	return ResponseEntity.ok(body);
     }
 }
