@@ -8,8 +8,8 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableFeignClients(basePackages = "com.ssafy.client.kakao")
 public class TriendApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(TriendApplication.class, args);
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(TriendApplication.class, args);
+  }
 
 }
