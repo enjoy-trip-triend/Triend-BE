@@ -3,10 +3,10 @@ package com.ssafy.planner.controller;
 import com.ssafy.common.security.dto.CustomUserDetails;
 import com.ssafy.planner.dto.Planner;
 import com.ssafy.planner.dto.PlannerCreateRequestDto;
-import com.ssafy.planner.dto.PlannerUpdateRequest;
+import com.ssafy.planner.dto.PlannerUpdateRequesDto;
 import com.ssafy.planner.service.PlannerService;
 import com.ssafy.schedule.dto.Schedule;
-import com.ssafy.schedule.dto.ScheduleUpdateRequest;
+import com.ssafy.schedule.dto.ScheduleUpdateRequestDto;
 
 import java.util.List;
 
@@ -53,7 +53,7 @@ public class PlannerController {
 
   @PutMapping("/{planner-id}")
   public ResponseEntity<Void> updatePlanner(@AuthenticationPrincipal CustomUserDetails loginUser,
-      @PathVariable("planner-id") Long plannerId, @RequestBody PlannerUpdateRequest request) {
+      @PathVariable("planner-id") Long plannerId, @RequestBody PlannerUpdateRequesDto request) {
     plannerService.updatePlanner(plannerId, request, loginUser);
     return ResponseEntity.noContent()
         .build();
@@ -85,8 +85,8 @@ public class PlannerController {
   public ResponseEntity<Void> updatePlansForPlanner(
       @AuthenticationPrincipal CustomUserDetails loginUser,
       @PathVariable("planner-id") Long plannerId,
-      @RequestBody List<ScheduleUpdateRequest> requests) {
-    plannerService.updateSchedulesForPlanner(plannerId, requests, loginUser);
+      @RequestBody List<ScheduleUpdateRequestDto> requests) {
+    //plannerService.updateSchedulesForPlanner(plannerId, requests, loginUser);
     return ResponseEntity.noContent()
         .build();
   }
