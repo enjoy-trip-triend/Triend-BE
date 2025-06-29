@@ -4,11 +4,13 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.schedule.mapper.ScheduleMapper">
 
-  <insert id="createSchedule" useGeneratedKeys="true" keyProperty="id">
-    insert into schedules (planner_id, date, start_time, place_id, content, place_url, idx)
-    values(
-    #{plannerId}, #{date}, #{startTime}, #{placeId}, #{content}, #{placeUrl}, #{idx}
-    )
+  <insert id="createSchedule" parameterType="map">
+    INSERT INTO schedules (planner_id, date, start_time, place_id, content, place_url, idx)
+    VALUES
+    <foreach collection="schedules" item="schedule" separator=",">
+      (#{plannerId}, #{schedule.date}, #{schedule.startTime}, #{schedule.placeId},
+      #{schedule.content}, #{schedule.placeUrl}, #{schedule.idx})
+    </foreach>
   </insert>
 
   <select id="getScheduleById" resultMap="scheduleMap">
@@ -99,14 +101,14 @@
 
 
   <resultMap type="Schedule" id="scheduleMap">
-    <id column="s_id" property="id"/>
-    <result column="s_date" property="date"/>
-    <result column="s_start_time" property="startTime"/>
-    <result column="s_place_id" property="placeId"/>
-    <result column="s_content" property="content"/>
-    <result column="s_place_url" property="placeUrl"/>
-    <result column="s_idx" property="idx"/>
-    <result column="p_id" property="plannerId"/>
+    <id column="id" property="id"/>
+    <result column="planner_id" property="plannerId"/>
+    <result column="date" property="date"/>
+    <result column="start_time" property="startTime"/>
+    <result column="place_id" property="placeId"/>
+    <result column="content" property="content"/>
+    <result column="place_url" property="placeUrl"/>
+    <result column="idx" property="idx"/>
   </resultMap>
 
 </mapper>
