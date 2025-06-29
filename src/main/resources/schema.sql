@@ -205,7 +205,7 @@ CREATE TABLE  `schedules`
     `id`         BIGINT NOT NULL AUTO_INCREMENT COMMENT 'auto_increment',
     `planner_id` BIGINT NOT NULL,
     `date`       DATE   NOT NULL,
-    `start_time` TIMESTAMP,
+    `start_time` TIME,
     `content`    VARCHAR(255),
     `place_url`  VARCHAR(255),
     `idx`        INT    NOT NULL,
