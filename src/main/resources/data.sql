@@ -12,6 +12,7 @@ VALUES (1, 11010, '강남구', 11),
 INSERT INTO members (email, password, name, role, birth, mbti, refresh_token)
 VALUES
     ('test@test.com', '$2a$10$.k8PcfjUA0KTJf3AK0lbD.FqrxsqJBoB6gn2khl2vjhlM51fkcOxe', 'test', 'MEMBER', '1995-06-15', 'INFP', NULL),
+    ('hong@test.com', '$2a$10$.k8PcfjUA0KTJf3AK0lbD.FqrxsqJBoB6gn2khl2vjhlM51fkcOxe', 'hong', 'MEMBER', '1995-06-20', 'INFP', NULL),
     ('admin@test.com', '$2a$10$.k8PcfjUA0KTJf3AK0lbD.FqrxsqJBoB6gn2khl2vjhlM51fkcOxe', 'admin', 'ADMIN', '1990-01-01', 'ENTJ', NULL),
     ('alice@example.com', 'hashed_pw1', 'Alice', 'MEMBER', '1995-06-01', 'INTJ', NULL),
     ('bob@example.com', 'hashed_pw2', 'Bob', 'ADMIN', NULL, NULL, NULL);
@@ -19,26 +20,25 @@ VALUES
 -- CHARACTERS
 INSERT INTO characters (name)
 VALUES ('탐험가'),
-       ('계획러');
+       ('계획러'),
+       ('힐링러'),
+       ('미식가'),
+       ('포토그래퍼'),
+       ('문화애호가'),
+       ('자연탐방가'),
+       ('액티비티러');
 
 -- MEMBERS_CHARACTERS
 INSERT INTO members_characters (member_id, character_id)
 VALUES (1, 1),
-       (1, 2);
+       (1, 2),
+       (2, 1),
+       (2, 2);
 
 -- CATEGORIES
-INSERT INTO characters (name)
-VALUES
-  ('힐링러'),
-  ('미식가'),
-  ('포토그래퍼'),
-  ('자유여행자'),
-  ('럭셔리러'),
-  ('액티비티러'),
-  ('문화애호가'),
-  ('자연탐방가'),
-  ('이색체험러'),
-  ('로컬러');
+INSERT INTO categories (name)
+VALUES ('음식점'),
+       ('관광지');
 
 -- PLACES_CATEGORIES_GROUPS
 INSERT INTO `places_categories_groups` (`group_code`, `group_name`)
@@ -49,8 +49,7 @@ VALUES
   ('CS2', '편의점'),          -- 편의점
   ('HP8', '병원'),            -- 병원
   ('CT1', '문화시설'),        -- 공연·전시·영화관 등
-  ('AT4', '관광명소'),        -- 관광/명소
-;
+  ('AT4', '관광명소');        -- 관광/명소
 
 
 -- PLACES_CATEGORIES
