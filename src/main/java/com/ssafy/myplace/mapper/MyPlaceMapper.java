@@ -1,15 +1,12 @@
 package com.ssafy.myplace.mapper;
 
 import java.util.List;
-
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
 import com.ssafy.myplace.dto.CategoryDTO;
 import com.ssafy.myplace.dto.HotPlaceResponseDto;
 import com.ssafy.myplace.dto.MyPlaceDto;
 import com.ssafy.myplace.dto.MyPlaceUpdateResponseDto;
-import com.ssafy.ai.dto.RecommendationPlaceResponseDto;
 
 @Mapper
 public interface MyPlaceMapper {

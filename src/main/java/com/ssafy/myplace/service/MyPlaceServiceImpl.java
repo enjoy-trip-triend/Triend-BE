@@ -15,43 +15,44 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class MyPlaceServiceImpl implements MyPlaceService {
-	
-	private final MyPlaceMapper myPlaceMapper;
 
-	@Override
-	public int createMyPlace(Long memberId, MyPlaceDto myPlaceRequestDto) {
-		
-		if(myPlaceMapper.selectCountByMemberIdAndPlaceId(memberId, myPlaceRequestDto.getKakaoId()) > 0) {
-			return -1;
-		}
-		
-		return myPlaceMapper.insertMyPlace(memberId, myPlaceRequestDto);
-	}
+    private final MyPlaceMapper myPlaceMapper;
 
-	@Override
-	public List<MyPlaceDto> getMyplaceListByMemberId(Long memberId, Long categoryId) {
-		return myPlaceMapper.selectMyPlacesByMemberId(memberId, categoryId);
-	}
+    @Override
+    public int createMyPlace(Long memberId, MyPlaceDto myPlaceRequestDto) {
 
-	@Override
-	public List<CategoryDTO> getCategoryList() {
-		return myPlaceMapper.selectCategories();
-	}
+        if (myPlaceMapper.selectCountByMemberIdAndPlaceId(memberId, myPlaceRequestDto.getKakaoId())
+                > 0) {
+            return -1;
+        }
 
-	@Override
-	public List<HotPlaceResponseDto> getHotPlaceList() {
-		return myPlaceMapper.selectTop10ByOrderByCountDesc();
-	}
+        return myPlaceMapper.insertMyPlace(memberId, myPlaceRequestDto);
+    }
 
-	@Override
-	public int removeMyPlaceByIds(List<Long> ids) {
-		return myPlaceMapper.deleteMyPlaceByIds(ids);
-	}
+    @Override
+    public List<MyPlaceDto> getMyplaceListByMemberId(Long memberId, Long categoryId) {
+        return myPlaceMapper.selectMyPlacesByMemberId(memberId, categoryId);
+    }
 
-	@Override
-	public int updateMyPlace(MyPlaceUpdateResponseDto dto) {
-		return myPlaceMapper.updateMypalceById(dto);
-	}
-	
+    @Override
+    public List<CategoryDTO> getCategoryList() {
+        return myPlaceMapper.selectCategories();
+    }
+
+    @Override
+    public List<HotPlaceResponseDto> getHotPlaceList() {
+        return myPlaceMapper.selectTop10ByOrderByCountDesc();
+    }
+
+    @Override
+    public int removeMyPlaceByIds(List<Long> ids) {
+        return myPlaceMapper.deleteMyPlaceByIds(ids);
+    }
+
+    @Override
+    public int updateMyPlace(MyPlaceUpdateResponseDto dto) {
+        return myPlaceMapper.updateMypalceById(dto);
+    }
+
 
 }
