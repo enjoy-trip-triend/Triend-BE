@@ -13,17 +13,20 @@ import com.ssafy.ai.dto.RecommendationPlaceResponseDto;
 
 @Mapper
 public interface MyPlaceMapper {
-	int insertMyPlace(@Param("memberId") Long memberId, @Param("dto") MyPlaceDto myPlaceRequestDto);
-	int selectCountByMemberIdAndPlaceId(@Param("memberId") Long memberId, @Param("kakaoId") String kakaoId);
-	List<MyPlaceDto> selectMyPlacesByMemberId(@Param("memberId") Long memberId, @Param("categoryId") Long categoryId);
-	List<CategoryDTO> selectCategories();
-	List<HotPlaceResponseDto> selectTop10ByOrderByCountDesc();
-	int deleteMyPlaceByIds(List<Long> myPlaceIds);
-	int updateMypalceById(@Param("dto") MyPlaceUpdateResponseDto updateResponseDto);
-	List<RecommendationPlaceResponseDto> selectTopPlacesByMbti(@Param("mbti") String mbti, @Param("excludeMemberId") Long excludeMemberId, @Param("limit")  int limit);
-	List<RecommendationPlaceResponseDto> selectTopPlacesByCharacters(
-	        @Param("characterIds") List<Long> characterIds,
-	        @Param("excludeMemberId") Long excludeMemberId,
-	        @Param("limit") int limit
-	    );
+
+    int insertMyPlace(@Param("memberId") Long memberId, @Param("dto") MyPlaceDto myPlaceRequestDto);
+
+    int selectCountByMemberIdAndPlaceId(@Param("memberId") Long memberId,
+            @Param("kakaoId") String kakaoId);
+
+    List<MyPlaceDto> selectMyPlacesByMemberId(@Param("memberId") Long memberId,
+            @Param("categoryId") Long categoryId);
+
+    List<CategoryDTO> selectCategories();
+
+    List<HotPlaceResponseDto> selectTop10ByOrderByCountDesc();
+
+    int deleteMyPlaceByIds(List<Long> myPlaceIds);
+
+    int updateMypalceById(@Param("dto") MyPlaceUpdateResponseDto updateResponseDto);
 }
