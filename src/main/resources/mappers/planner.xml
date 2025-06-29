@@ -6,40 +6,20 @@
 
   <insert id="createPlanner" parameterType="com.ssafy.planner.dto.Planner" useGeneratedKeys="true"
     keyProperty="id" keyColumn="id">
-    insert into planners (start_day, end_day, member_id, name, comment, exposure)
-    values(#{startDay}, #{endDay}, #{memberId}, #{name}, #{comment}, #{exposure})
+    INSERT INTO planners (start_day, end_day, member_id, name, comment, exposure)
+    VALUES (#{startDay}, #{endDay}, #{memberId}, #{name}, #{comment}, #{exposure})
   </insert>
 
   <select id="getPlannerById" resultMap="plannerMap">
-    SELECT
-    p.id AS p_id,
-    p.start_day AS p_start_day,
-    p.end_day AS p_end_day,
-    p.name AS p_name,
-    m.id AS m_id,
-    m.name AS m_name,
-    m.email AS m_email,
-    m.password AS m_password,
-    m.role AS m_role
-    FROM planners p
-    JOIN members m ON p.member_id = m.id
-    WHERE p.id = #{plannerId}
+    SELECT id, start_day, end_day, member_id, name, comment, exposure, likes_count
+    FROM planners
+    WHERE id = #{plannerId}
   </select>
 
-  <select id="getPlannersByMember" resultMap="plannerMap">
-    SELECT
-    p.id AS p_id,
-    p.start_day AS p_start_day,
-    p.end_day AS p_end_day,
-    p.name AS p_name,
-    m.id AS m_id,
-    m.name AS m_name,
-    m.email AS m_email,
-    m.password AS m_password,
-    m.role AS m_role
-    FROM planners p
-    JOIN members m ON p.member_id = m.id
-    WHERE p.member_id = #{memberId}
+  <select id="getPlannersByMemberId" resultMap="plannerMap">
+    SELECT id, start_day, end_day, member_id, name, comment, exposure, likes_count
+    FROM planners
+    WHERE member_id = #{memberId}
   </select>
 
   <update id="updatePlanner">
