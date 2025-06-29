@@ -23,6 +23,7 @@ import org.springframework.web.util.ContentCachingRequestWrapper;
 @Slf4j
 public class ApiLoggingFilter implements Filter {
     
+    private static final String API_LOGGING_PREFIX = "/api/logs";
     private final ApiLogService apiLogService;
     private final JWTUtil jwtUtil;
     private final MemberService memberService;
@@ -33,7 +34,8 @@ public class ApiLoggingFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         
-        if ("OPTIONS".equals(req.getMethod())) {
+        if (req.getRequestURI()
+                .startsWith(API_LOGGING_PREFIX) || "OPTIONS".equals(req.getMethod())) {
             
             log.debug("[ApiLoggingFilter] 요청 실행됨");
             chain.doFilter(request, response);
