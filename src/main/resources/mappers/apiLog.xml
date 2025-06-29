@@ -27,61 +27,118 @@
     );
   </insert>
 
-  <select id="selectAllApiLogs" resultMap="apiLogMap">
+  <select id="selectApiLogs" resultMap="apiLogResponseMap">
     select
-    id as a_id,
-    member_id as a_member_id,
-    endpoint as a_endpoint,
-    http_method as a_http_method,
-    status_code as a_status_code,
-    response_time_ms as a_response_time_ms,
-    ip_address as a_ip_address,
-    user_agent as a_user_agent,
-    request_body as a_request_body
-    from api_logs;
+    a.id as a_id,
+    m.id as m_id,
+    m.name as m_name,
+    m.email as m_email,
+    m.role as m_role,
+    a.endpoint as a_endpoint,
+    a.http_method as a_http_method,
+    a.status_code as a_status_code,
+    a.response_time_ms as a_response_time_ms,
+    a.ip_address as a_ip_address,
+    a.user_agent as a_user_agent,
+    a.request_body as a_request_body,
+    a.created_at as a_created_at
+    FROM api_logs as a
+    join members m on a.member_id = m.id
+    WHERE 1 = 1
+    <if test="from != null">
+      AND a.created_at <![CDATA[ >= ]]> #{from}
+    </if>
+    <if test="to != null">
+      AND a.created_at <![CDATA[ <= ]]> #{to}
+    </if>
+    ORDER BY a.created_at DESC;
   </select>
 
-  <select id="selectApiLogsByDateRange" resultMap="apiLogMap">
+
+  <select id="selectApiLogsByMember" resultMap="apiLogResponseMap">
+    select
+    a.id as a_id,
+    m.id as m_id,
+    m.name as m_name,
+    m.email as m_email,
+    m.role as m_role,
+    a.endpoint as a_endpoint,
+    a.http_method as a_http_method,
+    a.status_code as a_status_code,
+    a.response_time_ms as a_response_time_ms,
+    a.ip_address as a_ip_address,
+    a.user_agent as a_user_agent,
+    a.request_body as a_request_body,
+    a.created_at as a_created_at
+    from api_logs a
+    join members m on a.member_id = m.id
+    where a.member_id = #{memberId}
+    ORDER BY a.created_at DESC;
+  </select>
+
+  <select id="selectApiLogCount" resultMap="apiLogCountResponseMap">
+    select
+    a.endpoint as a_endpoint,
+    a.http_method as a_http_method,
+    count(*) as a_count
+    FROM api_logs as a
+    WHERE 1 = 1
+    <if test="from != null">
+      AND a.created_at <![CDATA[ >= ]]> #{from}
+    </if>
+    <if test="to != null">
+      AND a.created_at <![CDATA[ <= ]]> #{to}
+    </if>
+    <if test="memberId != null">
+      AND a.member_id = #{memberId}
+    </if>
+    GROUP BY a.endpoint, a.http_method
+    Order BY a_count DESC
+  </select>
+
+  <select id="selectApiLogStatusRate" resultType="com.ssafy.admin.dto.ApiLogStatusRateResponseDto">
     SELECT
-    id as a_id,
-    member_id as a_member_id,
-    endpoint as a_endpoint,
-    http_method as a_http_method,
-    status_code as a_status_code,
-    response_time_ms as a_response_time_ms,
-    ip_address as a_ip_address,
-    user_agent as a_user_agent,
-    request_body as a_request_body
+    endpoint AS endpoint,
+    http_method AS httpMethod,
+    SUM(CASE WHEN status_code BETWEEN 200 AND 399 THEN 1 ELSE 0 END) AS successCount,
+    SUM(CASE WHEN status_code  <![CDATA[ >= ]]> 400 THEN 1 ELSE 0 END) AS failureCount,
+    ROUND(
+    SUM(CASE WHEN status_code BETWEEN 200 AND 299 THEN 1 ELSE 0 END) / COUNT(*) * 100, 2
+    ) AS successRate
     FROM api_logs
     WHERE 1 = 1
-    <if test="startDateTime != null">
-      AND created_at <![CDATA[ >= ]]> #{startDateTime}
+    <if test="from != null">
+      AND created_at <![CDATA[ >= ]]> #{from}
     </if>
-    <if test="endDateTime != null">
-      AND created_at <![CDATA[ <= ]]> #{endDateTime}
+    <if test="to != null">
+      AND created_at <![CDATA[ <= ]]> #{to}
     </if>
-    ORDER BY created_at DESC
+    GROUP BY endpoint, http_method
+    ORDER BY successRate;
   </select>
 
-
-  <select id="selectApiLogsByMember" resultMap="apiLogMap">
+  <!--  String endpoint,-->
+  <!--  String httpMethod,-->
+  <!--  Double averageLatencyMs-->
+  <select id="selectApiLogLatency" resultType="com.ssafy.admin.dto.ApiLogLatencyResponseDto">
     select
-    id as a_id,
-    member_id as a_member_id,
-    endpoint as a_endpoint,
-    http_method as a_http_method,
-    status_code as a_status_code,
-    response_time_ms as a_response_time_ms,
-    ip_address as a_ip_address,
-    user_agent as a_user_agent,
-    request_body as a_request_body
-    from api_logs
-    where member_id = #{memberId};
+    endpoint as endpoint,
+    http_method as httpMethod,
+    ROUND(AVG(response_time_ms), 2) AS averageLatencyMs
+    FROM api_logs
+    WHERE 1 = 1
+    <if test="from != null">
+      AND created_at <![CDATA[ >= ]]> #{from}
+    </if>
+    <if test="to != null">
+      AND created_at <![CDATA[ <= ]]> #{to}
+    </if>
+    GROUP BY endpoint, http_method
+    ORDER BY averageLatencyMs DESC
   </select>
 
-  <resultMap type="ApiLogDto" id="apiLogMap">
+  <resultMap id="apiLogResponseMap" type="com.ssafy.admin.dto.ApiLogResponseDto">
     <id column="a_id" property="id"/>
-    <result column="a_member_id" property="memberId"/>
     <result column="a_endpoint" property="endpoint"/>
     <result column="a_http_method" property="httpMethod"/>
     <result column="a_status_code" property="statusCode"/>
@@ -89,6 +146,20 @@
     <result column="a_ip_address" property="ipAddress"/>
     <result column="a_user_agent" property="userAgent"/>
     <result column="a_request_body" property="requestBody"/>
+    <result column="a_created_at" property="createdAt"/>
+
+    <association property="member" javaType="com.ssafy.admin.dto.ApiLogMemberResponseDto">
+      <id column="m_id" property="id"/>
+      <result column="m_email" property="email"/>
+      <result column="m_name" property="name"/>
+      <result column="m_role" property="role"/>
+    </association>
+  </resultMap>
+
+  <resultMap id="apiLogCountResponseMap" type="com.ssafy.admin.dto.ApiLogCountResponseDto">
+    <result column="a_endpoint" property="endpoint"/>
+    <result column="a_http_method" property="httpMethod"/>
+    <result column="a_count" property="count"/>
   </resultMap>
 
 </mapper>
