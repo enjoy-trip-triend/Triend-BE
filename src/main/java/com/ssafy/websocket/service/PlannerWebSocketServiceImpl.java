@@ -24,9 +24,9 @@ public class PlannerWebSocketServiceImpl implements PlannerWebSocketService {
 
     @Override
     @Transactional
-    public void joinEditor(JoinGroupMessage joinMessage, String sessionId, String ipAddr) {
+    public void joinEditor(JoinGroupMessage joinMessage, String userName, String ipAddr) {
         EditorInfo editor = EditorInfo.builder()
-                .sessionId(sessionId)
+                .sessionId(userName)
                 .ipAddr(ipAddr)
                 .plannerId(joinMessage.getPlannerId())
                 .build();
@@ -34,11 +34,20 @@ public class PlannerWebSocketServiceImpl implements PlannerWebSocketService {
         editor.setName();
         editorManager.addEditor(editor);
 
+        // 개인에게 보냄
+        messagingTemplate.convertAndSendToUser(
+                userName,
+                "/queue/my-session-id",
+                userName
+        );
+
+        log.info("[SEND_TO_USER] Sent sessionId={} to /user/{}/queue/my-session-id", userName, userName);
+
         // 브로드캐스트: 현재 참여자 목록을 모두에게 보냄
         messagingTemplate.convertAndSend("/topic/planner/" + joinMessage.getPlannerId() + "/editors",
                 editorManager.getEditors(joinMessage.getPlannerId()));
 
-        log.info("JOIN: plannerId={}, sessionId={}, name={}", joinMessage.getPlannerId(), sessionId, editor.getName());
+        log.info("JOIN: plannerId={}, sessionId={}, name={}", joinMessage.getPlannerId(), userName, editor.getName());
     }
 
     @Override
