@@ -1,6 +1,7 @@
 package com.ssafy.schedule.mapper;
 
 import com.ssafy.schedule.dto.Schedule;
+import com.ssafy.schedule.dto.ScheduleDto;
 import com.ssafy.schedule.dto.ScheduleImage;
 import java.time.LocalDate;
 import java.util.List;
@@ -10,7 +11,7 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface ScheduleMapper {
     
-    int createSchedule(Schedule schedule);
+    int createSchedule(@Param("plannerId") Long plannerId, @Param("schedules") List<ScheduleDto> schedule);
     
     Schedule getScheduleById(Long scheduleId);
     
