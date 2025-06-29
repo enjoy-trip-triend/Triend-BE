@@ -9,10 +9,10 @@ import com.ssafy.place.dto.PlaceResponseDto;
 import com.ssafy.place.mapper.PlaceMapper;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 @Service
@@ -50,6 +50,11 @@ public class PlaceServiceImpl implements PlaceService {
     public List<PlaceResponseDto> getTopPlacesByCharacter(Member member) {
 
         List<CharacterDTO> characterList = memberMapper.selectCharactersById(member.getId());
+
+        if (CollectionUtils.isEmpty(characterList)) {
+            return Collections.emptyList();
+        }
+
         List<Long> characterIds = characterList.stream()
                 .map(CharacterDTO::getId)
                 .toList();
