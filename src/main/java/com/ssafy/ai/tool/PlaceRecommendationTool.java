@@ -1,5 +1,7 @@
 package com.ssafy.ai.tool;
 
+import com.ssafy.place.dto.PlaceResponseDto;
+import com.ssafy.place.service.PlaceService;
 import java.util.List;
 
 import org.springframework.ai.tool.annotation.Tool;
@@ -16,18 +18,18 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class PlaceRecommendationTool {
-    private final RecommendationService recommendationService;
+    private final PlaceService placeService;
     private final MemberService memberService;
 
     @Tool(description = "같은 MBTI 사용자들이 저장한 장소 추천")
-    public List<RecommendationPlaceResponseDto> getRecommendedPlacesByMBTI(String email) {
+    public List<PlaceResponseDto> getRecommendedPlacesByMBTI(String email) {
         Member me = memberService.getMemberByEmail(email);
-        return recommendationService.recommendPlacesByMbti(me, DEFAULT_RECOMMENDATION_LIMIT);
+        return placeService.getTopPlacesByMbti(me);
     }
 
     @Tool(description = "비슷한 성향을 가진 사용자들이 저장한 장소 추천")
-    public List<RecommendationPlaceResponseDto> getRecommendPlacesByCharacters(String email) {
+    public List<PlaceResponseDto> getRecommendPlacesByCharacters(String email) {
     	Member me = memberService.getMemberByEmail(email);
-    	return recommendationService.recommendByCharacters(me, DEFAULT_RECOMMENDATION_LIMIT);
+    	return placeService.getTopPlacesByCharacter(me);
     }
 }
