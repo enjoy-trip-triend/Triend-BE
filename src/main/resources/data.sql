@@ -4,11 +4,12 @@
 
 -- MEMBERS
 INSERT INTO members (email, password, name, role, birth, mbti, refresh_token)
-VALUES
-    ('test@test.com', '$2a$10$.k8PcfjUA0KTJf3AK0lbD.FqrxsqJBoB6gn2khl2vjhlM51fkcOxe', 'test', 'MEMBER', '1995-06-15', 'INFP', NULL),
-    ('admin@test.com', '$2a$10$.k8PcfjUA0KTJf3AK0lbD.FqrxsqJBoB6gn2khl2vjhlM51fkcOxe', 'admin', 'ADMIN', '1990-01-01', 'ENTJ', NULL),
-    ('alice@example.com', 'hashed_pw1', 'Alice', 'MEMBER', '1995-06-01', 'INTJ', NULL),
-    ('bob@example.com', 'hashed_pw2', 'Bob', 'ADMIN', NULL, NULL, NULL);
+VALUES ('test@test.com', '$2a$10$.k8PcfjUA0KTJf3AK0lbD.FqrxsqJBoB6gn2khl2vjhlM51fkcOxe', 'test',
+        'MEMBER', '1995-06-15', 'INFP', NULL),
+       ('admin@test.com', '$2a$10$.k8PcfjUA0KTJf3AK0lbD.FqrxsqJBoB6gn2khl2vjhlM51fkcOxe', 'admin',
+        'ADMIN', '1990-01-01', 'ENTJ', NULL),
+       ('alice@example.com', 'hashed_pw1', 'Alice', 'MEMBER', '1995-06-01', 'INTJ', NULL),
+       ('bob@example.com', 'hashed_pw2', 'Bob', 'ADMIN', NULL, NULL, NULL);
 
 -- CHARACTERS
 INSERT INTO characters (name)
@@ -46,7 +47,7 @@ INSERT INTO planners (start_day, end_day, member_id, name, comment, exposure,
 VALUES ('2025-07-01 00:00:00', '2025-07-03 00:00:00', 1, '여름 서울 여행', '서울 맛집 투어',
         'PUBLIC', 1),
        ('2025-08-01 00:00:00', '2025-08-02 00:00:00', 2, '부산 여행', '부산', 'PRIVATE',
-       0);
+        0);
 
 -- PLANNERS_LOCATIONS
 INSERT INTO planners_locations (planner_id, sido_code, gugun_code)
