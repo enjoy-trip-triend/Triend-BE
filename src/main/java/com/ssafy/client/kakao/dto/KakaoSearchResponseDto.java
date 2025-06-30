@@ -1,6 +1,7 @@
 package com.ssafy.client.kakao.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ssafy.client.kakao.CategoryGroupCode;
 import java.util.List;
 import lombok.Data;
 
@@ -42,7 +43,7 @@ public class KakaoSearchResponseDto {
         private String phone;
 
         @JsonProperty("category_group_code")
-        private String categoryGroupCode;
+        private CategoryGroupCode categoryGroupCode;
 
         @JsonProperty("category_group_name")
         private String categoryGroupName;
