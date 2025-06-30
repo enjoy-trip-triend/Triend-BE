@@ -15,16 +15,10 @@ public interface ApiLogService {
      */
     void createApiLog(ApiLogDto apiLogDto);
     
-    
-    /**
-     * 유저별 API 로그를 조회합니다.
-     */
-    List<ApiLogResponseDto> getApiLogsByMember(Long memberId);
-    
     /**
      * 날짜 범위로 API 로그를 조회합니다.
      */
-    List<ApiLogResponseDto> getApiLogs(LocalDateTime from, LocalDateTime to);
+    List<ApiLogResponseDto> getApiLogs(LocalDateTime from, LocalDateTime to, Long memberId);
     
     /**
      * 각 API 호출 개수 통계를 조회합니다.
