@@ -114,12 +114,9 @@
       AND created_at <![CDATA[ <= ]]> #{to}
     </if>
     GROUP BY endpoint, http_method
-    ORDER BY successRate;
+    ORDER BY successRate DESC;
   </select>
 
-  <!--  String endpoint,-->
-  <!--  String httpMethod,-->
-  <!--  Double averageLatencyMs-->
   <select id="selectApiLogLatency" resultType="com.ssafy.admin.dto.ApiLogLatencyResponseDto">
     select
     endpoint as endpoint,
