@@ -8,7 +8,7 @@ import com.ssafy.common.security.dto.CustomUserDetails;
 import com.ssafy.schedule.dto.ScheduleCreateRequestDto;
 
 public interface ScheduleService {
-	void createSchedule(ScheduleCreateRequestDto request, CustomUserDetails loginUser);
+	void createSchedules(ScheduleCreateRequestDto request, CustomUserDetails loginUser);
 	void deleteSchedule(Long planId, CustomUserDetails loginUser);
 	void deleteSchedulesByPlannerAndDate(Long plannerId, LocalDate startDay, LocalDate endDay);
 	void deleteSchedulesByPlanner(Long plannerId);

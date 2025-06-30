@@ -26,9 +26,9 @@ public class ScheduleController {
   private final ScheduleService scheduleService;
 
   @PostMapping
-  public ResponseEntity<Long> createSchedule(@AuthenticationPrincipal CustomUserDetails loginUser,
+  public ResponseEntity<Long> createSchedules(@AuthenticationPrincipal CustomUserDetails loginUser,
       @RequestBody ScheduleCreateRequestDto request) {
-    scheduleService.createSchedule(request, loginUser);
+    scheduleService.createSchedules(request, loginUser);
     URI location = ServletUriComponentsBuilder
         .fromCurrentRequest()   // /api/schedules
         .build()

@@ -31,7 +31,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
   @Transactional
   @Override
-  public void createSchedule(ScheduleCreateRequestDto request, CustomUserDetails loginUser) {
+  public void createSchedules(ScheduleCreateRequestDto request, CustomUserDetails loginUser) {
     Planner thisPlanner = plannerMapper.getPlannerById(request.plannerId());
 
     // 정렬: 모든 스케줄을 idx 순으로 정렬
@@ -60,7 +60,7 @@ public class ScheduleServiceImpl implements ScheduleService {
       }
     }
 
-    int cnt = scheduleMapper.createSchedule(request.plannerId(), request.schedules());
+    int cnt = scheduleMapper.createSchedules(request.plannerId(), request.schedules());
     if (cnt != request.schedules()
         .size()) {
       throw new RuntimeException("[ERROR] 스케줄 추가 실패");

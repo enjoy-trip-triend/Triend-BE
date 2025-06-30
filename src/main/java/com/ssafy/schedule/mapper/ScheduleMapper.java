@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface ScheduleMapper {
     
-    int createSchedule(@Param("plannerId") Long plannerId, @Param("schedules") List<ScheduleDto> schedule);
+    int createSchedules(@Param("plannerId") Long plannerId, @Param("schedules") List<ScheduleDto> schedule);
     
     Schedule getScheduleById(Long scheduleId);
     
