@@ -17,7 +17,7 @@ public interface ApiLogMapper {
     
     List<ApiLogResponseDto> selectApiLogs(@Param("from") LocalDateTime from, @Param("to") LocalDateTime to);
     
-    List<ApiLogResponseDto> selectApiLogsByMember(Long memberId);
+    List<ApiLogResponseDto> selectApiLogsByMember(@Param("memberId") Long memberId);
     
     List<ApiLogCountResponseDto> selectApiLogCount(@Param("from") LocalDateTime from, @Param("to") LocalDateTime to, @Param("memberId") Long memberId);
     
