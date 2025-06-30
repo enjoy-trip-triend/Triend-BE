@@ -51,6 +51,9 @@
     <if test="to != null">
       AND a.created_at <![CDATA[ <= ]]> #{to}
     </if>
+    <if test="memberId != null">
+      AND a.member_id = #{memberId}
+    </if>
     ORDER BY a.created_at DESC;
   </select>
 
