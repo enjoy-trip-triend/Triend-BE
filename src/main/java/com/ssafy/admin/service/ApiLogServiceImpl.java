@@ -42,7 +42,7 @@ public class ApiLogServiceImpl implements ApiLogService {
     }
     
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<ApiLogCountResponseDto> getApiLogCount(LocalDateTime from, LocalDateTime to, Long memberId) {
         return apiLogMapper.selectApiLogCount(from, to, memberId);
     }
