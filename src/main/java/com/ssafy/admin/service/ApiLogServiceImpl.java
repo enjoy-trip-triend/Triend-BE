@@ -28,17 +28,11 @@ public class ApiLogServiceImpl implements ApiLogService {
     
     @Override
     @Transactional(readOnly = true)
-    public List<ApiLogResponseDto> getApiLogs(LocalDateTime from, LocalDateTime to) {
-        List<ApiLogResponseDto> apiLogDtoList = apiLogMapper.selectApiLogs(from, to);
+    public List<ApiLogResponseDto> getApiLogs(LocalDateTime from, LocalDateTime to, Long memberId) {
+        List<ApiLogResponseDto> apiLogDtoList = apiLogMapper.selectApiLogs(from, to, memberId);
         log.debug("Retrieved API logs: {}", apiLogDtoList);
         
         return apiLogDtoList;
-    }
-    
-    @Override
-    @Transactional(readOnly = true)
-    public List<ApiLogResponseDto> getApiLogsByMember(Long memberId) {
-        return apiLogMapper.selectApiLogsByMember(memberId);
     }
     
     @Override
