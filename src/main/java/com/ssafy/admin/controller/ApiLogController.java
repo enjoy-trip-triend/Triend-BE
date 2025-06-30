@@ -24,15 +24,10 @@ public class ApiLogController {
     @GetMapping
     public ResponseEntity<List<ApiLogResponseDto>> getApiLogs(
             @RequestParam(name = "from", required = false) LocalDateTime from,
-            @RequestParam(name = "to", required = false) LocalDateTime to
+            @RequestParam(name = "to", required = false) LocalDateTime to,
+            @RequestParam(value = "member-id", required = false) Long memberId
     ) {
-        return ResponseEntity.ok(apiLogService.getApiLogs(from, to));
-    }
-    
-    @GetMapping("/members")
-    public ResponseEntity<List<ApiLogResponseDto>> getApiLogsByMember(
-            @RequestParam("member-id") Long memberId) {
-        return ResponseEntity.ok(apiLogService.getApiLogsByMember(memberId));
+        return ResponseEntity.ok(apiLogService.getApiLogs(from, to, memberId));
     }
     
     @GetMapping("/stats/counts")
