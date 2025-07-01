@@ -1,4 +1,4 @@
-package com.ssafy.chatGPT.constant;
+package com.ssafy.ai.constant;
 
 public class PromptParamConstants {
 	public static final String LANGUAGE = "korean";

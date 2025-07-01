@@ -4,42 +4,65 @@
 
 -- MEMBERS
 INSERT INTO members (email, password, name, role, birth, mbti, refresh_token)
-VALUES ('test@test.com', '$2a$10$.k8PcfjUA0KTJf3AK0lbD.FqrxsqJBoB6gn2khl2vjhlM51fkcOxe', 'test',
-        'MEMBER', '1995-06-15', 'INFP', NULL),
-       ('admin@test.com', '$2a$10$.k8PcfjUA0KTJf3AK0lbD.FqrxsqJBoB6gn2khl2vjhlM51fkcOxe', 'admin',
-        'ADMIN', '1990-01-01', 'ENTJ', NULL),
-       ('alice@example.com', 'hashed_pw1', 'Alice', 'MEMBER', '1995-06-01', 'INTJ', NULL),
-       ('bob@example.com', 'hashed_pw2', 'Bob', 'ADMIN', NULL, NULL, NULL);
+VALUES
+    ('test@test.com', '$2a$10$.k8PcfjUA0KTJf3AK0lbD.FqrxsqJBoB6gn2khl2vjhlM51fkcOxe', 'test', 'MEMBER', '1995-06-15', 'INFP', NULL),
+    ('hong@test.com', '$2a$10$.k8PcfjUA0KTJf3AK0lbD.FqrxsqJBoB6gn2khl2vjhlM51fkcOxe', 'hong', 'MEMBER', '1995-06-20', 'INFP', NULL),
+    ('admin@test.com', '$2a$10$.k8PcfjUA0KTJf3AK0lbD.FqrxsqJBoB6gn2khl2vjhlM51fkcOxe', 'admin', 'ADMIN', '1990-01-01', 'ENTJ', NULL),
+    ('alice@example.com', 'hashed_pw1', 'Alice', 'MEMBER', '1995-06-01', 'INTJ', NULL),
+    ('bob@example.com', 'hashed_pw2', 'Bob', 'ADMIN', NULL, NULL, NULL);
 
 -- CHARACTERS
 INSERT INTO characters (name)
 VALUES ('탐험가'),
-       ('계획러');
+       ('계획러'),
+       ('힐링러'),
+       ('미식가'),
+       ('포토그래퍼'),
+       ('문화애호가'),
+       ('자연탐방가'),
+       ('액티비티러');
 
 -- MEMBERS_CHARACTERS
 INSERT INTO members_characters (member_id, character_id)
 VALUES (1, 1),
-       (1, 2);
+       (1, 2),
+       (2, 1),
+       (2, 2);
 
 -- CATEGORIES
 INSERT INTO categories (name)
-VALUES ('관광'),
-       ('맛집');
+VALUES ('음식점'),
+       ('관광지');
+
+-- PLACES_CATEGORIES_GROUPS
+INSERT INTO `places_categories_groups` (`group_code`, `group_name`)
+VALUES
+  ('FD6', '음식점'),            -- 숙박업소
+  ('CE7', '카페'),            -- 카페
+  ('PM9', '약국'),            -- 약국
+  ('CS2', '편의점'),          -- 편의점
+  ('HP8', '병원'),            -- 병원
+  ('CT1', '문화시설'),        -- 공연·전시·영화관 등
+  ('AT4', '관광명소');        -- 관광/명소
+
 
 -- PLACES_CATEGORIES
-INSERT INTO places_categories (category_group_code, category_group_name, category_name)
-VALUES ('FD6', '음식점', '한식'),
-       ('CE7', '카페', '커피전문점');
+INSERT INTO `places_categories` (`category_name`, `category_group_id`)
+VALUES ('음식점 > 한식', 1),
+       ('카페 > 커피숍', 2);
+
 
 -- PLACES
-INSERT INTO places (kakaoId, address, location_name, lat, lon, count, category_id)
-VALUES (1001, '서울 강남구 테헤란로 1', '강남 맛집', 37.4979, 127.0276, 0, 1),
-       (1002, '부산 해운대구 해운대로 1', '해운대 카페', 35.1587, 129.1604, 0, 2);
+INSERT INTO places (kakao_id, address_name, road_address_name, place_name, latitude, longitude, phone, save_count, category_id)
+VALUES (12678345, '서울특별시 종로구 사직로 161', '서울특별시 종로구 사직로 지하 1', '경복궁', 37.5796170, 126.9770410, '02-3700-3900', 5, 1),
+       (18965432, '부산광역시 해운대구 우동 1420', '부산광역시 해운대구 해운대로 264', '해운대해수욕장', 35.1631824, 129.1635765, '051-749-7611', 8, 2);
+
+
 
 -- MY_PLACES
-INSERT INTO my_places (member_id, kakaoId)
-VALUES (1, 1001),
-       (1, 1002);
+INSERT INTO my_places (member_id, place_id)
+VALUES (1, 1),
+       (1, 2);
 
 -- PLANNERS
 INSERT INTO planners (start_day, end_day, member_id, name, comment, exposure,
@@ -66,13 +89,12 @@ VALUES (1, 1),
        (2, 2);
 
 -- PLACES_IMAGES
-INSERT INTO places_images (kakaoId, image_key)
-VALUES (1001, 'img_1001.jpg'),
-       (1002, 'img_1002.jpg');
+INSERT INTO places_images (place_id, image_key)
+VALUES (1, 'img_1001.jpg'),
+       (2, 'img_1002.jpg');
 
 -- SCHEDULES
 INSERT INTO schedules (id, planner_id, date, start_time, content, place_url, idx, place_id)
-VALUES (1, 1, '2025-07-01 10:00:00', '2025-07-01 10:00:00', '점심 식사', 'https://place1.com', 1,
-        1001),
-       (2, 1, '2025-07-01 15:00:00', '2025-07-01 15:00:00', '카페 타임', 'https://place2.com', 2,
-        1002);
+VALUES (1, 1, '2025-07-01 10:00:00', '2025-07-01 10:00:00', '점심 식사', 'https://place1.com', 1, 1),
+       (2, 1, '2025-07-01 15:00:00', '2025-07-01 15:00:00', '카페 타임', 'https://place2.com', 2, 2);
+

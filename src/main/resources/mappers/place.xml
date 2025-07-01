@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.place.mapper.PlaceMapper">
+
+  <resultMap id="PlaceResponseDtoMap" type="com.ssafy.place.dto.PlaceResponseDto">
+    <id property="id" column="id"/>
+    <result property="kakaoId" column="kakao_id"/>
+    <result property="placeName" column="place_name"/>
+    <result property="addressName" column="address_name"/>
+    <result property="roadAddressName" column="road_address_name"/>
+    <result property="latitude" column="latitude"/>
+    <result property="longitude" column="longitude"/>
+    <result property="phone" column="phone"/>
+    <result property="saveCount" column="save_count"/>
+    <result property="categoryId" column="category_id"/>
+    <result property="categoryName" column="category_name"/>
+  </resultMap>
+
+  <select id="selectTopPlacesByMbti" resultMap="PlaceResponseDtoMap">
+    SELECT DISTINCT
+      p.id,
+      p.kakao_id,
+      p.place_name,
+      p.address_name,
+      p.road_address_name,
+      p.latitude,
+      p.longitude,
+      p.phone,
+      p.save_count,
+      p.category_id,
+      c.category_name
+    FROM places p
+    JOIN my_places mp
+      ON mp.place_id = p.id
+    JOIN members m
+      ON m.id = mp.member_id
+    LEFT JOIN places_categories c
+      ON c.id = p.category_id
+    WHERE m.mbti = #{mbti}
+      AND m.id != #{excludeMemberId}
+    ORDER BY p.save_count DESC
+    LIMIT #{limit}
+  </select>
+
+  <select id="selectTopPlacesByCharacter" resultMap="PlaceResponseDtoMap">
+    SELECT DISTINCT
+      p.id,
+      p.kakao_id,
+      p.place_name,
+      p.address_name,
+      p.road_address_name,
+      p.latitude,
+      p.longitude,
+      p.phone,
+      p.save_count,
+      p.category_id,
+      c.name AS category_name
+    FROM places p
+    JOIN my_places mp
+      ON mp.place_id = p.id
+    JOIN members m
+      ON m.id = mp.member_id
+    JOIN members_characters mc
+      ON mc.member_id = m.id
+    LEFT JOIN places_categories c
+      ON c.id = p.category_id
+    WHERE mc.character_id IN
+    <foreach item="characterId"
+      collection="characterIds"
+      open="("
+      separator=","
+      close=")">
+      #{characterId}
+    </foreach>
+    AND m.id != #{excludeMemberId}
+    ORDER BY p.save_count DESC
+    LIMIT #{limit}
+  </select>
+</mapper>
