@@ -70,7 +70,7 @@ INSERT INTO planners (start_day, end_day, member_id, name, comment, exposure,
 VALUES ('2025-07-01 00:00:00', '2025-07-03 00:00:00', 1, '여름 서울 여행', '서울 맛집 투어',
         'PUBLIC', 1),
        ('2025-08-01 00:00:00', '2025-08-02 00:00:00', 2, '부산 여행', '부산', 'PRIVATE',
-       0);
+        0);
 
 -- PLANNERS_LOCATIONS
 INSERT INTO planners_locations (planner_id, sido_code, gugun_code)
@@ -97,3 +97,4 @@ VALUES (1, 'img_1001.jpg'),
 INSERT INTO schedules (id, planner_id, date, start_time, content, place_url, idx, place_id)
 VALUES (1, 1, '2025-07-01 10:00:00', '2025-07-01 10:00:00', '점심 식사', 'https://place1.com', 1, 1),
        (2, 1, '2025-07-01 15:00:00', '2025-07-01 15:00:00', '카페 타임', 'https://place2.com', 2, 2);
+
