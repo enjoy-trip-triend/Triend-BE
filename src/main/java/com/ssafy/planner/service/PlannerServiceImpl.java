@@ -3,19 +3,15 @@ package com.ssafy.planner.service;
 import com.ssafy.common.security.dto.CustomUserDetails;
 import com.ssafy.planner.dto.Planner;
 import com.ssafy.planner.dto.PlannerCreateRequestDto;
-import com.ssafy.planner.dto.PlannerUpdateRequest;
+import com.ssafy.planner.dto.PlannerUpdateRequesDto;
 import com.ssafy.planner.mapper.PlannerLocationMapper;
 import com.ssafy.planner.mapper.PlannerMapper;
 import com.ssafy.schedule.dto.Schedule;
-import com.ssafy.schedule.dto.ScheduleUpdateRequest;
+import com.ssafy.schedule.dto.ScheduleUpdateRequestDto;
 import com.ssafy.schedule.mapper.ScheduleMapper;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -65,7 +61,7 @@ public class PlannerServiceImpl implements PlannerService {
 
   @Override
   public List<Planner> getPlannersByMember(CustomUserDetails loginUser) {
-    List<Planner> planners = plannerMapper.getPlannersByMember(loginUser.getMember()
+    List<Planner> planners = plannerMapper.getPlannersByMemberId(loginUser.getMember()
         .getId());
 
     if (planners == null) {
@@ -91,7 +87,7 @@ public class PlannerServiceImpl implements PlannerService {
   }
 
   @Override
-  public void updatePlanner(Long plannerId, PlannerUpdateRequest request,
+  public void updatePlanner(Long plannerId, PlannerUpdateRequesDto request,
       CustomUserDetails loginUser) {
     Planner targetPlanner = plannerMapper.getPlannerById(plannerId);
 
@@ -170,73 +166,73 @@ public class PlannerServiceImpl implements PlannerService {
   }
 
   @Override
-  public void updateSchedulesForPlanner(Long plannerId, List<ScheduleUpdateRequest> requests,
+  public void updateSchedulesForPlanner(Long plannerId, List<ScheduleUpdateRequestDto> requests,
       CustomUserDetails loginUser) {
 
-    Planner planner = plannerMapper.getPlannerById(plannerId);
-    if (planner == null) {
-      throw new RuntimeException("[ERROR] 해당 ID의 플래너가 존재하지 않습니다.");
-    }
-
-    Collections.sort(requests, (o1, o2) -> {
-      if (o1.date()
-          .isBefore(o2.date())) {
-        return -1;
-      } else if (o1.date()
-          .isAfter(o2.date())) {
-        return 1;
-      } else {
-        return o1.startTime()
-            .compareTo(o2.startTime());
-      }
-    });
-
-    boolean isFirst = true;
-    LocalDate preDate = null;
-    LocalTime preStartTime = null;
-    LocalTime preEndTime = null;
-    for (ScheduleUpdateRequest request : requests) {
-
-      if (request.startTime()
-          .equals(request.endTime())) {
-        throw new RuntimeException("[ERROR] 시작 시간과 종료 시간이 같습니다.");
-      }
-
-      if (request.startTime()
-          .isAfter(request.endTime())) {
-        throw new RuntimeException("[ERROR] 시작 시간이 종료 시간보다 늦을 수 없습니다.");
-      }
-
-      if (isFirst) {
-        isFirst = false;
-        preDate = request.date();
-        preStartTime = request.startTime();
-        preEndTime = request.endTime();
-        continue;
-      }
-
-      if (request.date()
-          .isEqual(preDate)) {
-        if (request.startTime()
-            .equals(preStartTime)) {
-          throw new RuntimeException("[ERROR] 같은 날짜에 시작 시간이 중복된 일정이 존재합니다.");
-        }
-
-        if (request.startTime()
-            .isBefore(preEndTime)) {
-          throw new RuntimeException("[ERROR] 같은 날짜에 겹치는 일정이 존재합니다.");
-        }
-      }
-
-      preDate = request.date();
-      preStartTime = request.startTime();
-      preEndTime = request.endTime();
-    }
-
-    List<Schedule> schedules = requests.stream()
-        .map(request -> toEntity(request, planner))
-        .collect(Collectors.toList());
-    scheduleMapper.updateSchedulesBatch(schedules);
+//    Planner planner = plannerMapper.getPlannerById(plannerId);
+//    if (planner == null) {
+//      throw new RuntimeException("[ERROR] 해당 ID의 플래너가 존재하지 않습니다.");
+//    }
+//
+//    Collections.sort(requests, (o1, o2) -> {
+//      if (o1.date()
+//          .isBefore(o2.date())) {
+//        return -1;
+//      } else if (o1.date()
+//          .isAfter(o2.date())) {
+//        return 1;
+//      } else {
+//        return o1.startTime()
+//            .compareTo(o2.startTime());
+//      }
+//    });
+//
+//    boolean isFirst = true;
+//    LocalDate preDate = null;
+//    LocalTime preStartTime = null;
+//    LocalTime preEndTime = null;
+//    for (ScheduleUpdateRequest request : requests) {
+//
+//      if (request.startTime()
+//          .equals(request.endTime())) {
+//        throw new RuntimeException("[ERROR] 시작 시간과 종료 시간이 같습니다.");
+//      }
+//
+//      if (request.startTime()
+//          .isAfter(request.endTime())) {
+//        throw new RuntimeException("[ERROR] 시작 시간이 종료 시간보다 늦을 수 없습니다.");
+//      }
+//
+//      if (isFirst) {
+//        isFirst = false;
+//        preDate = request.date();
+//        preStartTime = request.startTime();
+//        preEndTime = request.endTime();
+//        continue;
+//      }
+//
+//      if (request.date()
+//          .isEqual(preDate)) {
+//        if (request.startTime()
+//            .equals(preStartTime)) {
+//          throw new RuntimeException("[ERROR] 같은 날짜에 시작 시간이 중복된 일정이 존재합니다.");
+//        }
+//
+//        if (request.startTime()
+//            .isBefore(preEndTime)) {
+//          throw new RuntimeException("[ERROR] 같은 날짜에 겹치는 일정이 존재합니다.");
+//        }
+//      }
+//
+//      preDate = request.date();
+//      preStartTime = request.startTime();
+//      preEndTime = request.endTime();
+//    }
+//
+//    List<Schedule> schedules = requests.stream()
+//        .map(request -> toEntity(request, planner))
+//        .collect(Collectors.toList());
+//    scheduleMapper.updateSchedulesBatch(schedules);
   }
 
   public void deleteSchedulesForPlanner(Long plannerId, List<Long> planIdList,
@@ -251,15 +247,15 @@ public class PlannerServiceImpl implements PlannerService {
     scheduleMapper.deleteSchedulesBatch(planIdList);
   }
 
-  public Schedule toEntity(ScheduleUpdateRequest request, Planner planner) {
-    return Schedule.builder()
-        .id(request.id())
-        .date(request.date())
-        .startTime(request.startTime())
-        .placeId(request.placeId())
-        .content(request.content())
-        .plannerId(planner.getId())
-        .placeUrl(request.placeUrl())
-        .build();
-  }
+//  public Schedule toEntity(ScheduleUpdateRequest request, Planner planner) {
+//    return Schedule.builder()
+//        .id(request.id())
+//        .date(request.date())
+//        .startTime(request.startTime())
+//        .placeId(request.placeId())
+//        .content(request.content())
+//        .plannerId(planner.getId())
+//        .placeUrl(request.placeUrl())
+//        .build();
+//  }
 }

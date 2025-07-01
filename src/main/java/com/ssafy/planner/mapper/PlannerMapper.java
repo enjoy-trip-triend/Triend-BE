@@ -11,7 +11,7 @@ public interface PlannerMapper {
 	
 	int createPlanner(Planner planner);
 
-	List<Planner> getPlannersByMember(Long memberId);
+	List<Planner> getPlannersByMemberId(Long memberId);
 	
 	Planner getPlannerById(Long plannerId);
 
