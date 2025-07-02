@@ -90,8 +90,8 @@ VALUES (1, 1),
 INSERT INTO planners (start_day, end_day, member_id, name, comment, exposure,
                       likes_count)
 VALUES ('2025-12-24', '2025-12-25', 1, '경주 1박 2일 유적지 여행', '크리스마스 경주 여행', 'PUBLIC', 0),
-       ('2025-07-01', '2025-07-03', 2, '여름 서울 여행', '서울 맛집 투어', 'PUBLIC', 0),
-       ('2025-08-01', '2025-08-02', 3, '부산 여행', '부산', 'PRIVATE', 0);
+       ('2025-07-01', '2025-07-03', 1, '여름 서울 여행', '서울 맛집 투어', 'PUBLIC', 0),
+       ('2025-08-01', '2025-08-02', 1, '부산 여행', '부산', 'PRIVATE', 0);
 
 -- PLANNERS_LOCATIONS
 INSERT INTO planners_locations (planner_id, sido_code, gugun_code)
