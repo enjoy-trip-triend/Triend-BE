@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 
-public record PlannerCreateRequestDto(
+public record PlannerRequestDto(
     LocalDate startDay,
     LocalDate endDay,
     String name,
