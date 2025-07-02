@@ -12,9 +12,12 @@
     </foreach>
   </insert>
 
+  <delete id="deleteLocation" parameterType="Long">
+    DELETE FROM planners_locations
+    WHERE planner_id = #{plannerId}
+  </delete>
+
   <resultMap type="com.ssafy.planner.dto.PlannerLocationDto" id="locationMap">
-<!--    <id column="id" property="id" />-->
-<!--    <result column="planner_id" property="plannerId"/>-->
     <result column="sido_code" property="sidoCode" />
     <result column="gugun_code" property="gugunCode" />
   </resultMap>

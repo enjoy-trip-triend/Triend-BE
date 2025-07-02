@@ -10,4 +10,5 @@ public interface PlannerLocationMapper {
 
   int insertLocation(@Param("plannerId") Long plannerId, @Param("list") List<PlannerLocationDto> list);
 
+  void deleteLocation(@Param("plannerId") Long PlannerId);
 }
