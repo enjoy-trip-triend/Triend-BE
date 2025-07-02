@@ -3,7 +3,7 @@ package com.ssafy.planner.service;
 import com.ssafy.common.security.dto.CustomUserDetails;
 import com.ssafy.planner.dto.Planner;
 import com.ssafy.planner.dto.PlannerCreateRequestDto;
-import com.ssafy.planner.dto.PlannerUpdateRequesDto;
+import com.ssafy.planner.dto.PlannerUpdateRequestDto;
 import com.ssafy.planner.mapper.PlannerLocationMapper;
 import com.ssafy.planner.mapper.PlannerMapper;
 import com.ssafy.schedule.dto.ScheduleResponseDto;
@@ -21,19 +21,19 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Slf4j
 public class PlannerServiceImpl implements PlannerService {
-    
+
     private final PlannerMapper plannerMapper;
     private final ScheduleMapper scheduleMapper;
     private final PlannerLocationMapper plannerLocationMapper;
-    
+
     @Override
     public void createPlanner(PlannerCreateRequestDto request, CustomUserDetails loginUser) {
-        
+
         if (request.startDay()
                 .isAfter(request.endDay())) {
             throw new RuntimeException("[ERROR] 시작일이 종료일보다 늦을 수 없습니다.");
         }
-        
+
         Planner planner = Planner.builder()
                 .startDay(request.startDay())
                 .endDay(request.endDay())
@@ -43,35 +43,35 @@ public class PlannerServiceImpl implements PlannerService {
                 .comment(request.comment())
                 .exposure(request.exposure())
                 .build();
-        
+
         int cnt = plannerMapper.createPlanner(planner); // 작업 행 개수 반환 (성공시 1)
         if (cnt != 1) {
             throw new RuntimeException("[ERROR] 플래너 생성 실패");
         }
-        
+
         if (request.locations() != null && !request.locations()
                 .isEmpty()) // 추가할 장소가 존재하는 경우에만 추가
         {
             plannerLocationMapper.insertLocation(planner.getId(), request.locations());
         }
     }
-    
+
     @Override
     public List<Planner> getPlannersByMember(CustomUserDetails loginUser) {
         List<Planner> planners = plannerMapper.getPlannersByMemberId(loginUser.getMember()
                 .getId());
-        
+
         if (planners == null) {
             throw new RuntimeException("[ERROR] 플래너가 존재하지 않습니다.");
         }
-        
+
         return planners;
     }
-    
+
     @Override
     public Planner getPlannerById(Long plannerId, CustomUserDetails loginUser) {
         Planner planner = plannerMapper.getPlannerById(plannerId);
-        
+
         if (planner == null) {
             throw new RuntimeException("[ERROR] 해당 ID의 플래너가 존재하지 않습니다.");
         }
@@ -79,34 +79,34 @@ public class PlannerServiceImpl implements PlannerService {
                 .getId())) {
             throw new RuntimeException("[ERROR] 사용자가 일치하지 않습니다.");
         }
-        
+
         return plannerMapper.getPlannerById(plannerId);
     }
-    
+
     @Override
-    public void updatePlanner(Long plannerId, PlannerUpdateRequesDto request,
+    public void updatePlanner(Long plannerId, PlannerUpdateRequestDto request,
             CustomUserDetails loginUser) {
         Planner targetPlanner = plannerMapper.getPlannerById(plannerId);
-        
+
         if (targetPlanner == null) {
             throw new RuntimeException("[ERROR] 해당 ID의 플래너가 존재하지 않습니다.");
         }
-        
+
         if (!Objects.equals(targetPlanner.getMemberId(), loginUser.getMember()
                 .getId())) {
             throw new RuntimeException("[ERROR] 사용자가 일치하지 않습니다.");
         }
-        
+
         // 날짜 변경시 해당 날짜의 플랜 삭제
         if (request.startDay()
                 .isAfter(request.endDay())) {
             throw new RuntimeException("[ERROR] 시작일이 종료일보다 늦을 수 없습니다.");
         }
-        
+
         // 바뀐 날짜에 포함되지 않는 날짜에 해당하는 계획 삭제
         scheduleMapper.deleteSchedulesByPlannerAndDate(plannerId, request.startDay(),
                 request.endDay());
-        
+
         Planner planner = Planner.builder()
                 .id(request.id())
                 .name(request.name())
@@ -115,42 +115,42 @@ public class PlannerServiceImpl implements PlannerService {
                 .memberId(loginUser.getMember()
                         .getId())
                 .build();
-        
+
         int cnt = plannerMapper.updatePlanner(planner);
         log.info("cnt : {}", cnt);
         if (cnt != 1) {
             throw new RuntimeException("[ERROR] 플래너 수정 실패");
         }
     }
-    
+
     @Override
     public void deletePlanner(Long plannerId, CustomUserDetails loginUser) {
         int cnt = plannerMapper.deletePlanner(plannerId);
-        
+
         if (cnt != 1) {
             throw new RuntimeException("[ERROR] 플래너 삭제 실패");
         }
     }
-    
+
     @Override
     public List<ScheduleResponseDto> getSchedulesByPlanner(Long plannerId, CustomUserDetails loginUser) {
-        
+
         Planner planner = plannerMapper.getPlannerById(plannerId);
-        
+
         if (!Objects.equals(planner.getMemberId(), loginUser.getMember()
                 .getId())) {
             throw new RuntimeException("[ERROR] 사용자가 다릅니다.");
         }
-        
+
         List<ScheduleResponseDto> schedules = scheduleMapper.getSchedulesByPlanner(plannerId);
-        
+
         if (schedules == null) {
             throw new RuntimeException("[ERROR] 플래너가 존재하지 않습니다.");
         }
-        
+
         return schedules;
     }
-    
+
     @Override
     public List<ScheduleResponseDto> getSchedulesByShared(Long plannerId) {
         List<ScheduleResponseDto> schedules = scheduleMapper.getSchedulesByPlanner(plannerId);
@@ -159,7 +159,7 @@ public class PlannerServiceImpl implements PlannerService {
         }
         return schedules;
     }
-    
+
     @Override
     public void updateSchedulesForPlanner(Long plannerId, List<ScheduleUpdateRequestDto> requests,
             CustomUserDetails loginUser) {
@@ -229,16 +229,16 @@ public class PlannerServiceImpl implements PlannerService {
 //        .collect(Collectors.toList());
 //    scheduleMapper.updateSchedulesBatch(schedules);
     }
-    
+
     public void deleteSchedulesForPlanner(Long plannerId, List<Long> planIdList,
             CustomUserDetails loginUser) {
         Planner planner = plannerMapper.getPlannerById(plannerId);
-        
+
         if (!Objects.equals(planner.getMemberId(), loginUser.getMember()
                 .getId())) {
             throw new RuntimeException("[ERROR] 사용자가 다릅니다.");
         }
-        
+
         scheduleMapper.deleteSchedulesBatch(planIdList);
     }
 

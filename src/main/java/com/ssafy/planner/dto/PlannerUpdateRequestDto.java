@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import groovy.transform.ToString;
 
 @ToString
-public record PlannerUpdateRequesDto(
+public record PlannerUpdateRequestDto(
 		Long id,
 		LocalDate startDay,
 		LocalDate endDay,
