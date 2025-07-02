@@ -19,6 +19,5 @@ public class Schedule {
     private LocalTime startTime;
     private Long placeId;
     private String content;
-    private String placeUrl;
     private Integer idx;
 }
