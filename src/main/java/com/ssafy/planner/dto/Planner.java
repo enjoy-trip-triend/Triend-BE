@@ -22,5 +22,4 @@ public class Planner {
   private String comment;
   private Exposure exposure;
   private Long likesCount;
-//  private Member member;
 }
