@@ -17,7 +17,7 @@ DROP TABLE IF EXISTS `characters`;
 DROP TABLE IF EXISTS `members`;
 DROP TABLE IF EXISTS `categories`;
 DROP TABLE IF EXISTS `api_logs`;
-
+DROP TABLE IF EXISTS `places_categories_groups`;
 SET FOREIGN_KEY_CHECKS=1;
 
 -- SIDOS
