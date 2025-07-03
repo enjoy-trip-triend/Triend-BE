@@ -125,10 +125,10 @@ public class PlannerServiceImpl implements PlannerService {
       throw new RuntimeException("[ERROR] 플래너 수정 실패");
     }
 
+    plannerLocationMapper.deleteLocation(plannerId);
     if (request.locations() != null && !request.locations()
         .isEmpty())
     {
-      plannerLocationMapper.deleteLocation(plannerId);
       plannerLocationMapper.insertLocation(plannerId, request.locations());
     }
   }
