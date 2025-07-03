@@ -3,6 +3,7 @@ package com.ssafy.schedule.mapper;
 import com.ssafy.schedule.dto.Schedule;
 import com.ssafy.schedule.dto.ScheduleDto;
 import com.ssafy.schedule.dto.ScheduleImage;
+import com.ssafy.schedule.dto.ScheduleResponseDto;
 import java.time.LocalDate;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
@@ -25,7 +26,7 @@ public interface ScheduleMapper {
     
     int deleteSchedulesByPlanner(Long plannerId);
     
-    List<Schedule> getSchedulesByPlanner(Long plannerId);
+    List<ScheduleResponseDto> getSchedulesByPlanner(Long plannerId);
     
     void updateSchedulesBatch(List<Schedule> schedules);
     

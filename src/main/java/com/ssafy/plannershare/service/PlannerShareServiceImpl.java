@@ -9,7 +9,7 @@ import com.ssafy.plannershare.dto.PlannerShareResponseDto;
 import com.ssafy.plannershare.dto.PlannerShareStatusResponseDto;
 import com.ssafy.plannershare.mapper.PlannerMemberMapper;
 import com.ssafy.plannershare.mapper.PlannerShareMapper;
-import com.ssafy.schedule.dto.Schedule;
+import com.ssafy.schedule.dto.ScheduleResponseDto;
 import com.ssafy.schedule.mapper.ScheduleMapper;
 import java.util.List;
 import java.util.UUID;
@@ -22,13 +22,14 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Service
 @Slf4j
-public class PlannerShareServiceImpl implements PlannerShareService{
+public class PlannerShareServiceImpl implements PlannerShareService {
+    
     private final PlannerShareMapper plannerShareMapper;
     private final PlannerMemberMapper plannerMemberMapper;
     private final PlannerMapper plannerMapper;
     private final ScheduleMapper scheduleMapper;
     private final PasswordEncoder passwordEncoder;
-
+    
     @Transactional(readOnly = true)
     @Override
     public PlannerShareStatusResponseDto getPlannerShareStatus(Long plannerId) {
@@ -38,7 +39,7 @@ public class PlannerShareServiceImpl implements PlannerShareService{
         }
         return new PlannerShareStatusResponseDto(true, share.getSecretCode());
     }
-
+    
     @Transactional
     @Override
     public PlannerShareCreateResponseDto createSecreteCode(Long plannerId, CustomUserDetails loginUser, String rawPassword) {
@@ -49,7 +50,9 @@ public class PlannerShareServiceImpl implements PlannerShareService{
         // 비밀번호 해시
         String hashedPassword = passwordEncoder.encode(rawPassword);
         // 시크릿 코드 생성
-        String secretCode = UUID.randomUUID().toString().substring(0, 10);
+        String secretCode = UUID.randomUUID()
+                .toString()
+                .substring(0, 10);
         PlannerShare share = PlannerShare.builder()
                 .secretCode(secretCode)
                 .password(hashedPassword)
@@ -58,19 +61,19 @@ public class PlannerShareServiceImpl implements PlannerShareService{
         plannerShareMapper.insertPlannerShare(share);
         return new PlannerShareCreateResponseDto(secretCode);
     }
-
+    
     @Transactional
     @Override
     public void verifyPassword(String secretCode, String inputPassword) {
         PlannerShare share = plannerShareMapper.findBySecretCode(secretCode);
-        if(share==null){
+        if (share == null) {
             throw new IllegalArgumentException("공유 링크가 존재하지 않습니다.");
         }
         if (!share.isPasswordMatched(inputPassword, passwordEncoder)) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
     }
-
+    
     @Transactional(readOnly = true)
     @Override
     public PlannerShareResponseDto getSharedPlanner(String secretCode, CustomUserDetails loginUser) {
@@ -80,19 +83,22 @@ public class PlannerShareServiceImpl implements PlannerShareService{
         }
         Long plannerId = share.getPlannerId();
         Planner planner = plannerMapper.getPlannerById(plannerId);
-        List<Schedule> scheduleList = scheduleMapper.getSchedulesByPlanner(plannerId);
+        List<ScheduleResponseDto> scheduleList = scheduleMapper.getSchedulesByPlanner(plannerId);
         boolean isEditable = false;
         if (loginUser != null) {
-            if (planner.getMemberId().equals(loginUser.getMember().getId())) {
+            if (planner.getMemberId()
+                    .equals(loginUser.getMember()
+                            .getId())) {
                 isEditable = true;
             } else {
-                isEditable = plannerMemberMapper.isPlannerMember(plannerId, loginUser.getMember().getId());
+                isEditable = plannerMemberMapper.isPlannerMember(plannerId, loginUser.getMember()
+                        .getId());
             }
         }
-
+        
         return new PlannerShareResponseDto(planner, scheduleList, isEditable);
     }
-
+    
     @Transactional
     @Override
     public void addMemberToPlannerMember(String secretCode, CustomUserDetails loginUser) {
@@ -100,12 +106,13 @@ public class PlannerShareServiceImpl implements PlannerShareService{
         if (share == null) {
             throw new IllegalArgumentException("공유 링크가 존재하지 않습니다.");
         }
-
+        
         Long plannerId = share.getPlannerId();
-        Long memberId = loginUser.getMember().getId();
-
+        Long memberId = loginUser.getMember()
+                .getId();
+        
         boolean isMember = plannerMemberMapper.isPlannerMember(plannerId, memberId);
-
+        
         if (!isMember) {
             plannerMemberMapper.insertPlannerMember(plannerId, memberId);
         }
