@@ -15,9 +15,6 @@ public class ScheduleValidationService {
       return;
     }
 
-    // 혹시 모르니 한 번 더 idx 기준 정렬
-    schedules.sort((o1, o2) -> o1.idx() - o2.idx());
-
     LocalDate startDate = planner.getStartDay();
     LocalDate endDate = planner.getEndDay();
 

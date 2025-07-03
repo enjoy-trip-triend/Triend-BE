@@ -7,6 +7,7 @@ import com.ssafy.s3.service.S3Service;
 import com.ssafy.schedule.dto.ScheduleCreateRequestDto;
 import com.ssafy.schedule.dto.ScheduleDto;
 import com.ssafy.schedule.dto.ScheduleImage;
+import com.ssafy.schedule.dto.ScheduleResponseDto;
 import com.ssafy.schedule.mapper.ScheduleMapper;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -31,10 +32,18 @@ public class ScheduleServiceImpl implements ScheduleService {
   @Override
   public void createSchedules(ScheduleCreateRequestDto request, CustomUserDetails loginUser) {
     Planner planner = plannerMapper.getPlannerById(request.plannerId());
-    List<ScheduleDto> schedules = request.schedules();
+
+    // 기존 스케줄이 있으면 모두 delete
+    List<ScheduleResponseDto> originSchedules = scheduleMapper.getSchedulesByPlanner(request.plannerId());
+    if (originSchedules != null && !originSchedules.isEmpty())
+      scheduleMapper.deleteSchedulesByPlanner(request.plannerId());
+
+    // 새로운 스케줄
+    List<ScheduleDto> newSchedules = request.schedules();
 
     // 도메인 서비스에서 검증
-    scheduleValidationService.validate(planner, schedules);
+    newSchedules.sort((o1, o2) -> o1.idx() - o2.idx());
+    scheduleValidationService.validate(planner, newSchedules);
 
     // 검증 통과 후 insert
     int cnt = scheduleMapper.createSchedules(request.plannerId(), request.schedules());
