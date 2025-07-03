@@ -12,7 +12,7 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface ScheduleMapper {
     
-    int createSchedules(@Param("plannerId") Long plannerId, @Param("schedules") List<ScheduleDto> schedule);
+    int createSchedules(@Param("plannerId") Long plannerId, @Param("schedules") List<ScheduleDto> schedules);
     
     Schedule getScheduleById(Long scheduleId);
     
@@ -34,4 +34,6 @@ public interface ScheduleMapper {
     
     void insertScheduleImages(@Param("scheduleId") Long scheduleId,
             @Param("imageKeys") List<String> imageKeys);
+
+    void updateScheduleIdx(@Param("schedules") List<ScheduleResponseDto> schedules);
 }

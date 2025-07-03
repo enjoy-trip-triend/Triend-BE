@@ -106,6 +106,14 @@
     </foreach>
   </delete>
 
+  <update id="updateScheduleIdx" parameterType="map">
+    <foreach collection="schedules" item="schedule" separator=";">
+      UPDATE schedules
+      SET idx = #{schedule.idx}
+      WHERE planner_id = #{schedule.plannerId} AND id = #{schedule.id}
+    </foreach>
+  </update>
+
   <resultMap id="scheduleMap" type="com.ssafy.schedule.dto.ScheduleResponseDto">
     <!-- Schedule 필드 -->
     <id property="id" column="s_id"/>
