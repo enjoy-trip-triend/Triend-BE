@@ -1,7 +1,3 @@
--- Add dummy data
--- SIDOS/GUGUNS will be fetched by tour API
--- 서버 최초 구동 시 아래 내용 모두 주석 처리 후 진행해주세요.
-
 -- MEMBERS
 INSERT INTO members (email, password, name, role, birth, mbti, refresh_token)
 VALUES ('test@test.com', '$2a$10$.k8PcfjUA0KTJf3AK0lbD.FqrxsqJBoB6gn2khl2vjhlM51fkcOxe', 'test',
