@@ -1,23 +1,22 @@
 package com.ssafy.schedule.dto;
 
+import com.ssafy.place.dto.PlaceResponseDto;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class Schedule {
+public class ScheduleResponseDto {
     
     private Long id;
     private Long plannerId;
     private LocalDate date;
     private LocalTime startTime;
-    private Long placeId;
     private String content;
     private Integer idx;
+    private PlaceResponseDto place;
 }
