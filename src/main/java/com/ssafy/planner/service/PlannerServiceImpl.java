@@ -128,8 +128,6 @@ public class PlannerServiceImpl implements PlannerService {
 
   @Override
   public void deletePlanner(Long plannerId, CustomUserDetails loginUser) {
-    scheduleMapper.deleteSchedulesByPlanner(plannerId);
-
     int cnt = plannerMapper.deletePlanner(plannerId);
 
     if (cnt != 1) {

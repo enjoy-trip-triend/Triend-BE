@@ -241,7 +241,7 @@ CREATE TABLE  `schedules`
     `idx`        INT    NOT NULL,
     `place_id`   BIGINT NOT NULL,
     PRIMARY KEY (`id`, `planner_id`),
-    FOREIGN KEY (`planner_id`) REFERENCES `planners` (`id`),
+    FOREIGN KEY (`planner_id`) REFERENCES `planners` (`id`) ON DELETE CASCADE,
     FOREIGN KEY (`place_id`) REFERENCES `places` (`id`)
 );
 
