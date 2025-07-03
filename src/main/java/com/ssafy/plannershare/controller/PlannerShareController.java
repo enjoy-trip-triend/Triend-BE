@@ -7,7 +7,6 @@ import com.ssafy.plannershare.dto.PlannerShareResponseDto;
 import com.ssafy.plannershare.dto.PlannerShareStatusResponseDto;
 import com.ssafy.plannershare.dto.PlannerShareVerifyRequestDto;
 import com.ssafy.plannershare.service.PlannerShareService;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -24,15 +23,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/planners/{planner-id}/share")
 public class PlannerShareController {
+    
     private final PlannerShareService plannerShareService;
-
+    
     // 공유 링크 조회
     @GetMapping
     public ResponseEntity<PlannerShareStatusResponseDto> getShareStatus(
             @PathVariable("planner-id") Long plannerId) {
         return ResponseEntity.ok(plannerShareService.getPlannerShareStatus(plannerId));
     }
-
+    
     // 공유 링크 생성 (비밀번호까지 설정)
     @PostMapping
     public ResponseEntity<PlannerShareCreateResponseDto> createShare(
@@ -41,36 +41,38 @@ public class PlannerShareController {
             @RequestBody PlannerShareCreateRequestDto request) {
         return ResponseEntity.ok(plannerShareService.createSecreteCode(plannerId, loginUser, request.password()));
     }
-
+    
     // 공유 플래너 비밀번호 검증
-    @PostMapping("/{secretCode}/verify")
+    @PostMapping("/{secret-code}/verify")
     public ResponseEntity<Void> verifyPassword(
             @PathVariable("planner-id") Long plannerId,
-            @PathVariable String secretCode,
+            @PathVariable("secret-code") String secretCode,
             @RequestBody PlannerShareVerifyRequestDto request
     ) {
         plannerShareService.verifyPassword(secretCode, request.password());
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.noContent()
+                .build();
     }
-
+    
     // 공유 링크 조회
-    @GetMapping("/{secretCode}")
+    @GetMapping("/{secret-code}")
     public ResponseEntity<PlannerShareResponseDto> getSharedPlanner(
             @PathVariable("planner-id") Long plannerId,
-            @PathVariable String secretCode,
+            @PathVariable("secret-code") String secretCode,
             @AuthenticationPrincipal CustomUserDetails loginUser
     ) {
         return ResponseEntity.ok(plannerShareService.getSharedPlanner(secretCode, loginUser));
     }
-
+    
     // 참여자 등록
-    @PostMapping("/{secretCode}/join")
+    @PostMapping("/{secret-code}/join")
     public ResponseEntity<Void> joinPlannerShare(
             @PathVariable("planner-id") Long plannerId,
-            @PathVariable String secretCode,
+            @PathVariable("secret-code") String secretCode,
             @AuthenticationPrincipal CustomUserDetails loginUser
     ) {
         plannerShareService.addMemberToPlannerMember(secretCode, loginUser);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.noContent()
+                .build();
     }
 }

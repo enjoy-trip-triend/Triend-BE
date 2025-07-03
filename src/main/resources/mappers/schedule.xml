@@ -57,24 +57,31 @@
         WHERE schedule_id = #{scheduleId}
     ]]>
   </delete>
-
+  
   <select id="getSchedulesByPlanner" resultMap="scheduleMap">
     SELECT
     s.id AS s_id,
+    s.planner_id AS s_planner_id,
     s.date AS s_date,
     s.start_time AS s_start_time,
-    s.place_id AS s_place_id,
     s.content AS s_content,
-    s.place_url AS s_place_url,
+    s.idx AS s_idx,
     p.id AS p_id,
-    p.start_day AS p_start_day,
-    p.end_day AS p_end_day,
-    p.name AS p_name,
-    p.location AS p_location
+    p.kakao_id AS p_kakao_id,
+    p.place_name AS p_place_name,
+    p.address_name AS p_address_name,
+    p.road_address_name AS p_road_address_name,
+    p.latitude AS p_latitude,
+    p.longitude AS p_longitude,
+    p.phone AS p_phone,
+    p.save_count AS p_save_count,
+    p.category_id AS p_category_id,
+    c.category_name AS p_category_name
     FROM schedules s
-    JOIN planners p ON s.planner_id = p.id
+    JOIN places p ON p.id = s.place_id
+    LEFT JOIN places_categories c ON c.id = p.category_id
     WHERE s.planner_id = #{plannerId}
-    ORDER BY s.date, s.start_time
+    ORDER BY s.idx
   </select>
 
   <update id="updateSchedulesBatch">
@@ -99,16 +106,30 @@
     </foreach>
   </delete>
 
+  <resultMap id="scheduleMap" type="com.ssafy.schedule.dto.ScheduleResponseDto">
+    <!-- Schedule 필드 -->
+    <id property="id" column="s_id"/>
+    <result property="plannerId" column="s_planner_id"/>
+    <result property="date" column="s_date"/>
+    <result property="startTime" column="s_start_time"/>
+    <result property="content" column="s_content"/>
+    <result property="idx" column="s_idx"/>
 
-  <resultMap type="Schedule" id="scheduleMap">
-    <id column="id" property="id"/>
-    <result column="planner_id" property="plannerId"/>
-    <result column="date" property="date"/>
-    <result column="start_time" property="startTime"/>
-    <result column="place_id" property="placeId"/>
-    <result column="content" property="content"/>
-    <result column="place_url" property="placeUrl"/>
-    <result column="idx" property="idx"/>
+    <!-- PlaceResponseDto 매핑 -->
+    <association property="place" javaType="com.ssafy.place.dto.PlaceResponseDto">
+      <id property="id" column="p_id"/>
+      <result property="kakaoId" column="p_kakao_id"/>
+      <result property="placeName" column="p_place_name"/>
+      <result property="addressName" column="p_address_name"/>
+      <result property="roadAddressName" column="p_road_address_name"/>
+      <result property="latitude" column="p_latitude"/>
+      <result property="longitude" column="p_longitude"/>
+      <result property="phone" column="p_phone"/>
+      <result property="saveCount" column="p_save_count"/>
+      <result property="categoryId" column="p_category_id"/>
+      <result property="categoryName" column="p_category_name"/>
+    </association>
   </resultMap>
+
 
 </mapper>
