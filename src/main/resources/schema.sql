@@ -176,7 +176,7 @@ CREATE TABLE `planners_locations`
     -- 플래너 참조
     CONSTRAINT `fk_planners_locations_planner`
       FOREIGN KEY (`planner_id`)
-      REFERENCES `planners` (`id`),
+      REFERENCES `planners` (`id`) ON DELETE CASCADE,
     -- 시도 참조
     CONSTRAINT `fk_planners_locations_sido`
       FOREIGN KEY (`sido_code`)
@@ -194,7 +194,7 @@ CREATE TABLE `planners_likes`
     `planner_id` BIGINT NOT NULL,
     `member_id`  BIGINT NOT NULL,
     PRIMARY KEY (`id`),
-    FOREIGN KEY (`planner_id`) REFERENCES `planners` (`id`),
+    FOREIGN KEY (`planner_id`) REFERENCES `planners` (`id`) ON DELETE CASCADE,
     FOREIGN KEY (`member_id`) REFERENCES `members` (`id`)
 );
 
@@ -205,7 +205,7 @@ CREATE TABLE `planners_members`
     `planner_id` BIGINT NOT NULL,
     `member_id`  BIGINT NOT NULL,
     PRIMARY KEY (`id`),
-    FOREIGN KEY (`planner_id`) REFERENCES `planners` (`id`),
+    FOREIGN KEY (`planner_id`) REFERENCES `planners` (`id`) ON DELETE CASCADE,
     FOREIGN KEY (`member_id`) REFERENCES `members` (`id`)
 );
 
@@ -241,7 +241,7 @@ CREATE TABLE  `schedules`
     `idx`        INT    NOT NULL,
     `place_id`   BIGINT NOT NULL,
     PRIMARY KEY (`id`, `planner_id`),
-    FOREIGN KEY (`planner_id`) REFERENCES `planners` (`id`),
+    FOREIGN KEY (`planner_id`) REFERENCES `planners` (`id`) ON DELETE CASCADE,
     FOREIGN KEY (`place_id`) REFERENCES `places` (`id`)
 );
 
