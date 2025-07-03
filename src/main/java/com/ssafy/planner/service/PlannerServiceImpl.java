@@ -107,7 +107,17 @@ public class PlannerServiceImpl implements PlannerService {
     // 바뀐 날짜에 포함되지 않는 날짜에 해당하는 계획 삭제
     scheduleMapper.deleteSchedulesByPlannerAndDate(plannerId, request.startDay(),
         request.endDay());
-    // TODO: 만약 계획이 당겨지는게 아니라 미뤄진다면(StartDay가 바뀌는 경우) idx re-sort 필요
+
+    // 인덱스 다시 붙여서 반영
+    List<ScheduleResponseDto> schedules = scheduleMapper.getSchedulesByPlanner(plannerId);
+    if (schedules != null && !schedules.isEmpty()) {
+      schedules.sort(((o1, o2) -> o1.getIdx() - o2.getIdx()));
+      for (int i = 0; i < schedules.size(); i++) {
+        schedules.get(i)
+            .setIdx(i);
+      }
+      scheduleMapper.updateScheduleIdx(schedules);
+    }
 
     Planner planner = Planner.builder()
         .id(plannerId)
