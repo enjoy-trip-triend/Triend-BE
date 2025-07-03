@@ -57,14 +57,7 @@
         WHERE schedule_id = #{scheduleId}
     ]]>
   </delete>
-
-  <!--  private Long id;-->
-  <!--  private Long plannerId;-->
-  <!--  private LocalDate date;-->
-  <!--  private LocalTime startTime;-->
-  <!--  private Long placeId;-->
-  <!--  private String content;-->
-  <!--  private Integer idx;-->
+  
   <select id="getSchedulesByPlanner" resultMap="scheduleMap">
     SELECT
     s.id AS s_id,
