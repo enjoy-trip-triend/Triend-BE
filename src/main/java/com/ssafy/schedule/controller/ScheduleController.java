@@ -1,7 +1,7 @@
 package com.ssafy.schedule.controller;
 
 import com.ssafy.common.security.dto.CustomUserDetails;
-import com.ssafy.schedule.dto.ScheduleCreateRequestDto;
+import com.ssafy.schedule.dto.ScheduleRequestDto;
 import com.ssafy.schedule.service.ScheduleService;
 import java.net.URI;
 import java.util.List;
@@ -27,7 +27,7 @@ public class ScheduleController {
 
   @PostMapping
   public ResponseEntity<Long> createSchedules(@AuthenticationPrincipal CustomUserDetails loginUser,
-      @RequestBody ScheduleCreateRequestDto request) {
+      @RequestBody ScheduleRequestDto request) {
     scheduleService.createSchedules(request, loginUser);
     URI location = ServletUriComponentsBuilder
         .fromCurrentRequest()   // /api/schedules

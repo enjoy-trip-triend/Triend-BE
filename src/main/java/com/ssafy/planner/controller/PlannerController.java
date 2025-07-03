@@ -4,8 +4,8 @@ import com.ssafy.common.security.dto.CustomUserDetails;
 import com.ssafy.planner.dto.Planner;
 import com.ssafy.planner.dto.PlannerRequestDto;
 import com.ssafy.planner.service.PlannerService;
+import com.ssafy.schedule.dto.ScheduleRequestDto;
 import com.ssafy.schedule.dto.ScheduleResponseDto;
-import com.ssafy.schedule.dto.ScheduleUpdateRequestDto;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -82,7 +82,7 @@ public class PlannerController {
   public ResponseEntity<Void> updatePlansForPlanner(
       @AuthenticationPrincipal CustomUserDetails loginUser,
       @PathVariable("planner-id") Long plannerId,
-      @RequestBody List<ScheduleUpdateRequestDto> requests) {
+      @RequestBody List<ScheduleRequestDto> requests) {
     //plannerService.updateSchedulesForPlanner(plannerId, requests, loginUser);
     return ResponseEntity.noContent()
         .build();

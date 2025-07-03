@@ -4,7 +4,7 @@ import com.ssafy.common.security.dto.CustomUserDetails;
 import com.ssafy.planner.dto.Planner;
 import com.ssafy.planner.mapper.PlannerMapper;
 import com.ssafy.s3.service.S3Service;
-import com.ssafy.schedule.dto.ScheduleCreateRequestDto;
+import com.ssafy.schedule.dto.ScheduleRequestDto;
 import com.ssafy.schedule.dto.ScheduleDto;
 import com.ssafy.schedule.dto.ScheduleImage;
 import com.ssafy.schedule.dto.ScheduleResponseDto;
@@ -30,7 +30,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
   @Transactional
   @Override
-  public void createSchedules(ScheduleCreateRequestDto request, CustomUserDetails loginUser) {
+  public void createSchedules(ScheduleRequestDto request, CustomUserDetails loginUser) {
     Planner planner = plannerMapper.getPlannerById(request.plannerId());
 
     // 기존 스케줄이 있으면 모두 delete

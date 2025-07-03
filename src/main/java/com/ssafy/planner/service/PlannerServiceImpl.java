@@ -5,8 +5,8 @@ import com.ssafy.planner.dto.Planner;
 import com.ssafy.planner.dto.PlannerRequestDto;
 import com.ssafy.planner.mapper.PlannerLocationMapper;
 import com.ssafy.planner.mapper.PlannerMapper;
+import com.ssafy.schedule.dto.ScheduleRequestDto;
 import com.ssafy.schedule.dto.ScheduleResponseDto;
-import com.ssafy.schedule.dto.ScheduleUpdateRequestDto;
 import com.ssafy.schedule.mapper.ScheduleMapper;
 import java.util.List;
 import java.util.Objects;
@@ -182,7 +182,7 @@ public class PlannerServiceImpl implements PlannerService {
   }
 
   @Override
-  public void updateSchedulesForPlanner(Long plannerId, List<ScheduleUpdateRequestDto> requests,
+  public void updateSchedulesForPlanner(Long plannerId, List<ScheduleRequestDto> requests,
       CustomUserDetails loginUser) {
 
 //    Planner planner = plannerMapper.getPlannerById(plannerId);
