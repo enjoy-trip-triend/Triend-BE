@@ -32,7 +32,7 @@ public class PlannerServiceImpl implements PlannerService {
 
     if (request.startDay()
         .isAfter(request.endDay())) {
-      throw new RuntimeException("[ERROR] 시작일이 종료일보다 늦을 수 없습니다.");
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "시작일이 종료일보다 늦을 수 없습니다.");
     }
 
     Planner planner = Planner.builder()
