@@ -13,17 +13,17 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Slf4j
 public class KakaoMapService {
+
     private final KakaoMapFeignClient kakaoMapFeignClient;
 
     @Value("${kakao.api.key}")
     private String kakaoApiKey;
 
     /**
-     *
-     * @param keyword 지역기반 키워드
+     * @param keyword           지역기반 키워드
      * @param categoryGroupCode 카테고리 그룹 코드
-     * @param page 페이지 번호
-     * @param size 페이지당 조회 개수
+     * @param page              페이지 번호
+     * @param size              페이지당 조회 개수
      * @return 카카오 응답의 Document 리스트
      */
     public List<KakaoSearchResponseDto.Document> searchPlacesByKeyword(
@@ -34,15 +34,15 @@ public class KakaoMapService {
     ) {
 
         // 파라미터 기본 값 처리
-        CategoryGroupCode cat = (categoryGroupCode != null) ? categoryGroupCode : CategoryGroupCode.AT4;
-        int p  = (page != null && page > 0) ? page : DEFAULT_PAGE;
+        CategoryGroupCode cat =
+                (categoryGroupCode != null) ? categoryGroupCode : CategoryGroupCode.AT4;
+        int p = (page != null && page > 0) ? page : DEFAULT_PAGE;
         int s = (size != null && size > 0 && size <= DEFAULT_SIZE) ? size : DEFAULT_SIZE;
 
         // 카카오 인증 헤더
         String authHeader = KAKAO_AUTH_HEADER + kakaoApiKey;
 
         log.debug("카카오 인증 헤더: {}", authHeader);
-
 
         // 카카오맵 api 응답 결과
         KakaoSearchResponseDto resp = kakaoMapFeignClient.searchByKeyword(
