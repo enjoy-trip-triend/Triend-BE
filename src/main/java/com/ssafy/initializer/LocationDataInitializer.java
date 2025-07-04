@@ -1,4 +1,4 @@
-package com.ssafy.location.runner;
+package com.ssafy.initializer;
 
 import com.ssafy.location.api.LocationDataClient;
 import com.ssafy.location.dto.Gugun;
