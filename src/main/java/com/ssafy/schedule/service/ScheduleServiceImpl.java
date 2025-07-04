@@ -35,8 +35,9 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     // 기존 스케줄이 있으면 모두 delete
     List<ScheduleResponseDto> originSchedules = scheduleMapper.getSchedulesByPlanner(request.plannerId());
-    if (originSchedules != null && !originSchedules.isEmpty())
+    if (originSchedules != null && !originSchedules.isEmpty()) {
       scheduleMapper.deleteSchedulesByPlanner(request.plannerId());
+    }
 
     // 새로운 스케줄
     List<ScheduleDto> newSchedules = request.schedules();
