@@ -108,17 +108,6 @@ public class PlannerServiceImpl implements PlannerService {
     scheduleMapper.deleteSchedulesByPlannerAndDate(plannerId, request.startDay(),
         request.endDay());
 
-    // 인덱스 다시 붙여서 반영
-    List<ScheduleResponseDto> schedules = scheduleMapper.getSchedulesByPlanner(plannerId);
-    if (schedules != null && !schedules.isEmpty()) {
-      schedules.sort(((o1, o2) -> o1.getIdx() - o2.getIdx()));
-      for (int i = 0; i < schedules.size(); i++) {
-        schedules.get(i)
-            .setIdx(i);
-      }
-      scheduleMapper.updateScheduleIdx(schedules);
-    }
-
     Planner planner = Planner.builder()
         .id(plannerId)
         .startDay(request.startDay())
