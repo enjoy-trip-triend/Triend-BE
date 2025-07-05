@@ -2,6 +2,7 @@ package com.ssafy.schedule.service;
 
 import com.ssafy.common.security.dto.CustomUserDetails;
 import com.ssafy.planner.dto.Planner;
+import com.ssafy.planner.dto.PlannerUpdateRequestDto;
 import com.ssafy.planner.mapper.PlannerMapper;
 import com.ssafy.s3.service.S3Service;
 import com.ssafy.schedule.dto.ScheduleRequestDto;
@@ -10,6 +11,7 @@ import com.ssafy.schedule.dto.ScheduleImage;
 import com.ssafy.schedule.dto.ScheduleResponseDto;
 import com.ssafy.schedule.mapper.ScheduleMapper;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -105,6 +107,24 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     return result;
+  }
+
+  @Override
+  public void updateSchedulesDate(Long plannerId, PlannerUpdateRequestDto oldPlanner, CustomUserDetails loginUser) {
+    if (!plannerMapper.getPlannerById(plannerId).getMemberId()
+        .equals(loginUser.getMember().getId())) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "사용자가 일치하지 않습니다.");
+    }
+
+    long diffDays = ChronoUnit.DAYS.between(oldPlanner.startDay(), oldPlanner.endDay());
+
+    // 차이 만큼 일정 조정
+    List<ScheduleResponseDto> schedules = scheduleMapper.getSchedulesByPlanner(plannerId);
+    for(ScheduleResponseDto schedule: schedules) {
+      schedule.setDate(schedule.getDate().plusDays(diffDays));
+    }
+
+    scheduleMapper.updateScheduleDate(schedules);
   }
 
 }

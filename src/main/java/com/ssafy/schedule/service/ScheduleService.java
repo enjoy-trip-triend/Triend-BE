@@ -1,5 +1,6 @@
 package com.ssafy.schedule.service;
 
+import com.ssafy.planner.dto.PlannerUpdateRequestDto;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -13,4 +14,6 @@ public interface ScheduleService {
 	void deleteSchedulesByPlannerAndDate(Long plannerId, LocalDate startDay, LocalDate endDay);
 	void deleteSchedulesByPlanner(Long plannerId, CustomUserDetails loginUser);
 	Map<Long, List<String>> getPresignedImageUrlsByScheduleIds(List<Long> planIds);
+
+	void updateSchedulesDate(Long plannerId, PlannerUpdateRequestDto oldPlanner, CustomUserDetails loginUser);
 }

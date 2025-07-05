@@ -1,6 +1,7 @@
 package com.ssafy.schedule.controller;
 
 import com.ssafy.common.security.dto.CustomUserDetails;
+import com.ssafy.planner.dto.PlannerUpdateRequestDto;
 import com.ssafy.schedule.dto.ScheduleRequestDto;
 import com.ssafy.schedule.service.ScheduleService;
 import java.net.URI;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -44,6 +46,15 @@ public class ScheduleController {
   public ResponseEntity<Void> deleteSchedules(@AuthenticationPrincipal CustomUserDetails loginUser,
       @PathVariable("planner-id") Long plannerId) {
     scheduleService.deleteSchedulesByPlanner(plannerId, loginUser);
+    return ResponseEntity.noContent()
+        .build();
+  }
+
+  @PutMapping("/{planner-id}")
+  public ResponseEntity<Void> updateSchedulesDate(
+      @AuthenticationPrincipal CustomUserDetails loginUser,
+      @PathVariable("planner-id") Long plannerId, @RequestBody PlannerUpdateRequestDto oldPlanner) {
+    scheduleService.updateSchedulesDate(plannerId, oldPlanner, loginUser);
     return ResponseEntity.noContent()
         .build();
   }
