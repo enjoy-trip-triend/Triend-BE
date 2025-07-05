@@ -1,4 +1,4 @@
-package com.ssafy.location.runner;
+package com.ssafy.initializer;
 
 import com.ssafy.location.api.LocationDataClient;
 import com.ssafy.location.dto.Gugun;
@@ -10,11 +10,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
+@Order(1)
 public class LocationDataInitializer implements ApplicationRunner {
 
   private final LocationService locationService;
@@ -26,7 +28,7 @@ public class LocationDataInitializer implements ApplicationRunner {
   @Override
   public void run(ApplicationArguments args) {
     try {
-      log.info("[INIT] Start to load initial data");
+      log.info("[INIT] Start to load initial Location Data");
 
       // 시도 정보가 DB에 없는 경우에만 호출
       if (locationService.getAllSidos()
@@ -65,12 +67,12 @@ public class LocationDataInitializer implements ApplicationRunner {
             locationService.insertAllGuguns(gugunList);
           }
         }
-        log.info("[INIT] Data initialization completed.");
+        log.info("[INIT] Location Data initialization completed.");
       } else {
-        log.info("[INIT] Data already exists. Skipping API fetch.");
+        log.info("[INIT] Location Data already exists. Skipping API fetch.");
       }
     } catch (Exception e) {
-      log.error("[INIT:ERROR] Data initialization failed: {}", e.getMessage(), e);
+      log.error("[INIT:ERROR] Location Data initialization FAILED: {}", e.getMessage(), e);
     }
   }
 }
