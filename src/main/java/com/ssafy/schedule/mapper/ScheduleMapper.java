@@ -35,5 +35,5 @@ public interface ScheduleMapper {
     void insertScheduleImages(@Param("scheduleId") Long scheduleId,
             @Param("imageKeys") List<String> imageKeys);
 
-    void updateScheduleIdx(@Param("schedules") List<ScheduleResponseDto> schedules);
+    void updateScheduleDate(@Param("schedules") List<ScheduleResponseDto> schedules);
 }

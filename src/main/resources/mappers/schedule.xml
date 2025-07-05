@@ -106,10 +106,10 @@
     </foreach>
   </delete>
 
-  <update id="updateScheduleIdx" parameterType="map">
+  <update id="updateScheduleDate" parameterType="map">
     <foreach collection="schedules" item="schedule" separator=";">
       UPDATE schedules
-      SET idx = #{schedule.idx}
+      SET date = #{schedule.date}
       WHERE planner_id = #{schedule.plannerId} AND id = #{schedule.id}
     </foreach>
   </update>
