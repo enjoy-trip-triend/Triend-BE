@@ -1,8 +1,8 @@
 package com.ssafy.ai.client;
 
-import com.ssafy.member.dto.Member;
-
 public interface AiClient {
 
-    String sendPrompt(Member member, String message);
+    String sendChatPrompt(String systemPrompt, String userPrompt);
+
+    String sendJsonPrompt(String systemPrompt, String userPrompt);
 }
