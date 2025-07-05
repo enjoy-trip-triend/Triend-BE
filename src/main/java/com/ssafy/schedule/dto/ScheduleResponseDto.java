@@ -15,13 +15,10 @@ public class ScheduleResponseDto {
 
   private Long id;
   private Long plannerId;
+  @Setter
   private LocalDate date;
   private LocalTime startTime;
   private String content;
   private Integer idx;
   private PlaceResponseDto place;
-
-  public void setIdx(Integer idx) {
-    this.idx = idx;
-  }
 }
