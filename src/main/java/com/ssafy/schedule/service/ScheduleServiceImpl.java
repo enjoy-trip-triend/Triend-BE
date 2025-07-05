@@ -15,8 +15,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 @RequiredArgsConstructor
 @Service
@@ -73,7 +75,12 @@ public class ScheduleServiceImpl implements ScheduleService {
   }
 
   @Override
-  public void deleteSchedulesByPlanner(Long plannerId) {
+  public void deleteSchedulesByPlanner(Long plannerId, CustomUserDetails loginUser) {
+    if (!plannerMapper.getPlannerById(plannerId).getMemberId()
+        .equals(loginUser.getMember().getId())) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "사용자가 일치하지 않습니다.");
+    }
+
     int cnt = scheduleMapper.deleteSchedulesByPlanner(plannerId);
 
     if (cnt < 1) {
