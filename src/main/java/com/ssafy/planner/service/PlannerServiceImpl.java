@@ -2,7 +2,8 @@ package com.ssafy.planner.service;
 
 import com.ssafy.common.security.dto.CustomUserDetails;
 import com.ssafy.planner.dto.Planner;
-import com.ssafy.planner.dto.PlannerRequestDto;
+import com.ssafy.planner.dto.PlannerCreateRequestDto;
+import com.ssafy.planner.dto.PlannerUpdateRequestDto;
 import com.ssafy.planner.mapper.PlannerLocationMapper;
 import com.ssafy.planner.mapper.PlannerMapper;
 import com.ssafy.schedule.dto.ScheduleRequestDto;
@@ -28,7 +29,7 @@ public class PlannerServiceImpl implements PlannerService {
   private final PlannerLocationMapper plannerLocationMapper;
 
   @Override
-  public void createPlanner(PlannerRequestDto request, CustomUserDetails loginUser) {
+  public void createPlanner(PlannerCreateRequestDto request, CustomUserDetails loginUser) {
 
     if (request.startDay()
         .isAfter(request.endDay())) {
@@ -85,7 +86,7 @@ public class PlannerServiceImpl implements PlannerService {
   }
 
   @Override
-  public void updatePlanner(Long plannerId, PlannerRequestDto request,
+  public void updatePlanner(Long plannerId, PlannerUpdateRequestDto request,
       CustomUserDetails loginUser) {
     Planner targetPlanner = plannerMapper.getPlannerById(plannerId);
 
