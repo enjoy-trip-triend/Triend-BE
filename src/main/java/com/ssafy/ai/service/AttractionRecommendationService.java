@@ -34,7 +34,7 @@ public class AttractionRecommendationService {
             return Collections.emptyList();
         }
 
-        List<Document> documents = regions.parallelStream()
+        List<Document> documents = regions.stream()
                 .flatMap(region -> kakaoMapService.searchPlacesByKeyword(region,
                                 CategoryGroupCode.AT4, DEFAULT_PAGE, DEFAULT_SIZE)
                         .stream())
