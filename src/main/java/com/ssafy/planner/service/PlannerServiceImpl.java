@@ -105,10 +105,6 @@ public class PlannerServiceImpl implements PlannerService {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "시작일이 종료일보다 늦을 수 없습니다.");
     }
 
-    // 바뀐 날짜에 포함되지 않는 날짜에 해당하는 계획 삭제
-    scheduleMapper.deleteSchedulesByPlannerAndDate(plannerId, request.startDay(),
-        request.endDay());
-
     Planner planner = Planner.builder()
         .id(plannerId)
         .startDay(request.startDay())
