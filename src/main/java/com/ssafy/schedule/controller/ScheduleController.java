@@ -40,7 +40,7 @@ public class ScheduleController {
         .build();
   }
 
-  @DeleteMapping
+  @DeleteMapping("/{planner-id}")
   public ResponseEntity<Void> deleteSchedules(@AuthenticationPrincipal CustomUserDetails loginUser,
       @PathVariable("planner-id") Long plannerId) {
     scheduleService.deleteSchedulesByPlanner(plannerId, loginUser);
