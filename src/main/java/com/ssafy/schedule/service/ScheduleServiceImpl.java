@@ -116,7 +116,8 @@ public class ScheduleServiceImpl implements ScheduleService {
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, "사용자가 일치하지 않습니다.");
     }
 
-    long diffDays = ChronoUnit.DAYS.between(oldPlanner.startDay(), oldPlanner.endDay());
+    Planner newPlanner = plannerMapper.getPlannerById(plannerId);
+    long diffDays = ChronoUnit.DAYS.between(oldPlanner.startDay(), newPlanner.getStartDay());
 
     // 차이 만큼 일정 조정
     List<ScheduleResponseDto> schedules = scheduleMapper.getSchedulesByPlanner(plannerId);
