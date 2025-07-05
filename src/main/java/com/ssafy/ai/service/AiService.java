@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface AiService {
 
-    String chatWithAi(Member member, UserMessage message);
+    String chatWithAi(Member member, UserMessage userMessage);
 
     List<Document> filterAttractionsByAi(Member member, List<Document> places);
 }
