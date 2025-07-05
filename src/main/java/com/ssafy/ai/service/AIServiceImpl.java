@@ -3,7 +3,7 @@ package com.ssafy.ai.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.ai.client.AiClient;
+import com.ssafy.ai.client.AIClient;
 import com.ssafy.ai.dto.UserMessage;
 import com.ssafy.ai.builder.PromptBuilder;
 import com.ssafy.client.kakao.dto.KakaoSearchResponseDto;
@@ -19,9 +19,9 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class AiServiceImpl implements AiService {
+public class AIServiceImpl implements AIService {
 
-    private final AiClient aiClient;
+    private final AIClient aiClient;
     private final PromptBuilder promptBuilder;
     private final ObjectMapper objectMapper;
     private final MemberService memberService;

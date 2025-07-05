@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
  * 이용해 ChatClient 빈을 생성합니다.
  */
 @Configuration
-public class AiConfig {
+public class AIConfig {
 
     /**
      * ChatClient를 빈으로 등록합니다.

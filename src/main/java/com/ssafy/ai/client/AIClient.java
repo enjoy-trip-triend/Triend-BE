@@ -1,6 +1,6 @@
 package com.ssafy.ai.client;
 
-public interface AiClient {
+public interface AIClient {
 
     String sendChatPrompt(String systemPrompt, String userPrompt);
 

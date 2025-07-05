@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 public class AttractionRecommendationService {
 
     private final KakaoMapService kakaoMapService;
-    private final AiService aiService;
+    private final AIService aiService;
 
     /**
      * 사용자에게 맞춤형 관광지를 추천해줍니다.

@@ -1,6 +1,6 @@
 package com.ssafy.ai.controller;
 
-import com.ssafy.ai.service.AiService;
+import com.ssafy.ai.service.AIService;
 import com.ssafy.ai.service.AttractionRecommendationService;
 import com.ssafy.client.kakao.dto.KakaoSearchResponseDto.Document;
 import java.util.List;
@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AIController {
 
-    private final AiService aiService;
+    private final AIService aiService;
     private final AttractionRecommendationService attractionRecommendationService;
 
     @PostMapping("/chat")

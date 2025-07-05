@@ -5,7 +5,7 @@ import com.ssafy.client.kakao.dto.KakaoSearchResponseDto.Document;
 import com.ssafy.member.dto.Member;
 import java.util.List;
 
-public interface AiService {
+public interface AIService {
 
     String chatWithAi(Member member, UserMessage userMessage);
 

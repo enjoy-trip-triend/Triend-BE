@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class OpenAiClient implements AiClient {
+public class OpenAIClient implements AIClient {
 
     private final ChatClient chatClient;
     private final MemberTool memberTool;
