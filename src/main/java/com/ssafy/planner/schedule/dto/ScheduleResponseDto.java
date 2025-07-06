@@ -1,4 +1,4 @@
-package com.ssafy.schedule.dto;
+package com.ssafy.planner.schedule.dto;
 
 import com.ssafy.place.dto.PlaceResponseDto;
 import java.time.LocalDate;

@@ -1,6 +1,6 @@
 package com.ssafy.s3.service;
 
-import com.ssafy.schedule.mapper.ScheduleMapper;
+import com.ssafy.planner.schedule.mapper.ScheduleMapper;
 import java.io.ByteArrayInputStream;
 import java.net.URLConnection;
 import java.time.Duration;

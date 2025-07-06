@@ -1,4 +1,4 @@
-package com.ssafy.plannershare.dto;
+package com.ssafy.planner.plannershare.dto;
 
 public record PlannerShareVerifyRequestDto(
         String password

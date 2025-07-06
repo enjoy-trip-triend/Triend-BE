@@ -1,9 +1,9 @@
-package com.ssafy.schedule.controller;
+package com.ssafy.planner.schedule.controller;
 
 import com.ssafy.common.security.dto.CustomUserDetails;
 import com.ssafy.planner.dto.PlannerUpdateRequestDto;
-import com.ssafy.schedule.dto.ScheduleRequestDto;
-import com.ssafy.schedule.service.ScheduleService;
+import com.ssafy.planner.schedule.dto.ScheduleRequestDto;
+import com.ssafy.planner.schedule.service.ScheduleService;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;

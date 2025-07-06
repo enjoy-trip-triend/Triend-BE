@@ -1,7 +1,7 @@
-package com.ssafy.plannershare.dto;
+package com.ssafy.planner.plannershare.dto;
 
 import com.ssafy.planner.dto.Planner;
-import com.ssafy.schedule.dto.ScheduleResponseDto;
+import com.ssafy.planner.schedule.dto.ScheduleResponseDto;
 import java.util.List;
 
 public record PlannerShareResponseDto(

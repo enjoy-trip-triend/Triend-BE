@@ -1,15 +1,15 @@
-package com.ssafy.schedule.service;
+package com.ssafy.planner.schedule.service;
 
 import com.ssafy.common.security.dto.CustomUserDetails;
 import com.ssafy.planner.dto.Planner;
 import com.ssafy.planner.dto.PlannerUpdateRequestDto;
 import com.ssafy.planner.mapper.PlannerMapper;
 import com.ssafy.s3.service.S3Service;
-import com.ssafy.schedule.dto.ScheduleRequestDto;
-import com.ssafy.schedule.dto.ScheduleDto;
-import com.ssafy.schedule.dto.ScheduleImage;
-import com.ssafy.schedule.dto.ScheduleResponseDto;
-import com.ssafy.schedule.mapper.ScheduleMapper;
+import com.ssafy.planner.schedule.dto.ScheduleRequestDto;
+import com.ssafy.planner.schedule.dto.ScheduleDto;
+import com.ssafy.planner.schedule.dto.ScheduleImage;
+import com.ssafy.planner.schedule.dto.ScheduleResponseDto;
+import com.ssafy.planner.schedule.mapper.ScheduleMapper;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;

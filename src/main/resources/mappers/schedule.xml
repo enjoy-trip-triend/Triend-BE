@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ssafy.schedule.mapper.ScheduleMapper">
+<mapper namespace="com.ssafy.planner.schedule.mapper.ScheduleMapper">
 
   <insert id="createSchedules" parameterType="map">
     INSERT INTO schedules (planner_id, date, start_time, place_id, content, place_url, idx)
@@ -114,7 +114,7 @@
     </foreach>
   </update>
 
-  <resultMap id="scheduleMap" type="com.ssafy.schedule.dto.ScheduleResponseDto">
+  <resultMap id="scheduleMap" type="com.ssafy.planner.schedule.dto.ScheduleResponseDto">
     <!-- Schedule 필드 -->
     <id property="id" column="s_id"/>
     <result property="plannerId" column="s_planner_id"/>

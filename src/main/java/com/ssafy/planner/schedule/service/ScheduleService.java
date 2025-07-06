@@ -1,4 +1,4 @@
-package com.ssafy.schedule.service;
+package com.ssafy.planner.schedule.service;
 
 import com.ssafy.planner.dto.PlannerUpdateRequestDto;
 import java.time.LocalDate;
@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.ssafy.common.security.dto.CustomUserDetails;
-import com.ssafy.schedule.dto.ScheduleRequestDto;
+import com.ssafy.planner.schedule.dto.ScheduleRequestDto;
 
 public interface ScheduleService {
 	void createSchedules(ScheduleRequestDto request, CustomUserDetails loginUser);

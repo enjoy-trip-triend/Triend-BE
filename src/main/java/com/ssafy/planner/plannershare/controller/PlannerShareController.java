@@ -1,12 +1,12 @@
-package com.ssafy.plannershare.controller;
+package com.ssafy.planner.plannershare.controller;
 
 import com.ssafy.common.security.dto.CustomUserDetails;
-import com.ssafy.plannershare.dto.PlannerShareCreateRequestDto;
-import com.ssafy.plannershare.dto.PlannerShareCreateResponseDto;
-import com.ssafy.plannershare.dto.PlannerShareResponseDto;
-import com.ssafy.plannershare.dto.PlannerShareStatusResponseDto;
-import com.ssafy.plannershare.dto.PlannerShareVerifyRequestDto;
-import com.ssafy.plannershare.service.PlannerShareService;
+import com.ssafy.planner.plannershare.dto.PlannerShareCreateRequestDto;
+import com.ssafy.planner.plannershare.dto.PlannerShareCreateResponseDto;
+import com.ssafy.planner.plannershare.dto.PlannerShareResponseDto;
+import com.ssafy.planner.plannershare.dto.PlannerShareStatusResponseDto;
+import com.ssafy.planner.plannershare.dto.PlannerShareVerifyRequestDto;
+import com.ssafy.planner.plannershare.service.PlannerShareService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

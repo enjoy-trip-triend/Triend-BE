@@ -1,4 +1,4 @@
-package com.ssafy.plannershare.mapper;
+package com.ssafy.planner.plannershare.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 

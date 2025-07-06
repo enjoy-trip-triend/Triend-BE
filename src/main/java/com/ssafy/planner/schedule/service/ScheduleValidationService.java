@@ -1,7 +1,7 @@
-package com.ssafy.schedule.service;
+package com.ssafy.planner.schedule.service;
 
 import com.ssafy.planner.dto.Planner;
-import com.ssafy.schedule.dto.ScheduleDto;
+import com.ssafy.planner.schedule.dto.ScheduleDto;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;

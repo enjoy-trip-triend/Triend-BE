@@ -1,4 +1,4 @@
-package com.ssafy.schedule.dto;
+package com.ssafy.planner.schedule.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

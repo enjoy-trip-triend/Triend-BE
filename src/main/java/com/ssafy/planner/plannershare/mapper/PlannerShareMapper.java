@@ -1,6 +1,6 @@
-package com.ssafy.plannershare.mapper;
+package com.ssafy.planner.plannershare.mapper;
 
-import com.ssafy.plannershare.dto.PlannerShare;
+import com.ssafy.planner.plannershare.dto.PlannerShare;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

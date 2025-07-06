@@ -1,16 +1,16 @@
-package com.ssafy.plannershare.service;
+package com.ssafy.planner.plannershare.service;
 
 import com.ssafy.common.security.dto.CustomUserDetails;
 import com.ssafy.planner.dto.Planner;
 import com.ssafy.planner.mapper.PlannerMapper;
-import com.ssafy.plannershare.dto.PlannerShare;
-import com.ssafy.plannershare.dto.PlannerShareCreateResponseDto;
-import com.ssafy.plannershare.dto.PlannerShareResponseDto;
-import com.ssafy.plannershare.dto.PlannerShareStatusResponseDto;
-import com.ssafy.plannershare.mapper.PlannerMemberMapper;
-import com.ssafy.plannershare.mapper.PlannerShareMapper;
-import com.ssafy.schedule.dto.ScheduleResponseDto;
-import com.ssafy.schedule.mapper.ScheduleMapper;
+import com.ssafy.planner.plannershare.dto.PlannerShare;
+import com.ssafy.planner.plannershare.dto.PlannerShareCreateResponseDto;
+import com.ssafy.planner.plannershare.dto.PlannerShareResponseDto;
+import com.ssafy.planner.plannershare.dto.PlannerShareStatusResponseDto;
+import com.ssafy.planner.plannershare.mapper.PlannerMemberMapper;
+import com.ssafy.planner.plannershare.mapper.PlannerShareMapper;
+import com.ssafy.planner.schedule.dto.ScheduleResponseDto;
+import com.ssafy.planner.schedule.mapper.ScheduleMapper;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;

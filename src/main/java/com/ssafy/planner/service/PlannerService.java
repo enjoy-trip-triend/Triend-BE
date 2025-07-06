@@ -4,8 +4,8 @@ import com.ssafy.common.security.dto.CustomUserDetails;
 import com.ssafy.planner.dto.Planner;
 import com.ssafy.planner.dto.PlannerCreateRequestDto;
 import com.ssafy.planner.dto.PlannerUpdateRequestDto;
-import com.ssafy.schedule.dto.ScheduleRequestDto;
-import com.ssafy.schedule.dto.ScheduleResponseDto;
+import com.ssafy.planner.schedule.dto.ScheduleRequestDto;
+import com.ssafy.planner.schedule.dto.ScheduleResponseDto;
 import java.util.List;
 
 public interface PlannerService {

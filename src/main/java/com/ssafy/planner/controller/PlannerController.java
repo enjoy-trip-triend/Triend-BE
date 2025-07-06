@@ -5,8 +5,8 @@ import com.ssafy.planner.dto.Planner;
 import com.ssafy.planner.dto.PlannerCreateRequestDto;
 import com.ssafy.planner.dto.PlannerUpdateRequestDto;
 import com.ssafy.planner.service.PlannerService;
-import com.ssafy.schedule.dto.ScheduleRequestDto;
-import com.ssafy.schedule.dto.ScheduleResponseDto;
+import com.ssafy.planner.schedule.dto.ScheduleRequestDto;
+import com.ssafy.planner.schedule.dto.ScheduleResponseDto;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;

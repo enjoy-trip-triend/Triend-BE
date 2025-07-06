@@ -1,10 +1,10 @@
-package com.ssafy.plannershare.service;
+package com.ssafy.planner.plannershare.service;
 
 
 import com.ssafy.common.security.dto.CustomUserDetails;
-import com.ssafy.plannershare.dto.PlannerShareCreateResponseDto;
-import com.ssafy.plannershare.dto.PlannerShareResponseDto;
-import com.ssafy.plannershare.dto.PlannerShareStatusResponseDto;
+import com.ssafy.planner.plannershare.dto.PlannerShareCreateResponseDto;
+import com.ssafy.planner.plannershare.dto.PlannerShareResponseDto;
+import com.ssafy.planner.plannershare.dto.PlannerShareStatusResponseDto;
 
 public interface PlannerShareService {
     PlannerShareStatusResponseDto getPlannerShareStatus(Long plannerId);
