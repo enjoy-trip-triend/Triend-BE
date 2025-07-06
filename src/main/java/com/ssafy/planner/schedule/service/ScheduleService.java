@@ -14,6 +14,6 @@ public interface ScheduleService {
 	void deleteSchedulesByPlannerAndDate(Long plannerId, LocalDate startDay, LocalDate endDay);
 	void deleteSchedulesByPlanner(Long plannerId, CustomUserDetails loginUser);
 	Map<Long, List<String>> getPresignedImageUrlsByScheduleIds(List<Long> planIds);
-
+	void updateSchedules(Long plannerId, ScheduleRequestDto request, CustomUserDetails loginUser);
 	void updateSchedulesDate(Long plannerId, PlannerUpdateRequestDto oldPlanner, CustomUserDetails loginUser);
 }

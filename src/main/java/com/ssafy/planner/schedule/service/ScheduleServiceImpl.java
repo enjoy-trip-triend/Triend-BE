@@ -35,15 +35,12 @@ public class ScheduleServiceImpl implements ScheduleService {
   @Transactional
   @Override
   public void createSchedules(Long plannerId, ScheduleRequestDto request, CustomUserDetails loginUser) {
-    Planner planner = plannerMapper.getPlannerById(plannerId);
-
-    // 기존 스케줄이 있으면 모두 delete
-    List<ScheduleResponseDto> originSchedules = scheduleMapper.getSchedulesByPlanner(plannerId);
-    if (originSchedules != null && !originSchedules.isEmpty()) {
-      scheduleMapper.deleteSchedulesByPlanner(plannerId);
+    if (!plannerMapper.getPlannerById(plannerId).getMemberId()
+        .equals(loginUser.getMember().getId())) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "사용자가 일치하지 않습니다.");
     }
 
-    // 새로운 스케줄
+    Planner planner = plannerMapper.getPlannerById(plannerId);
     List<ScheduleDto> newSchedules = request.schedules();
 
     // 도메인 서비스에서 검증
@@ -107,6 +104,15 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     return result;
+  }
+
+  @Override
+  public void updateSchedules(Long plannerId, ScheduleRequestDto request, CustomUserDetails loginUser) {
+    // 기존 스케줄 삭제
+    deleteSchedulesByPlanner(plannerId, loginUser);
+
+    // 새로운 스케줄 삽입
+    createSchedules(plannerId, request, loginUser);
   }
 
   @Override

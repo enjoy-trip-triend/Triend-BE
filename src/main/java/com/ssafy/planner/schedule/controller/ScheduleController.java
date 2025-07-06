@@ -42,6 +42,14 @@ public class ScheduleController {
         .build();
   }
 
+  @PutMapping
+  public ResponseEntity<Void> updateSchedules(@AuthenticationPrincipal CustomUserDetails loginUser,
+      @PathVariable("planner-id") Long plannerId, @RequestBody ScheduleRequestDto request) {
+    scheduleService.updateSchedules(plannerId, request, loginUser);
+    return ResponseEntity.noContent()
+        .build();
+  }
+
   @DeleteMapping
   public ResponseEntity<Void> deleteSchedules(@AuthenticationPrincipal CustomUserDetails loginUser,
       @PathVariable("planner-id") Long plannerId) {
@@ -50,7 +58,7 @@ public class ScheduleController {
         .build();
   }
 
-  @PutMapping
+  @PutMapping("/date")
   public ResponseEntity<Void> updateSchedulesDate(
       @AuthenticationPrincipal CustomUserDetails loginUser,
       @PathVariable("planner-id") Long plannerId, @RequestBody PlannerUpdateRequestDto oldPlanner) {
