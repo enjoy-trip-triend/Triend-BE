@@ -31,8 +31,8 @@ public class ScheduleController {
 
   @PostMapping
   public ResponseEntity<Long> createSchedules(@AuthenticationPrincipal CustomUserDetails loginUser,
-      @RequestBody ScheduleRequestDto request) {
-    scheduleService.createSchedules(request, loginUser);
+      @PathVariable("planner-id") Long plannerId, @RequestBody ScheduleRequestDto request) {
+    scheduleService.createSchedules(plannerId, request, loginUser);
     URI location = ServletUriComponentsBuilder
         .fromCurrentRequest()   // /api/schedules
         .build()
@@ -42,7 +42,7 @@ public class ScheduleController {
         .build();
   }
 
-  @DeleteMapping("/{planner-id}")
+  @DeleteMapping
   public ResponseEntity<Void> deleteSchedules(@AuthenticationPrincipal CustomUserDetails loginUser,
       @PathVariable("planner-id") Long plannerId) {
     scheduleService.deleteSchedulesByPlanner(plannerId, loginUser);
@@ -50,7 +50,7 @@ public class ScheduleController {
         .build();
   }
 
-  @PutMapping("/{planner-id}")
+  @PutMapping
   public ResponseEntity<Void> updateSchedulesDate(
       @AuthenticationPrincipal CustomUserDetails loginUser,
       @PathVariable("planner-id") Long plannerId, @RequestBody PlannerUpdateRequestDto oldPlanner) {

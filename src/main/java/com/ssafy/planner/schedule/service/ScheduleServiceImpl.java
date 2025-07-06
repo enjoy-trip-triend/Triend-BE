@@ -34,13 +34,13 @@ public class ScheduleServiceImpl implements ScheduleService {
 
   @Transactional
   @Override
-  public void createSchedules(ScheduleRequestDto request, CustomUserDetails loginUser) {
-    Planner planner = plannerMapper.getPlannerById(request.plannerId());
+  public void createSchedules(Long plannerId, ScheduleRequestDto request, CustomUserDetails loginUser) {
+    Planner planner = plannerMapper.getPlannerById(plannerId);
 
     // 기존 스케줄이 있으면 모두 delete
-    List<ScheduleResponseDto> originSchedules = scheduleMapper.getSchedulesByPlanner(request.plannerId());
+    List<ScheduleResponseDto> originSchedules = scheduleMapper.getSchedulesByPlanner(plannerId);
     if (originSchedules != null && !originSchedules.isEmpty()) {
-      scheduleMapper.deleteSchedulesByPlanner(request.plannerId());
+      scheduleMapper.deleteSchedulesByPlanner(plannerId);
     }
 
     // 새로운 스케줄
@@ -51,7 +51,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     scheduleValidationService.validate(planner, newSchedules);
 
     // 검증 통과 후 insert
-    int cnt = scheduleMapper.createSchedules(request.plannerId(), request.schedules());
+    int cnt = scheduleMapper.createSchedules(plannerId, request.schedules());
     if (cnt != request.schedules().size()) {
       throw new RuntimeException("[ERROR] 스케줄 추가 실패");
     }
