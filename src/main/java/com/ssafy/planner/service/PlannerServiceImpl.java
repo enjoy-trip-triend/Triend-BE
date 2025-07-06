@@ -139,26 +139,6 @@ public class PlannerServiceImpl implements PlannerService {
   }
 
   @Override
-  public List<ScheduleResponseDto> getSchedulesByPlanner(Long plannerId,
-      CustomUserDetails loginUser) {
-
-    Planner planner = plannerMapper.getPlannerById(plannerId);
-
-    if (!Objects.equals(planner.getMemberId(), loginUser.getMember()
-        .getId())) {
-      throw new RuntimeException("[ERROR] 사용자가 다릅니다.");
-    }
-
-    List<ScheduleResponseDto> schedules = scheduleMapper.getSchedulesByPlanner(plannerId);
-
-    if (schedules == null) {
-      throw new RuntimeException("[ERROR] 플래너가 존재하지 않습니다.");
-    }
-
-    return schedules;
-  }
-
-  @Override
   public List<ScheduleResponseDto> getSchedulesByShared(Long plannerId) {
     List<ScheduleResponseDto> schedules = scheduleMapper.getSchedulesByPlanner(plannerId);
     if (schedules == null) {

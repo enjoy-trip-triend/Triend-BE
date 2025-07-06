@@ -66,13 +66,6 @@ public class PlannerController {
         .build();
   }
 
-  @GetMapping("/{planner-id}/schedules")
-  public ResponseEntity<List<ScheduleResponseDto>> getSchedulesByPlanner(
-      @AuthenticationPrincipal CustomUserDetails loginUser,
-      @PathVariable("planner-id") Long plannerId) {
-    return ResponseEntity.ok(plannerService.getSchedulesByPlanner(plannerId, loginUser));
-  }
-
   @GetMapping("/{planner-id}/shared")
   public ResponseEntity<List<ScheduleResponseDto>> getPlansByShared(
       @PathVariable("planner-id") Long plannerId) {

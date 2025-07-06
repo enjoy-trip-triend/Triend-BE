@@ -14,8 +14,6 @@ public interface PlannerService {
 
   List<Planner> getPlannersByMember(CustomUserDetails loginUser);
 
-  List<ScheduleResponseDto> getSchedulesByPlanner(Long plannerId, CustomUserDetails loginUser);
-
   List<ScheduleResponseDto> getSchedulesByShared(Long plannerId);
 
   Planner getPlannerById(Long plannerId, CustomUserDetails loginUser);

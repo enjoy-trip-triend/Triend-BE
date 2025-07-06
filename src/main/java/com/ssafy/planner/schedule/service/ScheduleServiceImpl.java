@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -52,6 +53,26 @@ public class ScheduleServiceImpl implements ScheduleService {
     if (cnt != request.schedules().size()) {
       throw new RuntimeException("[ERROR] 스케줄 추가 실패");
     }
+  }
+
+  @Override
+  public List<ScheduleResponseDto> getSchedulesByPlanner(Long plannerId,
+      CustomUserDetails loginUser) {
+
+    Planner planner = plannerMapper.getPlannerById(plannerId);
+
+    if (!Objects.equals(planner.getMemberId(), loginUser.getMember()
+        .getId())) {
+      throw new RuntimeException("[ERROR] 사용자가 다릅니다.");
+    }
+
+    List<ScheduleResponseDto> schedules = scheduleMapper.getSchedulesByPlanner(plannerId);
+
+    if (schedules == null) {
+      throw new RuntimeException("[ERROR] 플래너가 존재하지 않습니다.");
+    }
+
+    return schedules;
   }
 
   @Override
