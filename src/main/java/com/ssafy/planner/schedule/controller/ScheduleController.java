@@ -24,7 +24,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/schedules")
+@RequestMapping("/api/planners/{planner-id}/schedule")
 public class ScheduleController {
 
   private final ScheduleService scheduleService;
