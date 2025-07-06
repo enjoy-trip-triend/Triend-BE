@@ -21,7 +21,7 @@
     LIMIT 1
   </select>
 
-  <resultMap type="PlannerShare" id="plannerShareMap">
+  <resultMap type="com.ssafy.planner.plannershare.dto.PlannerShare" id="plannerShareMap">
     <id column="id" property="id" />
     <result column="secret_code" property="secretCode" />
     <result column="planner_id" property="plannerId" />
