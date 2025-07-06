@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Slf4j
 public class PlannerWebSocketServiceImpl implements PlannerWebSocketService {
+
     private final PlannerEditorManager editorManager;
     private final SimpMessagingTemplate messagingTemplate;
     private final ScheduleMapper scheduleMapper;
@@ -41,13 +42,16 @@ public class PlannerWebSocketServiceImpl implements PlannerWebSocketService {
                 userName
         );
 
-        log.info("[SEND_TO_USER] Sent sessionId={} to /user/{}/queue/my-session-id", userName, userName);
+        log.info("[SEND_TO_USER] Sent sessionId={} to /user/{}/queue/my-session-id", userName,
+                userName);
 
         // 브로드캐스트: 현재 참여자 목록을 모두에게 보냄
-        messagingTemplate.convertAndSend("/topic/planner/" + joinMessage.getPlannerId() + "/editors",
+        messagingTemplate.convertAndSend(
+                "/topic/planner/" + joinMessage.getPlannerId() + "/editors",
                 editorManager.getEditors(joinMessage.getPlannerId()));
 
-        log.info("JOIN: plannerId={}, sessionId={}, name={}", joinMessage.getPlannerId(), userName, editor.getName());
+        log.info("JOIN: plannerId={}, sessionId={}, name={}", joinMessage.getPlannerId(), userName,
+                editor.getName());
     }
 
     @Override
@@ -65,19 +69,19 @@ public class PlannerWebSocketServiceImpl implements PlannerWebSocketService {
                     .startTime(LocalTime.parse(message.getStartTime()))
                     .placeId(message.getPlaceId())
                     .content(message.getContent())
-                    .placeUrl(message.getPlaceUrl())
                     .idx(message.getIdx())
                     .build();
         }
 
         // DB 처리
-        switch (message.getAction()) {
-            case "ADD" -> scheduleMapper.createSchedule(schedule);
-            case "UPDATE" -> scheduleMapper.updateSchedule(schedule);
-            case "DELETE" -> scheduleMapper.deleteSchedule(message.getScheduleId());
-        }
+//        switch (message.getAction()) {
+//            case "ADD" -> scheduleMapper.createSchedule(schedule);
+//            case "UPDATE" -> scheduleMapper.updateSchedule(schedule);
+//            case "DELETE" -> scheduleMapper.deleteSchedule(message.getScheduleId());
+//        }
 
         // 다른 사용자에게 브로드캐스트
-        messagingTemplate.convertAndSend("/topic/planner/" + message.getPlannerId() + "/schedule", message);
+        messagingTemplate.convertAndSend("/topic/planner/" + message.getPlannerId() + "/schedule",
+                message);
     }
 }
