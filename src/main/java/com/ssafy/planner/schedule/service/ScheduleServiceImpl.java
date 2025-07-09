@@ -33,7 +33,6 @@ public class ScheduleServiceImpl implements ScheduleService {
   private final PlannerMapper plannerMapper;
   private final S3Service s3Service;
 
-  @Transactional
   @Override
   public void createSchedules(Long plannerId, ScheduleRequestDto request, CustomUserDetails loginUser) {
     Planner planner = plannerMapper.getPlannerById(plannerId);
