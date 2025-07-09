@@ -36,12 +36,12 @@ public class ScheduleServiceImpl implements ScheduleService {
   @Transactional
   @Override
   public void createSchedules(Long plannerId, ScheduleRequestDto request, CustomUserDetails loginUser) {
-    if (!plannerMapper.getPlannerById(plannerId).getMemberId()
-        .equals(loginUser.getMember().getId())) {
+    Planner planner = plannerMapper.getPlannerById(plannerId);
+
+    if (!planner.getMemberId().equals(loginUser.getMember().getId())) {
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, "사용자가 일치하지 않습니다.");
     }
 
-    Planner planner = plannerMapper.getPlannerById(plannerId);
     List<ScheduleDto> newSchedules = request.schedules();
 
     // 도메인 서비스에서 검증
