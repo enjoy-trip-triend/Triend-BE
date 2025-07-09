@@ -59,7 +59,7 @@ public class AIServiceImpl implements AIService {
                 member.getId());
 
         // 사용자의 정보가 부족하면 추천해줄 수 없음.
-        if (Objects.isNull(member.getMbti()) || charactersNameByMemberId.isEmpty()) {
+        if (Objects.isNull(member.getMbti()) && charactersNameByMemberId.isEmpty()) {
             throw new IllegalStateException("[ERROR] 사용자의 정보가 부족하여 추천할 수 없습니다.");
         }
 
