@@ -22,7 +22,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/schedules")
+@RequestMapping("/api/planners/{planner-id}/schedules")
 public class ScheduleController {
     
     private final ScheduleService scheduleService;
@@ -46,7 +46,7 @@ public class ScheduleController {
         return ResponseEntity.ok(scheduleService.getPresignedImageUrlsByScheduleIds(scheduleIds));
     }
     
-    @PutMapping("/schedules/order")
+    @PutMapping("/order")
     public ResponseEntity<Void> updateSchedulesOrder(
             @AuthenticationPrincipal CustomUserDetails loginUser,
             @RequestBody SchedulesOrderUpdateRequestDto request) {
