@@ -2,7 +2,8 @@ package com.ssafy.schedule.controller;
 
 import com.ssafy.common.security.dto.CustomUserDetails;
 import com.ssafy.schedule.dto.ScheduleCreateRequestDto;
-import com.ssafy.schedule.dto.SchedulesOrderUpdateRequestDto;
+import com.ssafy.schedule.dto.ScheduleOrderUpdateRequestDto;
+import com.ssafy.schedule.dto.ScheduleUpdateRequestDto;
 import com.ssafy.schedule.service.ScheduleService;
 import java.net.URI;
 import java.util.List;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -49,9 +51,10 @@ public class ScheduleController {
     @PutMapping("/order")
     public ResponseEntity<Void> updateSchedulesOrder(
             @AuthenticationPrincipal CustomUserDetails loginUser,
-            @RequestBody SchedulesOrderUpdateRequestDto request) {
+            @RequestBody List<ScheduleOrderUpdateRequestDto> request,
+            @PathVariable("planner-id") Long plannerId) {
         
-        scheduleService.updateSchedulesOrder(request, loginUser);
+        scheduleService.updateScheduleOrder(request, plannerId, loginUser);
         
         return ResponseEntity.noContent()
                 .build();
