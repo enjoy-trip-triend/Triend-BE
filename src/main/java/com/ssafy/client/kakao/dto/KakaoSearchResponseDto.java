@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ssafy.client.kakao.CategoryGroupCode;
 import java.util.List;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class KakaoSearchResponseDto {
     private Meta meta;
     private List<Document> documents;
@@ -37,6 +39,7 @@ public class KakaoSearchResponseDto {
         private String roadAddressName;
 
         @JsonProperty("id")
+        @EqualsAndHashCode.Include
         private String kakaoId;
 
         @JsonProperty("phone")

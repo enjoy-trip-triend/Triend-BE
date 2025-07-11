@@ -18,6 +18,8 @@ public interface MemberService {
     List<CharacterDTO> getCharacters();
     
     List<CharacterDTO> getCharacterByMemberId(Long memberId);
+
+    List<String> getCharactersNameByMemberId(Long memberId);
     
     void updateMember(Member member);
 }
