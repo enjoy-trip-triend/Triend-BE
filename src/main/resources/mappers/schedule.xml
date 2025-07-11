@@ -99,6 +99,14 @@
     </foreach>
   </update>
 
+  <update id="updateScheduleOrder">
+    <foreach collection="schedules" item="schedule" separator=";">
+      UPDATE schedules
+      SET idx = #{schedule.idx}
+      WHERE id = #{schedule.scheduleId}
+    </foreach>
+  </update>
+
   <delete id="deleteSchedulesBatch">
     <foreach collection="schedulesIdList" item="scheduleId" separator=";">
       DELETE FROM schedules
