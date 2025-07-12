@@ -4,6 +4,7 @@ import com.ssafy.common.security.dto.CustomUserDetails;
 import com.ssafy.planner.dto.Planner;
 import com.ssafy.planner.dto.PlannerUpdateRequestDto;
 import com.ssafy.planner.mapper.PlannerMapper;
+import com.ssafy.planner.plannershare.mapper.PlannerMemberMapper;
 import com.ssafy.s3.service.S3Service;
 import com.ssafy.planner.schedule.dto.ScheduleRequestDto;
 import com.ssafy.planner.schedule.dto.ScheduleDto;
@@ -31,14 +32,15 @@ public class ScheduleServiceImpl implements ScheduleService {
   private final ScheduleValidationService scheduleValidationService;
   private final ScheduleMapper scheduleMapper;
   private final PlannerMapper plannerMapper;
+  private final PlannerMemberMapper plannerMemberMapper;
   private final S3Service s3Service;
 
   @Override
   public void createSchedules(Long plannerId, ScheduleRequestDto request, CustomUserDetails loginUser) {
     Planner planner = plannerMapper.getPlannerById(plannerId);
 
-    if (!planner.getMemberId().equals(loginUser.getMember().getId())) {
-      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "사용자가 일치하지 않습니다.");
+    if (plannerMemberMapper.isPlannerMember(plannerId, loginUser.getMember().getId())) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "권한이 없습니다.");
     }
 
     List<ScheduleDto> newSchedules = request.schedules();
