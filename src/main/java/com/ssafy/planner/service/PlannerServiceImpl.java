@@ -6,6 +6,7 @@ import com.ssafy.planner.dto.PlannerCreateRequestDto;
 import com.ssafy.planner.dto.PlannerUpdateRequestDto;
 import com.ssafy.planner.mapper.PlannerLocationMapper;
 import com.ssafy.planner.mapper.PlannerMapper;
+import com.ssafy.planner.plannershare.mapper.PlannerMemberMapper;
 import com.ssafy.planner.schedule.dto.ScheduleRequestDto;
 import com.ssafy.planner.schedule.dto.ScheduleResponseDto;
 import com.ssafy.planner.schedule.mapper.ScheduleMapper;
@@ -26,6 +27,7 @@ public class PlannerServiceImpl implements PlannerService {
 
   private final PlannerMapper plannerMapper;
   private final ScheduleMapper scheduleMapper;
+  private final PlannerMemberMapper plannerMemberMapper;
   private final PlannerLocationMapper plannerLocationMapper;
 
   @Override
@@ -47,6 +49,7 @@ public class PlannerServiceImpl implements PlannerService {
         .build();
 
     int cnt = plannerMapper.createPlanner(planner); // 작업 행 개수 반환 (성공시 1)
+    plannerMemberMapper.insertPlannerMember(planner.getId(), loginUser.getMember().getId());
     if (cnt != 1) {
       throw new RuntimeException("[ERROR] 플래너 생성 실패");
     }
