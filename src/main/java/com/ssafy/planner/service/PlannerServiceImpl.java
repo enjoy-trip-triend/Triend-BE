@@ -134,6 +134,12 @@ public class PlannerServiceImpl implements PlannerService {
 
   @Override
   public void deletePlanner(Long plannerId, CustomUserDetails loginUser) {
+    Planner planner = plannerMapper.getPlannerById(plannerId);
+
+    if (!planner.getMemberId().equals(loginUser.getMember().getId())) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "권한이 없습니다.");
+    }
+
     int cnt = plannerMapper.deletePlanner(plannerId);
 
     if (cnt != 1) {
