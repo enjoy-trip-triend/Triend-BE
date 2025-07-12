@@ -22,10 +22,10 @@
     WHERE member_id = #{memberId}
   </select>
 
-  <update id="updatePlanner">
-    update planners
-    set start_day = #{startDay}, end_day = #{endDay}, name = #{name}
-    where id = #{id}
+  <update id="updatePlanner" parameterType="com.ssafy.planner.dto.Planner">
+    UPDATE planners
+    SET start_day = #{startDay}, end_day = #{endDay}, name = #{name}, comment = #{comment}, exposure = #{exposure}
+    WHERE id = #{id} AND member_id = #{memberId}
   </update>
 
   <delete id="deletePlanner">
