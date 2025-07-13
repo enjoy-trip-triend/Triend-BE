@@ -7,11 +7,13 @@ import com.ssafy.s3.service.S3Service;
 import com.ssafy.schedule.dto.ScheduleCreateRequestDto;
 import com.ssafy.schedule.dto.ScheduleDto;
 import com.ssafy.schedule.dto.ScheduleImage;
+import com.ssafy.schedule.dto.ScheduleOrderDto;
 import com.ssafy.schedule.dto.ScheduleOrderUpdateRequestDto;
 import com.ssafy.schedule.dto.ScheduleResponseDto;
 import com.ssafy.schedule.mapper.ScheduleMapper;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -94,18 +96,36 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
     
     @Override
-    public void updateScheduleOrder(List<ScheduleOrderUpdateRequestDto> request, Long plannerId, CustomUserDetails loginUser) {
+    public void updateScheduleOrder(ScheduleOrderUpdateRequestDto request, Long plannerId, CustomUserDetails loginUser) {
         Planner planner = plannerMapper.getPlannerById(plannerId);
-
-        if(planner == null) {
+        
+        if (planner == null) {
             throw new IllegalArgumentException("플래너가 존재하지 않습니다.");
         }
-
-        List<ScheduleResponseDto> schedules = scheduleMapper.getSchedulesByPlanner(planner.getId());
+        
+        List<ScheduleResponseDto> schedules = scheduleMapper.getSchedulesByPlannerAndDate(plannerId, request.date());
         if (schedules == null || schedules.isEmpty()) {
             throw new IllegalArgumentException("플래너에 스케줄이 존재하지 않습니다.");
         }
-
-        scheduleMapper.updateScheduleOrder(request);
+        
+        List<ScheduleOrderDto> reorderSchedules = request.schedules();
+        reorderSchedules.sort(Comparator.comparingLong(ScheduleOrderDto::idx));
+        
+        if (schedules.size() != reorderSchedules.size()) {
+            throw new IllegalArgumentException("스케줄의 개수가 일치하지 않습니다.");
+        }
+        
+        // idx로 정렬 후 새로운 순서 매핑
+        List<ScheduleOrderDto> newOrder = new ArrayList<>();
+        for (int i = 0; i < reorderSchedules.size(); i++) {
+            ScheduleOrderDto orderDto = reorderSchedules.get(i);
+            ScheduleResponseDto schedule = schedules.get(i);
+            
+            newOrder.add(new ScheduleOrderDto(
+                    orderDto.scheduleId(),
+                    schedule.getIdx()
+            ));
+        }
+        scheduleMapper.updateScheduleOrder(newOrder);
     }
 }

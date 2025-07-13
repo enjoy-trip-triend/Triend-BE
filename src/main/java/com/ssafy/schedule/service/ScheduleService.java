@@ -19,5 +19,5 @@ public interface ScheduleService {
     
     Map<Long, List<String>> getPresignedImageUrlsByScheduleIds(List<Long> planIds);
     
-    void updateScheduleOrder(List<ScheduleOrderUpdateRequestDto> request, Long plannerId, CustomUserDetails loginUser);
+    void updateScheduleOrder(ScheduleOrderUpdateRequestDto request, Long plannerId, CustomUserDetails loginUser);
 }
