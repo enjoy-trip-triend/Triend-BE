@@ -1,13 +1,9 @@
 package com.ssafy.planner.schedule.mapper;
 
-import com.ssafy.schedule.dto.Schedule;
-import com.ssafy.schedule.dto.ScheduleDto;
-import com.ssafy.schedule.dto.ScheduleImage;
-import com.ssafy.schedule.dto.ScheduleOrderDto;
-import com.ssafy.schedule.dto.ScheduleResponseDto;
 import com.ssafy.planner.schedule.dto.Schedule;
 import com.ssafy.planner.schedule.dto.ScheduleDto;
 import com.ssafy.planner.schedule.dto.ScheduleImage;
+import com.ssafy.planner.schedule.dto.ScheduleOrderDto;
 import com.ssafy.planner.schedule.dto.ScheduleResponseDto;
 import java.time.LocalDate;
 import java.util.List;
@@ -20,30 +16,29 @@ public interface ScheduleMapper {
     int createSchedules(@Param("plannerId") Long plannerId, @Param("schedules") List<ScheduleDto> schedule);
     
     Schedule getScheduleById(Long scheduleId);
-
+    
     List<ScheduleImage> findImagesByScheduleIds(@Param("planIds") List<Long> scheduleIds);
-
+    
     int updateSchedule(Schedule schedule);
-
+    
     int deleteSchedule(Long scheduleId);
-
+    
     int deleteSchedulesByPlannerAndDate(Long plannerId, LocalDate startDay, LocalDate endDay);
-
+    
     int deleteSchedulesByPlanner(Long plannerId);
-
+    
     List<ScheduleResponseDto> getSchedulesByPlanner(Long plannerId);
-
+    
     void updateSchedulesBatch(List<Schedule> schedules);
-
+    
     void deleteSchedulesBatch(List<Long> schedulesIdList);
-
-    void insertScheduleImages(@Param("scheduleId") Long scheduleId,
-            @Param("imageKeys") List<String> imageKeys);
+    
+    void insertScheduleImages(@Param("scheduleId") Long scheduleId, @Param("imageKeys") List<String> imageKeys);
     
     void updateScheduleOrder(@Param("schedules") List<ScheduleOrderDto> schedules);
     
-    List<ScheduleResponseDto> getSchedulesByPlannerAndDate(
-            @Param("plannerId") Long plannerId,
-            @Param("date") LocalDate date);
+    void updateScheduleDate(@Param("schedules") List<ScheduleResponseDto> schedules);
+    
+    List<ScheduleResponseDto> getSchedulesByPlannerAndDate(@Param("plannerId") Long plannerId, @Param("date") LocalDate date);
     
 }
