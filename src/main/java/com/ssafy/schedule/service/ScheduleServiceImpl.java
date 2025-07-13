@@ -7,7 +7,8 @@ import com.ssafy.s3.service.S3Service;
 import com.ssafy.schedule.dto.ScheduleCreateRequestDto;
 import com.ssafy.schedule.dto.ScheduleDto;
 import com.ssafy.schedule.dto.ScheduleImage;
-import com.ssafy.schedule.dto.SchedulesOrderUpdateRequestDto;
+import com.ssafy.schedule.dto.ScheduleOrderUpdateRequestDto;
+import com.ssafy.schedule.dto.ScheduleResponseDto;
 import com.ssafy.schedule.mapper.ScheduleMapper;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -93,7 +94,18 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
     
     @Override
-    public void updateSchedulesOrder(SchedulesOrderUpdateRequestDto request, CustomUserDetails loginUser) {
-    
+    public void updateScheduleOrder(List<ScheduleOrderUpdateRequestDto> request, Long plannerId, CustomUserDetails loginUser) {
+        Planner planner = plannerMapper.getPlannerById(plannerId);
+
+        if(planner == null) {
+            throw new IllegalArgumentException("플래너가 존재하지 않습니다.");
+        }
+
+        List<ScheduleResponseDto> schedules = scheduleMapper.getSchedulesByPlanner(planner.getId());
+        if (schedules == null || schedules.isEmpty()) {
+            throw new IllegalArgumentException("플래너에 스케줄이 존재하지 않습니다.");
+        }
+
+        scheduleMapper.updateScheduleOrder(request);
     }
 }

@@ -1,5 +1,10 @@
 package com.ssafy.planner.schedule.mapper;
 
+import com.ssafy.schedule.dto.Schedule;
+import com.ssafy.schedule.dto.ScheduleDto;
+import com.ssafy.schedule.dto.ScheduleImage;
+import com.ssafy.schedule.dto.ScheduleOrderUpdateRequestDto;
+import com.ssafy.schedule.dto.ScheduleResponseDto;
 import com.ssafy.planner.schedule.dto.Schedule;
 import com.ssafy.planner.schedule.dto.ScheduleDto;
 import com.ssafy.planner.schedule.dto.ScheduleImage;
@@ -12,7 +17,7 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface ScheduleMapper {
     
-    int createSchedules(@Param("plannerId") Long plannerId, @Param("schedules") List<ScheduleDto> schedules);
+    int createSchedules(@Param("plannerId") Long plannerId, @Param("schedules") List<ScheduleDto> schedule);
     
     Schedule getScheduleById(Long scheduleId);
     
@@ -35,5 +40,5 @@ public interface ScheduleMapper {
     void insertScheduleImages(@Param("scheduleId") Long scheduleId,
             @Param("imageKeys") List<String> imageKeys);
 
-    void updateScheduleDate(@Param("schedules") List<ScheduleResponseDto> schedules);
+    void updateScheduleOrder(@Param("schedules") List<ScheduleOrderUpdateRequestDto> schedules);
 }

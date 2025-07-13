@@ -2,7 +2,7 @@ package com.ssafy.schedule.service;
 
 import com.ssafy.common.security.dto.CustomUserDetails;
 import com.ssafy.schedule.dto.ScheduleCreateRequestDto;
-import com.ssafy.schedule.dto.SchedulesOrderUpdateRequestDto;
+import com.ssafy.schedule.dto.ScheduleOrderUpdateRequestDto;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -19,5 +19,5 @@ public interface ScheduleService {
     
     Map<Long, List<String>> getPresignedImageUrlsByScheduleIds(List<Long> planIds);
     
-    void updateSchedulesOrder(SchedulesOrderUpdateRequestDto request, CustomUserDetails loginUser);
+    void updateScheduleOrder(List<ScheduleOrderUpdateRequestDto> request, Long plannerId, CustomUserDetails loginUser);
 }
