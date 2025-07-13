@@ -10,6 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ScheduleImage {
+    
     private Long id;
     private Long planId;
     private String imageKey;
