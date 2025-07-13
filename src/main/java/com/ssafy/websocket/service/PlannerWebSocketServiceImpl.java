@@ -1,7 +1,8 @@
 package com.ssafy.websocket.service;
 
-import com.ssafy.schedule.dto.Schedule;
-import com.ssafy.schedule.mapper.ScheduleMapper;
+
+import com.ssafy.planner.schedule.dto.Schedule;
+import com.ssafy.planner.schedule.mapper.ScheduleMapper;
 import com.ssafy.websocket.dto.EditorInfo;
 import com.ssafy.websocket.dto.JoinGroupMessage;
 import com.ssafy.websocket.dto.ScheduleEditMessage;
