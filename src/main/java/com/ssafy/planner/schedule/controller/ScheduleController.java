@@ -2,6 +2,7 @@ package com.ssafy.planner.schedule.controller;
 
 import com.ssafy.common.security.dto.CustomUserDetails;
 import com.ssafy.planner.dto.PlannerUpdateRequestDto;
+import com.ssafy.planner.schedule.dto.ScheduleOrderUpdateRequestDto;
 import com.ssafy.planner.schedule.dto.ScheduleRequestDto;
 import com.ssafy.planner.schedule.dto.ScheduleResponseDto;
 import com.ssafy.planner.schedule.service.ScheduleService;
@@ -27,57 +28,69 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @RequiredArgsConstructor
 @RequestMapping("/api/planners/{planner-id}/schedules")
 public class ScheduleController {
-
-  private final ScheduleService scheduleService;
-
-  @PostMapping
-  public ResponseEntity<Long> createSchedules(@AuthenticationPrincipal CustomUserDetails loginUser,
-      @PathVariable("planner-id") Long plannerId, @RequestBody ScheduleRequestDto request) {
-    scheduleService.createSchedules(plannerId, request, loginUser);
-    URI location = ServletUriComponentsBuilder
-        .fromCurrentRequest()   // /api/schedules
-        .build()
-        .toUri();
-
-    return ResponseEntity.created(location)
-        .build();
-  }
-
-  @GetMapping
-  public ResponseEntity<List<ScheduleResponseDto>> getSchedulesByPlanner(
-      @AuthenticationPrincipal CustomUserDetails loginUser,
-      @PathVariable("planner-id") Long plannerId) {
-    return ResponseEntity.ok(scheduleService.getSchedulesByPlanner(plannerId, loginUser));
-  }
-
-  @PutMapping
-  public ResponseEntity<Void> updateSchedules(@AuthenticationPrincipal CustomUserDetails loginUser,
-      @PathVariable("planner-id") Long plannerId, @RequestBody ScheduleRequestDto request) {
-    scheduleService.updateSchedules(plannerId, request, loginUser);
-    return ResponseEntity.noContent()
-        .build();
-  }
-
-  @DeleteMapping
-  public ResponseEntity<Void> deleteSchedules(@AuthenticationPrincipal CustomUserDetails loginUser,
-      @PathVariable("planner-id") Long plannerId) {
-    scheduleService.deleteSchedulesByPlanner(plannerId, loginUser);
-    return ResponseEntity.noContent()
-        .build();
-  }
-
-  @PutMapping("/date")
-  public ResponseEntity<Void> updateSchedulesDate(
-      @AuthenticationPrincipal CustomUserDetails loginUser,
-      @PathVariable("planner-id") Long plannerId, @RequestBody PlannerUpdateRequestDto oldPlanner) {
-    scheduleService.updateSchedulesDate(plannerId, oldPlanner, loginUser);
-    return ResponseEntity.noContent()
-        .build();
-  }
-
-  @GetMapping("/images")
-  public ResponseEntity<Map<Long, List<String>>> getPresignedImageUrlsByScheduleIds(
-      @RequestParam List<Long> scheduleIds) {
-    return ResponseEntity.ok(scheduleService.getPresignedImageUrlsByScheduleIds(scheduleIds));
-  }
+    
+    private final ScheduleService scheduleService;
+    
+    @PostMapping
+    public ResponseEntity<Long> createSchedules(@AuthenticationPrincipal CustomUserDetails loginUser,
+            @PathVariable("planner-id") Long plannerId, @RequestBody ScheduleRequestDto request) {
+        scheduleService.createSchedules(plannerId, request, loginUser);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()   // /api/schedules
+                .build()
+                .toUri();
+        
+        return ResponseEntity.created(location)
+                .build();
+    }
+    
+    @GetMapping
+    public ResponseEntity<List<ScheduleResponseDto>> getSchedulesByPlanner(
+            @AuthenticationPrincipal CustomUserDetails loginUser,
+            @PathVariable("planner-id") Long plannerId) {
+        return ResponseEntity.ok(scheduleService.getSchedulesByPlanner(plannerId, loginUser));
+    }
+    
+    @PutMapping
+    public ResponseEntity<Void> updateSchedules(@AuthenticationPrincipal CustomUserDetails loginUser,
+            @PathVariable("planner-id") Long plannerId, @RequestBody ScheduleRequestDto request) {
+        scheduleService.updateSchedules(plannerId, request, loginUser);
+        return ResponseEntity.noContent()
+                .build();
+    }
+    
+    @DeleteMapping
+    public ResponseEntity<Void> deleteSchedules(@AuthenticationPrincipal CustomUserDetails loginUser,
+            @PathVariable("planner-id") Long plannerId) {
+        scheduleService.deleteSchedulesByPlanner(plannerId, loginUser);
+        return ResponseEntity.noContent()
+                .build();
+    }
+    
+    @PutMapping("/date")
+    public ResponseEntity<Void> updateSchedulesDate(
+            @AuthenticationPrincipal CustomUserDetails loginUser,
+            @PathVariable("planner-id") Long plannerId, @RequestBody PlannerUpdateRequestDto oldPlanner) {
+        scheduleService.updateSchedulesDate(plannerId, oldPlanner, loginUser);
+        return ResponseEntity.noContent()
+                .build();
+    }
+    
+    @GetMapping("/images")
+    public ResponseEntity<Map<Long, List<String>>> getPresignedImageUrlsByScheduleIds(
+            @RequestParam List<Long> scheduleIds) {
+        return ResponseEntity.ok(scheduleService.getPresignedImageUrlsByScheduleIds(scheduleIds));
+    }
+    
+    @PutMapping("/order")
+    public ResponseEntity<Void> updateSchedulesOrder(
+            @AuthenticationPrincipal CustomUserDetails loginUser,
+            @RequestBody ScheduleOrderUpdateRequestDto request,
+            @PathVariable("planner-id") Long plannerId) {
+        
+        scheduleService.updateScheduleOrder(request, plannerId, loginUser);
+        
+        return ResponseEntity.noContent()
+                .build();
+    }
 }
