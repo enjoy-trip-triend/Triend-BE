@@ -3,7 +3,6 @@ package com.ssafy.schedule.controller;
 import com.ssafy.common.security.dto.CustomUserDetails;
 import com.ssafy.schedule.dto.ScheduleCreateRequestDto;
 import com.ssafy.schedule.dto.ScheduleOrderUpdateRequestDto;
-import com.ssafy.schedule.dto.ScheduleUpdateRequestDto;
 import com.ssafy.schedule.service.ScheduleService;
 import java.net.URI;
 import java.util.List;
@@ -51,7 +50,7 @@ public class ScheduleController {
     @PutMapping("/order")
     public ResponseEntity<Void> updateSchedulesOrder(
             @AuthenticationPrincipal CustomUserDetails loginUser,
-            @RequestBody List<ScheduleOrderUpdateRequestDto> request,
+            @RequestBody ScheduleOrderUpdateRequestDto request,
             @PathVariable("planner-id") Long plannerId) {
         
         scheduleService.updateScheduleOrder(request, plannerId, loginUser);
