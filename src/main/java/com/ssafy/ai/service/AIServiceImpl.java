@@ -41,7 +41,7 @@ public class AIServiceImpl implements AIService {
         String systemPrompt = promptBuilder.buildSystemPromptWithChat(member,
                 charactersNameByMemberId);
 
-        return aiClient.sendChatPrompt(systemPrompt, userMessage.message());
+        return aiClient.sendChatPrompt(member.getId(), systemPrompt, userMessage.message());
     }
 
     /**
