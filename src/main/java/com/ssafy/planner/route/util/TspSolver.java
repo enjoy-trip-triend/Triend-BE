@@ -12,10 +12,10 @@ public class TspSolver {
     
     private static double haversine(WaypointDto a, WaypointDto b) {
         double R = 6371.0;
-        double dLat = Math.toRadians(b.lat - a.lat);
-        double dLng = Math.toRadians(b.lng - a.lng);
-        double lat1 = Math.toRadians(a.lat);
-        double lat2 = Math.toRadians(b.lat);
+        double dLat = Math.toRadians(b.getLat() - a.getLat());
+        double dLng = Math.toRadians(b.getLng() - a.getLng());
+        double lat1 = Math.toRadians(a.getLat());
+        double lat2 = Math.toRadians(b.getLat());
         
         double aVal = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
         double c = 2 * Math.atan2(Math.sqrt(aVal), Math.sqrt(1 - aVal));
@@ -56,16 +56,19 @@ public class TspSolver {
         solve(1 << start, start, end, dist, dp, path, N);
         
         // 경로 복원
-        List<String> route = new ArrayList<>();
+        List<Long> route = new ArrayList<>();
         int visited = 1 << start, current = start;
-        route.add(points.get(current).name);
+        route.add(points.get(current)
+                .getScheduleId());
         while (path[visited][current] != -1) {
             int next = path[visited][current];
-            route.add(points.get(next).name);
+            route.add(points.get(next)
+                    .getScheduleId());
             visited |= (1 << next);
             current = next;
         }
-        route.add(points.get(end).name);
+        route.add(points.get(end)
+                .getScheduleId());
         
         return new RouteResponseDto(route, dp[1 << start][start]);
     }

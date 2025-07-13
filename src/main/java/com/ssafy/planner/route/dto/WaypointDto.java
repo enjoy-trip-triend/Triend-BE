@@ -11,8 +11,8 @@ import lombok.ToString;
 @ToString
 public class WaypointDto {
     
-    public String name;
-    public double lat;
-    public double lng;
+    private Long scheduleId;
+    private double lat;
+    private double lng;
 }
 
