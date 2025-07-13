@@ -57,7 +57,7 @@
         WHERE schedule_id = #{scheduleId}
     ]]>
   </delete>
-  
+
   <select id="getSchedulesByPlanner" resultMap="scheduleMap">
     SELECT
     s.id AS s_id,
@@ -147,5 +147,30 @@
     </association>
   </resultMap>
 
+  <select id="getSchedulesByPlannerAndDate" resultMap="scheduleMap">
+    SELECT
+    s.id AS s_id,
+    s.planner_id AS s_planner_id,
+    s.date AS s_date,
+    s.start_time AS s_start_time,
+    s.content AS s_content,
+    s.idx AS s_idx,
+    p.id AS p_id,
+    p.kakao_id AS p_kakao_id,
+    p.place_name AS p_place_name,
+    p.address_name AS p_address_name,
+    p.road_address_name AS p_road_address_name,
+    p.latitude AS p_latitude,
+    p.longitude AS p_longitude,
+    p.phone AS p_phone,
+    p.save_count AS p_save_count,
+    p.category_id AS p_category_id,
+    c.category_name AS p_category_name
+    FROM schedules s
+    JOIN places p ON p.id = s.place_id
+    LEFT JOIN places_categories c ON c.id = p.category_id
+    WHERE s.planner_id = #{plannerId} AND s.date = #{date}
+    ORDER BY s.idx
+  </select>
 
 </mapper>
