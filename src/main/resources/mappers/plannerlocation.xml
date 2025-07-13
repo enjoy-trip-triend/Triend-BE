@@ -17,9 +17,23 @@
     WHERE planner_id = #{plannerId}
   </delete>
 
+  <select id="findByPlannerId" parameterType="Long" resultMap="locationMap">
+    SELECT
+    pl.sido_code   AS sido_code,
+    pl.gugun_code  AS gugun_code,
+    s.sido_name    AS sido_name,
+    g.gugun_name   AS gugun_name
+    FROM planners_locations pl
+    JOIN sidos s ON pl.sido_code = s.sido_code
+    LEFT JOIN guguns g ON pl.gugun_code = g.gugun_code
+    WHERE pl.planner_id = #{plannerId}
+  </select>
+
   <resultMap type="com.ssafy.planner.dto.PlannerLocationDto" id="locationMap">
     <result column="sido_code" property="sidoCode" />
     <result column="gugun_code" property="gugunCode" />
+    <result column="sido_name"   property="sidoName"/>
+    <result column="gugun_name"  property="gugunName"/>
   </resultMap>
 
 </mapper>
