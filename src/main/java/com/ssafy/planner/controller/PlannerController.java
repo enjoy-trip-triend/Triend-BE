@@ -3,10 +3,8 @@ package com.ssafy.planner.controller;
 import com.ssafy.common.security.dto.CustomUserDetails;
 import com.ssafy.planner.dto.Planner;
 import com.ssafy.planner.dto.PlannerCreateRequestDto;
-import com.ssafy.planner.dto.PlannerLocationDto;
 import com.ssafy.planner.dto.PlannerUpdateRequestDto;
 import com.ssafy.planner.service.PlannerService;
-import com.ssafy.planner.schedule.dto.ScheduleRequestDto;
 import com.ssafy.planner.schedule.dto.ScheduleResponseDto;
 
 import java.util.List;
@@ -72,24 +70,5 @@ public class PlannerController {
     public ResponseEntity<List<ScheduleResponseDto>> getPlansByShared(
             @PathVariable("planner-id") Long plannerId) {
         return ResponseEntity.ok(plannerService.getSchedulesByShared(plannerId));
-    }
-
-    @PutMapping("/{planner-id}/plans")
-    public ResponseEntity<Void> updatePlansForPlanner(
-            @AuthenticationPrincipal CustomUserDetails loginUser,
-            @PathVariable("planner-id") Long plannerId,
-            @RequestBody List<ScheduleRequestDto> requests) {
-        //plannerService.updateSchedulesForPlanner(plannerId, requests, loginUser);
-        return ResponseEntity.noContent()
-                .build();
-    }
-
-    @DeleteMapping("/{planner-id}/plans")
-    public ResponseEntity<Void> deletePlansForPlanner(
-            @AuthenticationPrincipal CustomUserDetails loginUser,
-            @PathVariable("planner-id") Long plannerId, @RequestBody List<Long> plandIdList) {
-        plannerService.deleteSchedulesForPlanner(plannerId, plandIdList, loginUser);
-        return ResponseEntity.noContent()
-                .build();
     }
 }
