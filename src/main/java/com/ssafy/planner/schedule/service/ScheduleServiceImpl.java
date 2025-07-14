@@ -1,6 +1,7 @@
 package com.ssafy.planner.schedule.service;
 
 import com.ssafy.common.security.dto.CustomUserDetails;
+import com.ssafy.member.dto.Member;
 import com.ssafy.planner.dto.Planner;
 import com.ssafy.planner.dto.PlannerUpdateRequestDto;
 import com.ssafy.planner.mapper.PlannerMapper;
@@ -42,7 +43,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     public void createSchedules(Long plannerId, ScheduleRequestDto request, CustomUserDetails loginUser) {
         Planner planner = plannerMapper.getPlannerById(plannerId);
         
-        if (plannerMemberMapper.isPlannerMember(plannerId, loginUser.getMember()
+        if (!plannerMemberMapper.isPlannerMember(plannerId, loginUser.getMember()
                 .getId())) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "권한이 없습니다.");
         }
@@ -172,6 +173,15 @@ public class ScheduleServiceImpl implements ScheduleService {
         
         if (planner == null) {
             throw new IllegalArgumentException("플래너가 존재하지 않습니다.");
+        }
+        
+        Member member = loginUser.getMember();
+        if (member == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그인 정보가 없습니다.");
+        }
+        
+        if (!plannerMemberMapper.isPlannerMember(plannerId, member.getId())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "권한이 없습니다.");
         }
         
         List<ScheduleResponseDto> schedules = scheduleMapper.getSchedulesByPlannerAndDate(plannerId, request.date());
