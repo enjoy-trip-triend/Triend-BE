@@ -25,7 +25,8 @@
     g.gugun_name   AS gugun_name
     FROM planners_locations pl
     JOIN sidos s ON pl.sido_code = s.sido_code
-    LEFT JOIN guguns g ON pl.gugun_code = g.gugun_code
+    LEFT JOIN guguns g ON pl.sido_code  = g.sido_code
+      AND pl.gugun_code = g.gugun_code
     WHERE pl.planner_id = #{plannerId}
   </select>
 
