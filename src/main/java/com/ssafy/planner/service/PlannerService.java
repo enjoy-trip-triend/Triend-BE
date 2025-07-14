@@ -10,20 +10,21 @@ import java.util.List;
 
 public interface PlannerService {
 
-  void createPlanner(PlannerCreateRequestDto request, CustomUserDetails loginUser);
+    void createPlanner(PlannerCreateRequestDto request, CustomUserDetails loginUser);
 
-  List<Planner> getPlannersByMember(CustomUserDetails loginUser);
+    List<Planner> getPlannersByMember(CustomUserDetails loginUser);
 
-  List<ScheduleResponseDto> getSchedulesByShared(Long plannerId);
+    List<ScheduleResponseDto> getSchedulesByShared(Long plannerId);
 
-  Planner getPlannerById(Long plannerId, CustomUserDetails loginUser);
+    Planner getPlannerById(Long plannerId, CustomUserDetails loginUser);
 
-  void updatePlanner(Long plannerId, PlannerUpdateRequestDto request, CustomUserDetails loginUser);
+    void updatePlanner(Long plannerId, PlannerUpdateRequestDto request,
+            CustomUserDetails loginUser);
 
-  void deletePlanner(Long plannerId, CustomUserDetails loginUser);
+    void deletePlanner(Long plannerId, CustomUserDetails loginUser);
 
-  void updateSchedulesForPlanner(Long plannerId, List<ScheduleRequestDto> requests,
-      CustomUserDetails loginUser);
+    void updateSchedulesForPlanner(Long plannerId, List<ScheduleRequestDto> requests,
+            CustomUserDetails loginUser);
 
-  void deleteSchedulesForPlanner(Long planId, List<Long> planIdList, CustomUserDetails loginUser);
+    void deleteSchedulesForPlanner(Long planId, List<Long> planIdList, CustomUserDetails loginUser);
 }
