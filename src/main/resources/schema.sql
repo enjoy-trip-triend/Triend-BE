@@ -173,6 +173,8 @@ CREATE TABLE `planners_locations`
     `sido_code`   INT    NOT NULL,
     `gugun_code`  INT    NOT NULL,
     PRIMARY KEY (`id`),
+    -- 복합 유니크 제약 추가 (장소 중복 삽입 방지)
+    UNIQUE KEY `uq_planner_location` (`planner_id`, `sido_code`, `gugun_code`),
     -- 플래너 참조
     CONSTRAINT `fk_planners_locations_planner`
       FOREIGN KEY (`planner_id`)
