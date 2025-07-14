@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.ai.client.AIClient;
-import com.ssafy.ai.dto.UserMessage;
+import com.ssafy.ai.dto.ChatRequest;
 import com.ssafy.ai.builder.PromptBuilder;
 import com.ssafy.client.kakao.dto.KakaoSearchResponseDto;
 import com.ssafy.client.kakao.dto.KakaoSearchResponseDto.Document;
@@ -30,18 +30,18 @@ public class AIServiceImpl implements AIService {
      * 챗봇과 대화를 할 수 있습니다.
      *
      * @param member      현재 로그인한 멤버
-     * @param userMessage 챗봇에게 보낼 사용자 메세지
+     * @param chatRequest 챗봇에게 보낼 사용자 메세지
      * @return 사용자 메세지에 대한 응답
      */
     @Override
-    public String chatWithAi(Member member, UserMessage userMessage) {
+    public String chatWithAi(Member member, ChatRequest chatRequest) {
         List<String> charactersNameByMemberId = memberService.getCharactersNameByMemberId(
                 member.getId());
 
         String systemPrompt = promptBuilder.buildSystemPromptWithChat(member,
                 charactersNameByMemberId);
 
-        return aiClient.sendChatPrompt(member.getId(), systemPrompt, userMessage.message());
+        return aiClient.sendChatPrompt(member.getId(), systemPrompt, chatRequest.message());
     }
 
     /**
