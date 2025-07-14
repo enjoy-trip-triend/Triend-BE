@@ -1,14 +1,19 @@
 package com.ssafy.ai.repository;
 
+import com.ssafy.ai.dto.MessageInfoDTO;
+import com.ssafy.ai.dto.AIRole;
 import io.micrometer.common.lang.NonNullApi;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.chat.memory.ChatMemoryRepository;
+import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.messages.Message;
+import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.data.redis.core.BoundListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
@@ -42,7 +47,17 @@ public class RedisChatMemoryRepository implements ChatMemoryRepository {
                 .range(key, 0, -1);
 
         return range.stream()
-                .map(m -> (Message) m)
+                .map(o -> (MessageInfoDTO) o)
+                .map(dto -> {
+                    // 반환 타입을 Message
+                    Message msg;
+                    if (dto.getRole() == AIRole.USER) {
+                        msg = new UserMessage(dto.getContent());
+                    } else {
+                        msg = new AssistantMessage(dto.getContent());
+                    }
+                    return msg;
+                })
                 .toList();
     }
 
@@ -51,9 +66,21 @@ public class RedisChatMemoryRepository implements ChatMemoryRepository {
         String key = KEY_PREDIX + conversationId;
         deleteByConversationId(key);
 
+        List<MessageInfoDTO> meesageInfoList = messages.stream()
+                .map(m -> {
+                    AIRole role = AIRole.valueOf(m.getMessageType()
+                            .name());
+                    String content = m.getText();
+                    Long timestamp = Instant.now()
+                            .toEpochMilli();
+
+                    return new MessageInfoDTO(role, content, timestamp);
+                })
+                .toList();
+
         BoundListOperations<String, Object> ops = redisTemplate.boundListOps(key);
-        for (Message m : messages) {
-            ops.rightPush(m);
+        for (MessageInfoDTO messageInfoDTO : meesageInfoList) {
+            ops.rightPush(messageInfoDTO);
         }
         redisTemplate.expire(key, TTL);
     }
