@@ -3,6 +3,7 @@ package com.ssafy.planner.controller;
 import com.ssafy.common.security.dto.CustomUserDetails;
 import com.ssafy.planner.dto.Planner;
 import com.ssafy.planner.dto.PlannerCreateRequestDto;
+import com.ssafy.planner.dto.PlannerLocationDto;
 import com.ssafy.planner.dto.PlannerUpdateRequestDto;
 import com.ssafy.planner.service.PlannerService;
 import com.ssafy.planner.schedule.dto.ScheduleResponseDto;
@@ -70,5 +71,12 @@ public class PlannerController {
     public ResponseEntity<List<ScheduleResponseDto>> getPlansByShared(
             @PathVariable("planner-id") Long plannerId) {
         return ResponseEntity.ok(plannerService.getSchedulesByShared(plannerId));
+    }
+
+    @GetMapping("/{planner-id}/locations")
+    public ResponseEntity<List<PlannerLocationDto>> getLocationsById(
+            @AuthenticationPrincipal CustomUserDetails loginUser,
+            @PathVariable("planner-id") Long plannerId) {
+        return ResponseEntity.ok(plannerService.getLocationsById(plannerId, loginUser));
     }
 }

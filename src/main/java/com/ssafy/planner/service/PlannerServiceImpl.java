@@ -3,6 +3,7 @@ package com.ssafy.planner.service;
 import com.ssafy.common.security.dto.CustomUserDetails;
 import com.ssafy.planner.dto.Planner;
 import com.ssafy.planner.dto.PlannerCreateRequestDto;
+import com.ssafy.planner.dto.PlannerLocationDto;
 import com.ssafy.planner.dto.PlannerUpdateRequestDto;
 import com.ssafy.planner.mapper.PlannerLocationMapper;
 import com.ssafy.planner.mapper.PlannerMapper;
@@ -156,5 +157,17 @@ public class PlannerServiceImpl implements PlannerService {
             throw new RuntimeException("[ERROR] 플래너가 존재하지 않습니다.");
         }
         return schedules;
+    }
+
+    @Override
+    public List<PlannerLocationDto> getLocationsById(Long plannerId, CustomUserDetails loginUser) {
+        Planner planner = plannerMapper.getPlannerById(plannerId);
+
+        if (!planner.getMemberId()
+                .equals(loginUser.getMember()
+                        .getId())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "권한이 없습니다.");
+        }
+        return plannerLocationMapper.findByPlannerId(plannerId);
     }
 }
