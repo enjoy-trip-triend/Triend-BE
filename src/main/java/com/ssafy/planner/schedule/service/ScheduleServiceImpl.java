@@ -1,19 +1,23 @@
 package com.ssafy.planner.schedule.service;
 
 import com.ssafy.common.security.dto.CustomUserDetails;
+import com.ssafy.member.dto.Member;
 import com.ssafy.planner.dto.Planner;
 import com.ssafy.planner.dto.PlannerUpdateRequestDto;
 import com.ssafy.planner.mapper.PlannerMapper;
 import com.ssafy.planner.plannershare.mapper.PlannerMemberMapper;
-import com.ssafy.s3.service.S3Service;
-import com.ssafy.planner.schedule.dto.ScheduleRequestDto;
 import com.ssafy.planner.schedule.dto.ScheduleDto;
 import com.ssafy.planner.schedule.dto.ScheduleImage;
+import com.ssafy.planner.schedule.dto.ScheduleOrderDto;
+import com.ssafy.planner.schedule.dto.ScheduleOrderUpdateRequestDto;
+import com.ssafy.planner.schedule.dto.ScheduleRequestDto;
 import com.ssafy.planner.schedule.dto.ScheduleResponseDto;
 import com.ssafy.planner.schedule.mapper.ScheduleMapper;
+import com.ssafy.s3.service.S3Service;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,132 +32,181 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 @Transactional
 public class ScheduleServiceImpl implements ScheduleService {
-
-  private final ScheduleValidationService scheduleValidationService;
-  private final ScheduleMapper scheduleMapper;
-  private final PlannerMapper plannerMapper;
-  private final PlannerMemberMapper plannerMemberMapper;
-  private final S3Service s3Service;
-
-  @Override
-  public void createSchedules(Long plannerId, ScheduleRequestDto request, CustomUserDetails loginUser) {
-    Planner planner = plannerMapper.getPlannerById(plannerId);
-
-    if (plannerMemberMapper.isPlannerMember(plannerId, loginUser.getMember().getId())) {
-      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "권한이 없습니다.");
+    
+    private final ScheduleValidationService scheduleValidationService;
+    private final ScheduleMapper scheduleMapper;
+    private final PlannerMapper plannerMapper;
+    private final PlannerMemberMapper plannerMemberMapper;
+    private final S3Service s3Service;
+    
+    @Override
+    public void createSchedules(Long plannerId, ScheduleRequestDto request, CustomUserDetails loginUser) {
+        Planner planner = plannerMapper.getPlannerById(plannerId);
+        
+        if (!plannerMemberMapper.isPlannerMember(plannerId, loginUser.getMember()
+                .getId())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "권한이 없습니다.");
+        }
+        
+        List<ScheduleDto> newSchedules = request.schedules();
+        
+        // 도메인 서비스에서 검증
+        newSchedules.sort((o1, o2) -> o1.idx() - o2.idx());
+        scheduleValidationService.validate(planner, newSchedules);
+        
+        // 검증 통과 후 insert
+        int cnt = scheduleMapper.createSchedules(plannerId, request.schedules());
+        if (cnt != request.schedules()
+                .size()) {
+            throw new RuntimeException("[ERROR] 스케줄 추가 실패");
+        }
     }
-
-    List<ScheduleDto> newSchedules = request.schedules();
-
-    // 도메인 서비스에서 검증
-    newSchedules.sort((o1, o2) -> o1.idx() - o2.idx());
-    scheduleValidationService.validate(planner, newSchedules);
-
-    // 검증 통과 후 insert
-    int cnt = scheduleMapper.createSchedules(plannerId, request.schedules());
-    if (cnt != request.schedules().size()) {
-      throw new RuntimeException("[ERROR] 스케줄 추가 실패");
+    
+    @Override
+    public List<ScheduleResponseDto> getSchedulesByPlanner(Long plannerId,
+            CustomUserDetails loginUser) {
+        
+        Planner planner = plannerMapper.getPlannerById(plannerId);
+        
+        if (!Objects.equals(planner.getMemberId(), loginUser.getMember()
+                .getId())) {
+            throw new RuntimeException("[ERROR] 사용자가 다릅니다.");
+        }
+        
+        List<ScheduleResponseDto> schedules = scheduleMapper.getSchedulesByPlanner(plannerId);
+        
+        if (schedules == null) {
+            throw new RuntimeException("[ERROR] 플래너가 존재하지 않습니다.");
+        }
+        
+        return schedules;
     }
-  }
-
-  @Override
-  public List<ScheduleResponseDto> getSchedulesByPlanner(Long plannerId,
-      CustomUserDetails loginUser) {
-
-    Planner planner = plannerMapper.getPlannerById(plannerId);
-
-    if (!Objects.equals(planner.getMemberId(), loginUser.getMember()
-        .getId())) {
-      throw new RuntimeException("[ERROR] 사용자가 다릅니다.");
+    
+    @Override
+    public void deleteSchedule(Long planId, CustomUserDetails loginUser) {
+        int cnt = scheduleMapper.deleteSchedule(planId);
+        
+        if (cnt != 1) {
+            throw new RuntimeException("[ERROR] 스케줄 삭제 실패");
+        }
     }
-
-    List<ScheduleResponseDto> schedules = scheduleMapper.getSchedulesByPlanner(plannerId);
-
-    if (schedules == null) {
-      throw new RuntimeException("[ERROR] 플래너가 존재하지 않습니다.");
+    
+    @Override
+    public void deleteSchedulesByPlannerAndDate(Long plannerId, LocalDate startDay,
+            LocalDate endDay) {
+        int cnt = scheduleMapper.deleteSchedulesByPlannerAndDate(plannerId, startDay, endDay);
+        
+        if (cnt < 1) {
+            throw new RuntimeException("[ERROR] 스케줄 삭제 실패");
+        }
     }
-
-    return schedules;
-  }
-
-  @Override
-  public void deleteSchedule(Long planId, CustomUserDetails loginUser) {
-    int cnt = scheduleMapper.deleteSchedule(planId);
-
-    if (cnt != 1) {
-      throw new RuntimeException("[ERROR] 스케줄 삭제 실패");
+    
+    @Override
+    public void deleteSchedulesByPlanner(Long plannerId, CustomUserDetails loginUser) {
+        if (!plannerMapper.getPlannerById(plannerId)
+                .getMemberId()
+                .equals(loginUser.getMember()
+                        .getId())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "사용자가 일치하지 않습니다.");
+        }
+        
+        int cnt = scheduleMapper.deleteSchedulesByPlanner(plannerId);
+        
+        if (cnt < 1) {
+            throw new RuntimeException("[ERROR] 스케줄 삭제 실패");
+        }
     }
-  }
-
-  @Override
-  public void deleteSchedulesByPlannerAndDate(Long plannerId, LocalDate startDay,
-      LocalDate endDay) {
-    int cnt = scheduleMapper.deleteSchedulesByPlannerAndDate(plannerId, startDay, endDay);
-
-    if (cnt < 1) {
-      throw new RuntimeException("[ERROR] 스케줄 삭제 실패");
+    
+    public Map<Long, List<String>> getPresignedImageUrlsByScheduleIds(List<Long> planIds) {
+        
+        List<ScheduleImage> allImages = scheduleMapper.findImagesByScheduleIds(planIds);
+        
+        Map<Long, List<String>> result = new HashMap<>();
+        for (ScheduleImage image : allImages) {
+            if (image == null || image.getPlanId() == null || image.getImageKey() == null) {
+                continue;
+            }
+            
+            String presignedUrl = s3Service.generatePresignedGetUrl(image.getImageKey());
+            
+            result.computeIfAbsent(image.getPlanId(), k -> new ArrayList<>())
+                    .add(presignedUrl);
+        }
+        
+        return result;
     }
-  }
-
-  @Override
-  public void deleteSchedulesByPlanner(Long plannerId, CustomUserDetails loginUser) {
-    if (!plannerMapper.getPlannerById(plannerId).getMemberId()
-        .equals(loginUser.getMember().getId())) {
-      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "사용자가 일치하지 않습니다.");
+    
+    @Override
+    public void updateSchedules(Long plannerId, ScheduleRequestDto request, CustomUserDetails loginUser) {
+        // 기존 스케줄 삭제
+        deleteSchedulesByPlanner(plannerId, loginUser);
+        
+        // 새로운 스케줄 삽입
+        createSchedules(plannerId, request, loginUser);
     }
-
-    int cnt = scheduleMapper.deleteSchedulesByPlanner(plannerId);
-
-    if (cnt < 1) {
-      throw new RuntimeException("[ERROR] 스케줄 삭제 실패");
+    
+    @Override
+    public void updateSchedulesDate(Long plannerId, PlannerUpdateRequestDto oldPlanner, CustomUserDetails loginUser) {
+        if (!plannerMapper.getPlannerById(plannerId)
+                .getMemberId()
+                .equals(loginUser.getMember()
+                        .getId())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "사용자가 일치하지 않습니다.");
+        }
+        
+        Planner newPlanner = plannerMapper.getPlannerById(plannerId);
+        long diffDays = ChronoUnit.DAYS.between(oldPlanner.startDay(), newPlanner.getStartDay());
+        
+        // 차이 만큼 일정 조정
+        List<ScheduleResponseDto> schedules = scheduleMapper.getSchedulesByPlanner(plannerId);
+        for (ScheduleResponseDto schedule : schedules) {
+            schedule.setDate(schedule.getDate()
+                    .plusDays(diffDays));
+        }
+        
+        scheduleMapper.updateScheduleDate(schedules);
     }
-  }
-
-  public Map<Long, List<String>> getPresignedImageUrlsByScheduleIds(List<Long> planIds) {
-
-    List<ScheduleImage> allImages = scheduleMapper.findImagesByScheduleIds(planIds);
-
-    Map<Long, List<String>> result = new HashMap<>();
-    for (ScheduleImage image : allImages) {
-      if (image == null || image.getPlanId() == null || image.getImageKey() == null) {
-        continue;
-      }
-
-      String presignedUrl = s3Service.generatePresignedGetUrl(image.getImageKey());
-
-      result.computeIfAbsent(image.getPlanId(), k -> new ArrayList<>())
-          .add(presignedUrl);
+    
+    @Override
+    public void updateScheduleOrder(ScheduleOrderUpdateRequestDto request, Long plannerId, CustomUserDetails loginUser) {
+        Planner planner = plannerMapper.getPlannerById(plannerId);
+        
+        if (planner == null) {
+            throw new IllegalArgumentException("플래너가 존재하지 않습니다.");
+        }
+        
+        Member member = loginUser.getMember();
+        if (member == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그인 정보가 없습니다.");
+        }
+        
+        if (!plannerMemberMapper.isPlannerMember(plannerId, member.getId())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "권한이 없습니다.");
+        }
+        
+        List<ScheduleResponseDto> schedules = scheduleMapper.getSchedulesByPlannerAndDate(plannerId, request.date());
+        if (schedules == null || schedules.isEmpty()) {
+            throw new IllegalArgumentException("플래너에 스케줄이 존재하지 않습니다.");
+        }
+        
+        List<ScheduleOrderDto> reorderSchedules = request.schedules();
+        reorderSchedules.sort(Comparator.comparingLong(ScheduleOrderDto::idx));
+        
+        if (schedules.size() != reorderSchedules.size()) {
+            throw new IllegalArgumentException("스케줄의 개수가 일치하지 않습니다.");
+        }
+        
+        // idx로 정렬 후 새로운 순서 매핑
+        List<ScheduleOrderDto> newOrder = new ArrayList<>();
+        for (int i = 0; i < reorderSchedules.size(); i++) {
+            ScheduleOrderDto orderDto = reorderSchedules.get(i);
+            ScheduleResponseDto schedule = schedules.get(i);
+            
+            newOrder.add(new ScheduleOrderDto(
+                    orderDto.scheduleId(),
+                    schedule.getIdx()
+            ));
+        }
+        scheduleMapper.updateScheduleOrder(newOrder);
     }
-
-    return result;
-  }
-
-  @Override
-  public void updateSchedules(Long plannerId, ScheduleRequestDto request, CustomUserDetails loginUser) {
-    // 기존 스케줄 삭제
-    deleteSchedulesByPlanner(plannerId, loginUser);
-
-    // 새로운 스케줄 삽입
-    createSchedules(plannerId, request, loginUser);
-  }
-
-  @Override
-  public void updateSchedulesDate(Long plannerId, PlannerUpdateRequestDto oldPlanner, CustomUserDetails loginUser) {
-    if (!plannerMapper.getPlannerById(plannerId).getMemberId()
-        .equals(loginUser.getMember().getId())) {
-      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "사용자가 일치하지 않습니다.");
-    }
-
-    Planner newPlanner = plannerMapper.getPlannerById(plannerId);
-    long diffDays = ChronoUnit.DAYS.between(oldPlanner.startDay(), newPlanner.getStartDay());
-
-    // 차이 만큼 일정 조정
-    List<ScheduleResponseDto> schedules = scheduleMapper.getSchedulesByPlanner(plannerId);
-    for(ScheduleResponseDto schedule: schedules) {
-      schedule.setDate(schedule.getDate().plusDays(diffDays));
-    }
-
-    scheduleMapper.updateScheduleDate(schedules);
-  }
-
 }
