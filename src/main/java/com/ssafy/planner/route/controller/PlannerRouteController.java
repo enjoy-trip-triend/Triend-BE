@@ -17,7 +17,7 @@ public class PlannerRouteController {
     
     private final PlannerRouteService routeService;
     
-    @PostMapping("/recommend")
+    @PostMapping("/recommendation")
     public RouteResponseDto recommend(@RequestBody List<WaypointDto> waypoints) {
         return routeService.recommendRoute(waypoints);
     }
