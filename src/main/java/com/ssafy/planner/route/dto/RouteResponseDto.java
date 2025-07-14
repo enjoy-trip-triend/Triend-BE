@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class RouteResponseDto {
     
-    public List<Long> route;
-    public double totalDistance;
+    private List<Long> route;
+    private double totalDistance;
 }
