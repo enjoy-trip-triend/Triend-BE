@@ -4,7 +4,6 @@ import com.ssafy.common.security.dto.CustomUserDetails;
 import com.ssafy.planner.dto.Planner;
 import com.ssafy.planner.dto.PlannerCreateRequestDto;
 import com.ssafy.planner.dto.PlannerUpdateRequestDto;
-import com.ssafy.planner.schedule.dto.ScheduleRequestDto;
 import com.ssafy.planner.schedule.dto.ScheduleResponseDto;
 import java.util.List;
 
@@ -22,9 +21,4 @@ public interface PlannerService {
             CustomUserDetails loginUser);
 
     void deletePlanner(Long plannerId, CustomUserDetails loginUser);
-
-    void updateSchedulesForPlanner(Long plannerId, List<ScheduleRequestDto> requests,
-            CustomUserDetails loginUser);
-
-    void deleteSchedulesForPlanner(Long planId, List<Long> planIdList, CustomUserDetails loginUser);
 }
