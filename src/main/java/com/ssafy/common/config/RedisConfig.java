@@ -3,7 +3,11 @@ package com.ssafy.common.config;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
+import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,16 +34,17 @@ public class RedisConfig {
         template.setKeySerializer(new StringRedisSerializer());
         template.setHashKeySerializer(new StringRedisSerializer());
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.activateDefaultTyping(
-                // 모든 서브타입을 허용하는 일종의 “무검증” 검증기 개발 테스트 단계에서 사용
-                LaissezFaireSubTypeValidator.instance,
-                // 어떤 클래스들에 타입 정보를 붙일지를 결정하는 정책
-                // NON_FINAL -> final 클래스가 아닌 모드 타입
-                DefaultTyping.NON_FINAL,
-                As.PROPERTY
-        );
+        ObjectMapper objectMapper = new ObjectMapper()
+                .registerModule(new ParameterNamesModule()) // 생성자 기반 DTO
+                .registerModule(new Jdk8Module())           // Optional 타입 필드
+                .registerModule(new JavaTimeModule());      // java.time
 
+        // 검증 없이 모든 하위 타입을 허용함
+        // 개발 테스트 단계에서 사용
+        PolymorphicTypeValidator ptv = LaissezFaireSubTypeValidator.instance;
+        objectMapper.activateDefaultTyping(ptv, DefaultTyping.NON_FINAL, As.PROPERTY);
+
+        // 직렬화
         Jackson2JsonRedisSerializer<Object> jsonSer = new Jackson2JsonRedisSerializer<>(
                 objectMapper, Object.class);
 
