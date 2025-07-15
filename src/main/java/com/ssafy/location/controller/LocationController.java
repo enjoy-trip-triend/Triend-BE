@@ -23,7 +23,7 @@ public class LocationController {
     return ResponseEntity.ok(locationService.getAllSidos());
   }
 
-  @GetMapping("/guguns/{sido-code}")
+  @GetMapping("/sidos/{sido-code}/guguns")
   public ResponseEntity<List<Gugun>> getGuguns(@PathVariable("sido-code") Integer sidoCode) {
     return ResponseEntity.ok(locationService.getGugunBySido(sidoCode));
   }
