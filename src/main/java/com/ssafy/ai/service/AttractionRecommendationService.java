@@ -6,6 +6,7 @@ import com.ssafy.client.kakao.CategoryGroupCode;
 import com.ssafy.client.kakao.KakaoMapService;
 import com.ssafy.client.kakao.dto.KakaoSearchResponseDto.Document;
 import com.ssafy.member.dto.Member;
+import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -13,6 +14,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,9 +22,12 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class AttractionRecommendationService {
 
+    private static final Duration TTL = Duration.ofDays(7);
+    private static final String KEY_PREFIX = "place:region:";
     private final KakaoMapService kakaoMapService;
     private final AIService aiService;
     private final Executor kakaoTaskExecutor;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     /**
      * 사용자에게 맞춤형 관광지를 추천해줍니다.
@@ -39,8 +44,24 @@ public class AttractionRecommendationService {
 
         List<CompletableFuture<List<Document>>> futures = regions.stream()
                 .map(region -> CompletableFuture.supplyAsync(
-                                () -> kakaoMapService.searchPlacesByKeyword(region, CategoryGroupCode.AT4,
-                                        DEFAULT_PAGE, DEFAULT_SIZE), kakaoTaskExecutor)
+                                () -> {
+                                    String key = KEY_PREFIX + region;
+                                    // 내가 이 unchecked 캐스트를 알아서 할 테니 경고 내지 말아라
+                                    @SuppressWarnings("unchecked")
+                                    List<Document> value = (List<Document>) redisTemplate.opsForValue()
+                                            .get(key);
+
+                                    if (!value.isEmpty()) {
+                                        return value;
+                                    }
+
+                                    List<Document> documents = kakaoMapService.searchPlacesByKeyword(
+                                            region, CategoryGroupCode.AT4, DEFAULT_PAGE,
+                                            DEFAULT_SIZE);
+
+                                    redisTemplate.opsForValue().set(key, documents, TTL);
+                                    return documents;
+                                }, kakaoTaskExecutor)
                         .orTimeout(2, TimeUnit.SECONDS)
                         .exceptionally(ex -> {
                             throw new RuntimeException("[ERROR] 장소를 가져오는데 에러가 발생했습니다.");
