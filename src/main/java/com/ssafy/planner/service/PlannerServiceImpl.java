@@ -87,7 +87,7 @@ public class PlannerServiceImpl implements PlannerService {
             throw new RuntimeException("[ERROR] 사용자가 일치하지 않습니다.");
         }
 
-        return plannerMapper.getPlannerById(plannerId);
+        return planner;
     }
 
     @Override
