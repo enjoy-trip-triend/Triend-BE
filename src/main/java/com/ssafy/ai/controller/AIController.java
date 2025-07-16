@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.ssafy.ai.dto.UserMessage;
+import com.ssafy.ai.dto.ChatRequest;
 import com.ssafy.common.security.dto.CustomUserDetails;
 import com.ssafy.member.dto.Member;
 import lombok.RequiredArgsConstructor;
@@ -28,9 +28,9 @@ public class AIController {
     @PostMapping("/chat")
     public ResponseEntity<String> chatWithAI(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
-            @RequestBody UserMessage userMessage) {
+            @RequestBody ChatRequest chatRequest) {
         Member member = customUserDetails.getMember();
-        String reply = aiService.chatWithAi(member, userMessage);
+        String reply = aiService.chatWithAi(member, chatRequest);
         return ResponseEntity.ok(reply);
     }
 
