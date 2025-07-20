@@ -14,8 +14,11 @@ import org.springframework.ai.chat.memory.ChatMemoryRepository;
 import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.UserMessage;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.core.BoundListOperations;
+import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -64,7 +67,6 @@ public class RedisChatMemoryRepository implements ChatMemoryRepository {
     @Override
     public void saveAll(String conversationId, List<Message> messages) {
         String key = KEY_PREDIX + conversationId;
-        deleteByConversationId(key);
 
         List<MessageInfoDTO> meesageInfoList = messages.stream()
                 .map(m -> {
@@ -78,11 +80,24 @@ public class RedisChatMemoryRepository implements ChatMemoryRepository {
                 })
                 .toList();
 
-        BoundListOperations<String, Object> ops = redisTemplate.boundListOps(key);
-        for (MessageInfoDTO messageInfoDTO : meesageInfoList) {
-            ops.rightPush(messageInfoDTO);
-        }
-        redisTemplate.expire(key, TTL);
+        // SessionCallback으로 MULTI/EXEC 블록 묶기
+        redisTemplate.execute(new SessionCallback<Void>() { // connection을 유지
+            @SuppressWarnings("unchecked")
+            @Override
+            public Void execute(RedisOperations ops) throws DataAccessException {
+                ops.multi();                                     // MULTI 시작
+                ops.delete(key);                                 // 1) 기존 삭제
+
+                BoundListOperations<String, Object> bound = ops.boundListOps(key);
+                for (MessageInfoDTO dto : meesageInfoList) {
+                    bound.rightPush(dto);                        // 2) 삽입
+                }
+
+                ops.expire(key, TTL);                            // 3) TTL 설정
+                ops.exec();                                      // EXEC 커밋
+                return null;
+            }
+        });
     }
 
     @Override
