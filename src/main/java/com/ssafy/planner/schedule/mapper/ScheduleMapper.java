@@ -3,6 +3,7 @@ package com.ssafy.planner.schedule.mapper;
 import com.ssafy.planner.schedule.dto.Schedule;
 import com.ssafy.planner.schedule.dto.ScheduleDto;
 import com.ssafy.planner.schedule.dto.ScheduleImage;
+import com.ssafy.planner.schedule.dto.ScheduleOrderDto;
 import com.ssafy.planner.schedule.dto.ScheduleResponseDto;
 import java.time.LocalDate;
 import java.util.List;
@@ -12,7 +13,7 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface ScheduleMapper {
     
-    int createSchedules(@Param("plannerId") Long plannerId, @Param("schedules") List<ScheduleDto> schedules);
+    int createSchedules(@Param("plannerId") Long plannerId, @Param("schedules") List<ScheduleDto> schedule);
     
     Schedule getScheduleById(Long scheduleId);
     
@@ -32,8 +33,12 @@ public interface ScheduleMapper {
     
     void deleteSchedulesBatch(List<Long> schedulesIdList);
     
-    void insertScheduleImages(@Param("scheduleId") Long scheduleId,
-            @Param("imageKeys") List<String> imageKeys);
-
+    void insertScheduleImages(@Param("scheduleId") Long scheduleId, @Param("imageKeys") List<String> imageKeys);
+    
+    void updateScheduleOrder(@Param("schedules") List<ScheduleOrderDto> schedules);
+    
     void updateScheduleDate(@Param("schedules") List<ScheduleResponseDto> schedules);
+    
+    List<ScheduleResponseDto> getSchedulesByPlannerAndDate(@Param("plannerId") Long plannerId, @Param("date") LocalDate date);
+    
 }

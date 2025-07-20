@@ -1,4 +1,4 @@
-package com.ssafy.planner.schedule.dto;
+package com.ssafy.websocket.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,10 +9,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ScheduleImage {
-    
-    private Long id;
-    private Long planId;
-    private String imageKey;
+/**
+ * planner 수정 그룹에 connection 요청 객체
+ */
+public class JoinGroupMessage {
+    private Long plannerId;
 }
-

@@ -12,13 +12,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ScheduleResponseDto {
-
-  private Long id;
-  private Long plannerId;
-  @Setter
-  private LocalDate date;
-  private LocalTime startTime;
-  private String content;
-  private Integer idx;
-  private PlaceResponseDto place;
+    
+    private Long id;
+    private Long plannerId;
+    @Setter
+    private LocalDate date;
+    private LocalTime startTime;
+    private String content;
+    private Integer idx;
+    private PlaceResponseDto place;
 }
